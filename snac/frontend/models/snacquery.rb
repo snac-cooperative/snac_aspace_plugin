@@ -76,8 +76,6 @@ class SNACQuery
                         end
                         tempfile.write('   <subfield code="'+code+'">'+comp["text"]+'</subfield>'+"\n")
                     end
-                    #tempfile.write('   <subfield code="q">(William James),</subfield>')
-                    #tempfile.write('   <subfield code="d">1812-1897</subfield>')
                 end
                 clean = primary.strip
                 tempfile.write('   <subfield code="a">'+ clean +'</subfield>'+"\n")
@@ -110,11 +108,6 @@ class SNACQuery
         tempfile.write('</record>'+"\n")
         # if corpbody: ind1=2 (direct order)
         # a = name,  d dates
-        #xml += '  <marcxml:datafield tag="110" ind1="2" ind2=" ">'+
-        #       '   <marcxml:subfield code="a">Corporate Name</marcxml:subfield>'+
-        #       '   <marcxml:subfield code="d">1812-1897</marcxml:subfield>'+
-        #       ' </marcxml:datafield>';
-        #end
     end
     tempfile.write("\n</collection>")
 

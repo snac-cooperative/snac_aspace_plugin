@@ -40,16 +40,6 @@ class SNACResultSet
 
   def to_json
     @response_body
-    #ASUtils.to_json(:records => @records,
-     #               :at_start => at_start?,
-      #              :at_end => at_end?,
-       #             :hit_count => hit_count,
-        #            :query => @query,
-         #           :page => @page,
-          #          :records_per_page => @records_per_page,
-           #         :first_record_index => first_record_index,
-            #        :last_record_index => last_record_index
-             #       )
   end
 
 end

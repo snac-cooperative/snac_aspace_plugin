@@ -87,26 +87,6 @@ $(function() {
     $selected.closest(".selected-container").width($selected.closest(".col-md-4").width() - 30);
   };
 
-  var convertToMARC = function(data) {
-    var xml = '<marcxml:record xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:marcxml="http://www.loc.gov/MARC21/slim" xmlns:mets="http://www.loc.gov/METS/" xmlns:mxe="http://www.loc.gov/mxe" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:madsrdf="http://www.loc.gov/mads/rdf/v1#" xmlns:ri="http://id.loc.gov/ontologies/RecordInfo#" xmlns:sem="http://marklogic.com/semantics">'+"\n";
-    xml += '<marcxml:controlfield tag="001">'+data.id+'</marcxml:controlfield>\n';
-    xml += '  <marcxml:datafield tag="010" ind1=" " ind2=" ">\n' +
-           '   <marcxml:subfield code="a">'+data.id+'</marcxml:subfield>\n' +
-           ' </marcxml:datafield>\n';
-    // if person: ind1=1 (surname) ind1=0 (forename only)  if family: ind1=3
-      // a = personal name Last, First, b numeration, q fuller form, d dates, c titles
-    xml += '  <marcxml:datafield tag="100" ind1="1" ind2=" ">'+
-           '   <marcxml:subfield code="a">Linton, W. J.</marcxml:subfield>'+
-           '   <marcxml:subfield code="q">(William James),</marcxml:subfield>'+
-           '   <marcxml:subfield code="d">1812-1897</marcxml:subfield>'+
-           ' </marcxml:datafield>';
-    // if corpbody: ind1=2 (direct order)
-      // a = name,  d dates
-    xml += '  <marcxml:datafield tag="110" ind1="2" ind2=" ">'+
-           '   <marcxml:subfield code="a">Corporate Name</marcxml:subfield>'+
-           '   <marcxml:subfield code="d">1812-1897</marcxml:subfield>'+
-           ' </marcxml:datafield>';
-  }
 
   $searchForm.ajaxForm({
     dataType: "json",
