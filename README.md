@@ -1,5 +1,10 @@
 # SNAC ArchivesSpace Plugin
 
+```
+UPDATE: This beta plugin has been updated for the new Agent model.
+        It uses the built-in EAC-CPF parser to parse SNAC EAC-CPF XML.
+```
+
 This is a *beta* version of a working SNAC ArchivesSpace plugin.  It allows an ArchivesSpace user to search SNAC for an identity, then choose and import that identity as an Agent in ArchivesSpace.
 
 Search functionality in ArchivesSpace shows the SNAC biogHist entry and preferred nameEntry heading.  When importing, it uses the current Agent model, reading and storing the SNAC ARK ID and the preferred nameEntry heading.
