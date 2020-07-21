@@ -20,15 +20,14 @@ class SnacController < ApplicationController
 
 
   def import
-    #marcxml_file = searcher.results_to_marcxml_file(SNACQuery.query_list_marcxml(params[:snacid]))
-    marcxml_file = SNACQuery.query_list_marcxml(params[:snacid])
+    eacxml_file = SNACQuery.query_list_eacxml(params[:snacid])
 
     begin
       job = Job.new("import_job", {
-                      "import_type" => "marcxml_snac_subjects_and_agents",
+                      "import_type" => "eac_xml",
                       "jsonmodel_type" => "import_job"
                       },
-                    {"snac_import_#{SecureRandom.uuid}" => marcxml_file})
+                    {"snac_import_#{SecureRandom.uuid}" => eacxml_file})
 
       response = job.upload
       render :json => {'job_uri' => url_for(:controller => :jobs, :action => :show, :id => response['id'])}
@@ -46,7 +45,7 @@ class SnacController < ApplicationController
 
 
   def searcher
-    #SNACSearcher.new('http://snac-dev.iath.virginia.edu/alpha/www/search')
-    SNACSearcher.new('https://snaccooperative.org/search')
+    SNACSearcher.new('http://snac-dev.iath.virginia.edu/alpha/www/search')
+    #SNACSearcher.new('https://snaccooperative.org/search')
   end
 end

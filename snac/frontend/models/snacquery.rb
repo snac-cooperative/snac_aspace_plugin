@@ -19,6 +19,31 @@ class SNACQuery
   end
   #'https://snaccooperative.org/search'
 
+  def self.query_list_eacxml(ids)
+    uri = URI('http://snac-dev.iath.virginia.edu/alpha/www/download/')
+    default_params = {'type' => 'eac-cpf'}
+
+    tempfile = ASUtils.tempfile('snac_import')
+
+    ids.each do |id|
+        #req = Net::HTTP::Put.new('/alpha/rest/', initheader = { 'Content-Type' => 'text/json'})
+        #req.body = jsonbody
+        #response = Net::HTTP.new('snac-dev.iath.virginia.edu', 80).start {|http| http.request(req) }
+        results = HTTPRequest.new.get(uri+id+"?type=eac-cpf") do |response|
+          if response.code != '200'
+            raise SNACQueryException.new("Error during SNAC search: #{response.body}")
+          end
+
+          tempfile.write(response.body.bytes.pack("c*").force_encoding("UTF-8"))
+        end
+    end
+
+    tempfile.flush
+    tempfile.rewind
+
+    return tempfile
+  end
+
   def self.query_list_marcxml(ids)
     uri = URI('https://api.snaccooperative.org/')
     default_params = {'command' => 'read'}
