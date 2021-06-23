@@ -1,21 +1,38 @@
 en:
+  actions:
+    snac_export: Export to SNAC
+    snac_export_confirm: Are you sure you want to create a new SNAC constellation?
+    snac_view: View in SNAC
+  snac_export_job:
+    _singular: SNAC Export Job
+    message: This background job type is intended to be used from within Agent records only.
+    agent_id: Agent ID
+    agent_type: Agent Type
+  job:
+    types:
+      snac_export_job: SNAC Export
+  import_job:
+    import_type_snac_constellation_json: SNAC Constellation JSON
+    import_type_snac_constellation_json_desc: Import agent(s) from SNAC constellation JSON (either a single constellation or an array of them)
+    import_type_snac_constellation_ids: SNAC Constellation IDs
+    import_type_snac_constellation_ids_desc: Import agent(s) from SNAC Constellation IDs formatted as JSON (either a single ID or an array of them)
   plugins:
     snac:
       label: SNAC Import
       search:
-        full_name: Name Entry 
+        full_name: Name Entry
       actions:
         search: Search
         import: Import
         select: Select
-        show_record: Show Record 
+        show_record: Show Record
       messages:
         none_selected: No Results Selected
         no_results: No Results For Query
         selected: Selected
         import_success: Import job created
         import_success_message: Redirecting to the job status page...
-        import_error: Error while importing from SNAC 
+        import_error: Error while importing from SNAC
         search_error: Search Error
         service_locked: Items already selected
         service_locked_message: Please import or remove your selected items before switching record service

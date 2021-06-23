@@ -1,9 +1,26 @@
 fr:
+  actions:
+    snac_export: Exporter vers SNAC
+    snac_export_confirm: Are you sure you want to create a new SNAC constellation?
+    snac_view: Voir dans SNAC
+  snac_export_job:
+    _singular: Travail d'exportation SNAC
+    message: Ce type de tâche d'arrière-plan est destiné à être utilisé à partir des enregistrements d'agent uniquement.
+    agent_id: Identifiant de l'agent
+    agent_type: Type d'agent
+  job:
+    types:
+      snac_export_job: Exportation SNAC
+  import_job:
+    import_type_snac_constellation_json: SNAC Constellation JSON
+    import_type_snac_constellation_json_desc: Agent(s) d'importation de la constellation SNAC JSON (soit une seule constellation ou un tableau d'entre eux)
+    import_type_snac_constellation_ids: Identifiants de la Constellation SNAC 
+    import_type_snac_constellation_ids_desc: Importer des agents à partir des identifiants de la constellation SNAC au format JSON (soit un identifiant unique, soit un tableau d'entre eux) 
   plugins:
     snac:
-      label: Import SNAC
+      label: Importer SNAC
       search:
-        full_name: Nom 
+        full_name: Nom
       actions:
         search: Rechercher
         import: Importer
@@ -15,7 +32,7 @@ fr:
         selected: Sélectionné
         import_success: Tâche d'import créée
         import_success_message: Redirection vers la page de statut de tâche...
-        import_error: Erreur lors de l'import à partir de SNAC 
+        import_error: Erreur lors de l'import à partir de SNAC
         search_error: Erreur de recherche
         service_locked: Items déjà sélectionnés
         service_locked_message: Veuillez importer ou enlever les items sélectionnés avant de changer de service d'enregistrement
