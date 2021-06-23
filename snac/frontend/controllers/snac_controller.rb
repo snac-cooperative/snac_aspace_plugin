@@ -7,7 +7,7 @@ class SnacController < ApplicationController
 
   class SNACControllerException < StandardError; end
 
-  set_access_control "update_agent_record" => [:search, :index, :import]
+  set_access_control "update_agent_record" => [:search, :index, :import, :export]
 
 
   def index
@@ -38,6 +38,28 @@ class SnacController < ApplicationController
       response = job.upload
       render :json => {'job_uri' => url_for(:controller => :jobs, :action => :show, :id => response['id'])}
     rescue
+      render :json => {'error' => $!.to_s}
+    end
+  end
+
+
+  def export
+    agent_id = params[:id].to_i
+    agent_type = params[:type]
+
+    begin
+      job = Job.new("snac_export_job", {
+                      "job_type" => "snac_export_job",
+                      "jsonmodel_type" => "snac_export_job",
+                      "agent_id" => agent_id,
+                      "agent_type" => agent_type
+                    },
+                    {})
+
+      response = job.upload
+      redirect_to :controller => :jobs, :action => :show, :id => JSONModel(:job).id_for(response['uri'])
+    rescue
+      # FIXME: probably doesn't do the right thing for the agent page
       render :json => {'error' => $!.to_s}
     end
   end
