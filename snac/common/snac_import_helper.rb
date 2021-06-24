@@ -83,16 +83,18 @@ module SNACImportHelper
   end
 
 
+  def self.new_name(entry)
+    {
+      'authorized' => entry['preferenceScore'] == '99',
+      'sort_name_auto_generate' => true
+    }
+  end
+
+
   def self.build_agent_names_person(entries)
     names = []
 
     entries.each do |entry|
-      name = {
-        'authorized' => entry['preferenceScore'] == '99',
-        'name_order' => 'direct',
-        'sort_name_auto_generate' => true
-      }
-
       primary_names = []
       rest_of_names = []
       qualifiers = []
@@ -100,24 +102,31 @@ module SNACImportHelper
       fuller_forms = []
       dates = []
 
-      # also UnspecifiedName?
-      entry['components'].each do |component|
-        case component['type']['term']
-          when 'Name', 'Surname'
-            primary_names << component['text']
-          when 'Forename'
-            rest_of_names << component['text']
-          when 'NameAddition'
-            qualifiers << component['text']
-          when 'Numeration'
-            numbers << component['text']
-          when 'NameExpansion'
-            fuller_forms << component['text']
-          when 'Date'
-            dates << component['text']
+      if entry.key?('components')
+        # also UnspecifiedName?
+        entry['components'].each do |component|
+          case component['type']['term']
+            when 'Name', 'Surname'
+              primary_names << component['text']
+            when 'Forename'
+              rest_of_names << component['text']
+            when 'NameAddition'
+              qualifiers << component['text']
+            when 'Numeration'
+              numbers << component['text']
+            when 'NameExpansion'
+              fuller_forms << component['text']
+            when 'Date'
+              dates << component['text']
+          end
         end
+      else
+        primary_names << entry['original']
       end
 
+      name = new_name(entry)
+
+      name['name_order'] = if primary_names.any? then 'indirect' else 'direct' end
       name['primary_name'] = primary_names.first unless primary_names.empty?
       name['rest_of_name'] = rest_of_names.first unless rest_of_names.empty?
       name['qualifier'] = qualifiers.join(', ').gsub(', (', ' (') unless qualifiers.empty?
@@ -136,31 +145,32 @@ module SNACImportHelper
     names = []
 
     entries.each do |entry|
-      name = {
-        'authorized' => entry['preferenceScore'] == '99',
-        'sort_name_auto_generate' => true
-      }
-
       family_names = []
       family_types = []
       qualifiers = []
       locations = []
       dates = []
 
-      entry['components'].each do |component|
-        case component['type']['term']
-          when 'Name', 'FamilyName'
-            family_names << component['text']
-          when 'FamilyType'
-            family_types << component['text']
-          when 'ProminentMember'
-            qualifiers << component['text']
-          when 'Place'
-            locations << component['text']
-          when 'Date'
-            dates << component['text']
+      if entry.key?('components')
+        entry['components'].each do |component|
+          case component['type']['term']
+            when 'Name', 'FamilyName'
+              family_names << component['text']
+            when 'FamilyType'
+              family_types << component['text']
+            when 'ProminentMember'
+              qualifiers << component['text']
+            when 'Place'
+              locations << component['text']
+            when 'Date'
+              dates << component['text']
+          end
         end
+      else
+        family_names << entry['original']
       end
+
+      name = new_name(entry)
 
       name['family_name'] = family_names.first unless family_names.empty?
       name['family_type'] = family_types.first unless family_types.empty?
@@ -179,11 +189,6 @@ module SNACImportHelper
     names = []
 
     entries.each do |entry|
-      name = {
-        'authorized' => entry['preferenceScore'] == '99',
-        'sort_name_auto_generate' => true
-      }
-
       primary_names = []
       qualifiers = []
       subordinates = []
@@ -193,28 +198,34 @@ module SNACImportHelper
       jurisdiction = false
       conference = false
 
-      entry['components'].each do |component|
-        case component['type']['term']
-          when 'Name'
-            primary_names << component['text']
-          when 'JurisdictionName'
-            primary_names << component['text']
-            jurisdiction = true
-          when 'NameAddition'
-            qualifiers << component['text']
-          when 'SubdivisionName'
-            subordinates << component['text']
-          when 'Number'
-            numbers << component['text']
-            conference = true
-          when 'Location'
-            locations << component['text']
-            conference = true
-          when 'Date'
-            dates << component['text']
-            conference = true
+      if entry.key?('components')
+        entry['components'].each do |component|
+          case component['type']['term']
+            when 'Name'
+              primary_names << component['text']
+            when 'JurisdictionName'
+              primary_names << component['text']
+              jurisdiction = true
+            when 'NameAddition'
+              qualifiers << component['text']
+            when 'SubdivisionName'
+              subordinates << component['text']
+            when 'Number'
+              numbers << component['text']
+              conference = true
+            when 'Location'
+              locations << component['text']
+              conference = true
+            when 'Date'
+              dates << component['text']
+              conference = true
+          end
         end
+      else
+        primary_names << entry['original']
       end
+
+      name = new_name(entry)
 
       name['primary_name'] = primary_names.first unless primary_names.empty?
       name['qualifier'] = qualifiers.join(', ').gsub(', (', ' (') unless qualifiers.empty?
