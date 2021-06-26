@@ -1,8 +1,11 @@
 fr:
   actions:
+    snac_view: Voir dans SNAC
     snac_export: Exporter vers SNAC
     snac_export_confirm: Are you sure you want to create a new SNAC constellation?
-    snac_view: Voir dans SNAC
+    snac_export_success_title: Tâche d'exportation créée
+    snac_export_success_message: Redirection vers la page de statut de tâche...
+    snac_export_failure_title: Erreur lors de la création de la tâche d'exportation
   snac_export_job:
     _singular: Travail d'exportation SNAC
     message: Ce type de tâche d'arrière-plan est destiné à être utilisé à partir des enregistrements d'agent uniquement.
@@ -14,8 +17,8 @@ fr:
   import_job:
     import_type_snac_constellation_json: SNAC Constellation JSON
     import_type_snac_constellation_json_desc: Agent(s) d'importation de la constellation SNAC JSON (soit une seule constellation ou un tableau d'entre eux)
-    import_type_snac_constellation_ids: Identifiants de la Constellation SNAC 
-    import_type_snac_constellation_ids_desc: Importer des agents à partir des identifiants de la constellation SNAC au format JSON (soit un identifiant unique, soit un tableau d'entre eux) 
+    import_type_snac_constellation_ids: Identifiants de la Constellation SNAC
+    import_type_snac_constellation_ids_desc: Importer des agents à partir des identifiants de la constellation SNAC au format JSON (soit un identifiant unique, soit un tableau d'entre eux)
   plugins:
     snac:
       label: Importer SNAC

@@ -1,0 +1,8 @@
+<% if res[:error] != '' %>
+  AS.openQuickModal(AS.renderTemplate("template_snac_export_failure_title"), '<%= res[:error] %>');
+<% else %>
+  AS.openQuickModal(AS.renderTemplate("template_snac_export_success_title"), AS.renderTemplate("template_snac_export_success_message"));
+  setTimeout(function() {
+    window.location = '<%= res[:job_uri] %>';
+  }, 2000);
+<% end %>

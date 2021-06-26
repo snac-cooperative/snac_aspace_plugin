@@ -1,8 +1,11 @@
 en:
   actions:
+    snac_view: View in SNAC
     snac_export: Export to SNAC
     snac_export_confirm: Are you sure you want to create a new SNAC constellation?
-    snac_view: View in SNAC
+    snac_export_success_title: Export job created
+    snac_export_success_message: Redirecting to the job status page...
+    snac_export_failure_title: Error while creating export job
   snac_export_job:
     _singular: SNAC Export Job
     message: This background job type is intended to be used from within Agent records only.

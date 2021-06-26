@@ -60,7 +60,7 @@
             </div>
           <% else %>
             <div class="btn btn-inline-form">
-              <%= link_to I18n.t("actions.snac_export"), {:controller => :snac, :action => :export, :id => @agent.id, :type => @agent.agent_type}, :class => "btn btn-sm btn-default", :id => "snac-export", data: { confirm: I18n.t("actions.snac_export_confirm"), disable_with: I18n.t("actions.snac_export") } %>
+              <%= link_to I18n.t("actions.snac_export"), {:controller => :snac, :action => :export, :id => @agent.id, :type => @agent.agent_type}, :class => "btn btn-sm btn-default", :id => "snac-export", data: { confirm: I18n.t("actions.snac_export_confirm"), disable_with: I18n.t("actions.snac_export") }, remote: true %>
             </div>
           <% end %>
 
@@ -87,4 +87,18 @@
     </div>
     <div class="clearfix"></div>
   </div>
+
+  <div id="template_snac_export_failure_title"><!--
+    <%= I18n.t("actions.snac_export_failure_title") %>
+  --></div>
+
+  <div id="template_snac_export_success_title"><!--
+    <%= I18n.t("actions.snac_export_success_title") %>
+  --></div>
+
+  <div id="template_snac_export_success_message"><!--
+    <div class="alert alert-success">
+    <%= I18n.t("actions.snac_export_success_message") %></div>
+  --></div>
+
 <% end %>

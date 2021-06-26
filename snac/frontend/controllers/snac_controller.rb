@@ -47,6 +47,11 @@ class SnacController < ApplicationController
     agent_id = params[:id].to_i
     agent_type = params[:type]
 
+    res = {
+      :job_uri => '',
+      :error => ''
+    }
+
     begin
       job = Job.new("snac_export_job", {
                       "job_type" => "snac_export_job",
@@ -57,10 +62,13 @@ class SnacController < ApplicationController
                     {})
 
       response = job.upload
-      redirect_to :controller => :jobs, :action => :show, :id => JSONModel(:job).id_for(response['uri'])
+      res[:job_uri] = url_for(:controller => :jobs, :action => :show, :id => JSONModel(:job).id_for(response['uri']))
     rescue
-      # FIXME: probably doesn't do the right thing for the agent page
-      render :json => {'error' => $!.to_s}
+      res[:error] = $!.to_s
+    end
+
+    respond_to do |format|
+      format.js { render :locals => {:res => res} }
     end
   end
 
