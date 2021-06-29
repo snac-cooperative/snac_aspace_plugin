@@ -124,14 +124,34 @@ module SNACImportHelper
         primary_names << entry['original']
       end
 
+      # adjust for odd cases...
+
+      primary_name = primary_names.first unless primary_names.empty?
+      rest_of_name = rest_of_names.first unless rest_of_names.empty?
+      fuller_form = fuller_forms.first unless fuller_forms.empty?
+
+      # surname not defined, but forename and/or fuller form is (e.g. "Poor Richard" in Ben Franklin's constellation)
+      unless primary_name
+        if rest_of_name
+          primary_name, rest_of_name = rest_of_name, nil
+        elsif fuller_form
+          primary_name, fuller_form = fuller_form, nil
+        end
+      end
+
+      # skip this entry if we still can't determine a primary name
+      next unless primary_name
+
+      # now fill out the name entry
+
       name = new_name(entry)
 
       name['name_order'] = if primary_names.any? then 'indirect' else 'direct' end
-      name['primary_name'] = primary_names.first unless primary_names.empty?
-      name['rest_of_name'] = rest_of_names.first unless rest_of_names.empty?
+      name['primary_name'] = primary_name
+      name['rest_of_name'] = rest_of_name
       name['qualifier'] = qualifiers.join(', ').gsub(', (', ' (') unless qualifiers.empty?
       name['number'] = numbers.first unless numbers.empty?
-      name['fuller_form'] = fuller_forms.first unless fuller_forms.empty?
+      name['fuller_form'] = fuller_form
       name['dates'] = dates.first unless dates.empty?
 
       names << name
