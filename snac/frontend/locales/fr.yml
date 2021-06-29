@@ -15,10 +15,8 @@ fr:
     types:
       snac_export_job: Exportation SNAC
   import_job:
-    import_type_snac_constellation_json: SNAC Constellation JSON
-    import_type_snac_constellation_json_desc: Agent(s) d'importation de la constellation SNAC JSON (soit une seule constellation ou un tableau d'entre eux)
-    import_type_snac_constellation_ids: Identifiants de la Constellation SNAC
-    import_type_snac_constellation_ids_desc: Importer des agents à partir des identifiants de la constellation SNAC au format JSON (soit un identifiant unique, soit un tableau d'entre eux)
+    import_type_snac_json: SNAC JSON
+    import_type_snac_json_desc: Importer des données depuis SNAC JSON (soit une seule entrée, soit un tableau d'entre elles)
   plugins:
     snac:
       label: Importer SNAC

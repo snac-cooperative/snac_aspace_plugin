@@ -7,6 +7,8 @@ class SNACConstellation
 
   class SNACConstellationException < StandardError; end
 
+  attr_accessor :constellation
+
 
   def initialize(from = nil)
     # determine whether we were passed a SNAC constellation, or an ID to look one up

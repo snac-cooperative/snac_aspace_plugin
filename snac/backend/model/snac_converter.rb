@@ -9,14 +9,10 @@ class SnacConverter < Converter
 
   def self.import_types(show_hidden = false)
     [
-     {
-       :name => "snac_constellation_json",
-       :description => I18n.t('import_job.import_type_snac_constellation_json_desc')
-     },
-     {
-       :name => "snac_constellation_ids",
-       :description => I18n.t('import_job.import_type_snac_constellation_ids_desc')
-     }
+      {
+        :name => "snac_json",
+        :description => I18n.t('import_job.import_type_snac_json_desc')
+      }
     ]
   end
 
@@ -47,17 +43,35 @@ class SnacConverter < Converter
     # * single constellation (either SNAC JSON or ID), via:
     #    ArchivesSpace -> Create -> Background Job -> Import Data -> SNAC Constellation JSON/IDs
 
+    # it could even be other things in the future... resources/holding reposoitories, etc.
+
     if data.is_a?(Array)
       data.each do |datum|
-        create_agent(datum)
+        create_from(datum)
       end
     else
-      create_agent(data)
+      create_from(data)
     end
   end
 
 
   private
+
+
+  def create_from(data)
+    # eventually this will handle other types of data
+
+    case data['type']
+    when 'constellation'
+      item = create_agent(data['id'])
+    else
+      return
+    end
+
+    @batch << item
+
+    item.to_json
+  end
 
 
   def create_agent(data)
@@ -68,9 +82,7 @@ class SnacConverter < Converter
 
     agent = JSONModel(agent_type).from_hash(agent_hash)
 
-    @batch << agent
-
-    agent.to_json
+    agent
   end
 
 

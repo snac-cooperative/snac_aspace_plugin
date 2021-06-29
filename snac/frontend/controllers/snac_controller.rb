@@ -23,17 +23,26 @@ class SnacController < ApplicationController
 
 
   def import
-    ids_file = ASUtils.tempfile('snac_import')
-    ids_file.write(params[:snacid].to_json)
-    ids_file.flush
-    ids_file.rewind
+    # eventually this will handle other types of data
+    items = []
+    params[:snacid].each do |id|
+      items << {
+        "type" => "constellation",
+        "id" => id
+      }
+    end
+
+    json_file = ASUtils.tempfile('snac_import')
+    json_file.write(items.to_json)
+    json_file.flush
+    json_file.rewind
 
     begin
       job = Job.new("import_job", {
-                      "import_type" => "snac_constellation_ids",
+                      "import_type" => "snac_json",
                       "jsonmodel_type" => "import_job"
                       },
-                    {"snac_import_#{SecureRandom.uuid}" => ids_file})
+                    {"snac_import_#{SecureRandom.uuid}" => json_file})
 
       response = job.upload
       render :json => {'job_uri' => url_for(:controller => :jobs, :action => :show, :id => response['id'])}
@@ -44,9 +53,6 @@ class SnacController < ApplicationController
 
 
   def export
-    agent_id = params[:id].to_i
-    agent_type = params[:type]
-
     res = {
       :job_uri => '',
       :error => ''
@@ -56,8 +62,7 @@ class SnacController < ApplicationController
       job = Job.new("snac_export_job", {
                       "job_type" => "snac_export_job",
                       "jsonmodel_type" => "snac_export_job",
-                      "agent_id" => agent_id,
-                      "agent_type" => agent_type
+                      "uris" => params[:uris]
                     },
                     {})
 

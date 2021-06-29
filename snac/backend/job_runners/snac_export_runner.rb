@@ -8,48 +8,12 @@ class SnacExportRunner < JobRunner
   class SNACExportRunnerException < StandardError; end
 
   def run
+    uris = @json.job['uris']
+
+    terminal_error = nil
+    modified = []
+
     begin
-      agent_id = @json.job['agent_id']
-      agent_type = @json.job['agent_type']
-
-      output "Looking up #{agent_type} with ID #{agent_id}..."
-
-      # get cleaned agent record
-      agent_model = Kernel.const_get(agent_type.camelize)
-      agent = JSONModel(agent_type.to_sym).from_hash(agent_model.to_jsonmodel(agent_id).to_hash)
-
-      output "Checking for existing SNAC resource identifier..."
-
-      # check for existing snac link
-      ids = agent['agent_record_identifiers']
-      has_primary = false
-
-      ids.each do |id|
-        raise SNACExportRunnerException.new("this agent is already linked to SNAC: #{id['record_identifier']}") if id['source'] == 'snac'
-        has_primary ||= id['primary_identifier']
-      end
-
-      # otherwise, insert into snac
-      output "Exporting agent to new SNAC constellation..."
-
-      con = SNACConstellation.new
-      res = con.export(agent)
-      log "res = [#{res}]"
-      log "url = [#{con.url}]"
-
-      output "Linking SNAC constellation to this agent..."
-
-      # add snac constellation url to agent
-      ids << {
-        'record_identifier' => con.url,
-        'primary_identifier' => !has_primary,
-        'source' => 'snac'
-      }
-
-      agent['agent_record_identifiers'] = ids
-
-      modified = []
-
       DB.open(DB.supports_mvcc?,
               :retry_on_optimistic_locking_fail => true) do
 
@@ -57,27 +21,57 @@ class SnacExportRunner < JobRunner
           RequestContext.open(:current_username => @job.owner.username,
                               :repo_id => @job.repo_id) do
 
-            agent_model.any_repo[agent_id].update_from_json(agent)
+            uris.each_with_index do |uri, index|
+              output "==========[ Exporting item #{index+1} of #{uris.length} ]=========="
+              output "Processing URI: #{uri}"
+
+              parsed = JSONModel.parse_reference(uri)
+              id = parsed[:id]
+              type = parsed[:type]
+              output "Looking up #{type} with ID #{id}..."
+
+              # get cleaned record
+              model = Kernel.const_get(type.camelize)
+              json = JSONModel(type.to_sym).from_hash(model.to_jsonmodel(id).to_hash)
+
+              # eventually this will handle other types of data
+              case type
+              when /^agent/
+                json = export_agent(json)
+              end
+
+              next unless json
+
+              output "Updating #{type} record..."
+              model.any_repo[id].update_from_json(json)
+              modified << json.uri if json.uri
+
+              output "Done!"
+            end
+
           end
 
-          output "SUCCESS: #{con.url}"
+          modified.uniq!
+
+          output "============================================="
+          output "SUCCESS: Exported #{modified.length} item#{"s" unless modified.length == 1}"
 
           self.success!
 
-          @job.record_created_uris([agent.uri])
+          @job.record_created_uris(modified)
 
         rescue Exception => e
           terminal_error = e
           raise Sequel::Rollback
         end
-
       end
 
     rescue
-      terminal_error = $!
+      terminal_error ||= $!
     end
 
     if terminal_error
+      output "============================================="
       output "ERROR: #{terminal_error.message}"
 
       terminal_error.backtrace.each do |line|
@@ -101,5 +95,48 @@ class SnacExportRunner < JobRunner
     log msg
     @job.write_output(msg)
   end
+
+
+  def export_agent(json)
+    # exports an agent to a SNAC constellation, and returns
+    # a modified Agent with a link to the entry in SNAC
+
+    output "Preparing to export this agent to SNAC..."
+
+    # check for existing snac link, as well as whether this
+    # this agent already has a primary identifier (used later)
+
+    ids = json['agent_record_identifiers']
+    has_primary = false
+
+    ids.each do |id|
+      if id['source'] == 'snac'
+        output "Skipping export because this agent is already linked to SNAC: #{id['record_identifier']}"
+        return nil
+      end
+      has_primary ||= id['primary_identifier']
+    end
+
+    output "Exporting agent to new SNAC constellation..."
+
+    con = SNACConstellation.new
+    res = con.export(json)
+
+    output "SNAC URL: #{con.url}"
+
+    output "Linking SNAC constellation to this agent..."
+
+    # add snac constellation url to agent
+    ids << {
+      'record_identifier' => con.url,
+      'primary_identifier' => !has_primary,
+      'source' => 'snac'
+    }
+
+    json['agent_record_identifiers'] = ids
+
+    json
+  end
+
 
 end

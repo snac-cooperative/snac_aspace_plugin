@@ -6,13 +6,14 @@
 
     "properties" => {
 
-      "agent_id" => {
-        "type" => "integer",
-        "ifmissing" => "error"
-      },
-      "agent_type" => {
-        "type" => "string",
-        "ifmissing" => "error"
+      "uris" => {
+        "type" => "array",
+        "ifmissing" => "error",
+        "minItems" => 1,
+        "items" => {
+          "type" => "string",
+          "ifmissing" => "error"
+        }
       }
 
     }

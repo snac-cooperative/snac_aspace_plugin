@@ -60,7 +60,7 @@
             </div>
           <% else %>
             <div class="btn btn-inline-form">
-              <%= link_to I18n.t("actions.snac_export"), {:controller => :snac, :action => :export, :id => @agent.id, :type => @agent.agent_type}, :class => "btn btn-sm btn-default", :id => "snac-export", data: { confirm: I18n.t("actions.snac_export_confirm"), disable_with: I18n.t("actions.snac_export") }, remote: true %>
+              <%= link_to I18n.t("actions.snac_export"), {:controller => :snac, :action => :export, :uris => [@agent.uri]}, :class => "btn btn-sm btn-default", :id => "snac-export", data: { confirm: I18n.t("actions.snac_export_confirm"), disable_with: I18n.t("actions.snac_export") }, remote: true %>
             </div>
           <% end %>
 
