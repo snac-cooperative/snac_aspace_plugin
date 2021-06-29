@@ -77,7 +77,7 @@ class SnacController < ApplicationController
 
 
   def do_search(params)
-    searcher.search(params[:family_name], params[:page].to_i, params[:records_per_page].to_i)
+    searcher.search(params[:name_entry], params[:page].to_i, params[:records_per_page].to_i)
   end
 
 

@@ -6,8 +6,6 @@ $(function() {
   var $results = $("#results");
   var $selected = $("#selected");
 
-  var result_json = {};
-
   var selected_snacids = {};
 
   var renderResults = function(json) {
@@ -15,7 +13,7 @@ $(function() {
 
     $results.empty();
     $results.append(AS.renderTemplate("template_snac_result_summary", json));
-    $.each(json.results, function(i, record) {
+    $.each(json.records, function(i, record) {
       var $result = $(AS.renderTemplate("template_snac_result", {record: record, selected: selected_snacids}));
       if (selected_snacids[record.id]) {
         $(".alert-success", $result).removeClass("hide");
@@ -25,24 +23,13 @@ $(function() {
       $results.append($result);
 
     });
-    //$results.append(AS.renderTemplate("template_snac_pagination", json));
-    $('.snac-marc', $results).each(function(i, e) {hljs.highlightBlock(e)});
+    $results.append(AS.renderTemplate("template_snac_pagination", json));
+    $('.snac-show', $results).each(function(i, e) {hljs.highlightBlock(e)});
   };
 
 
   var decorateResults = function(resultsJson) {
-    //stringify the query here so templates don't need
-    //to worry about SRU vs OpenSearch
-    if (typeof(resultsJson.query) === 'string') {
-      // just use sru's family_name as the 
-      // sole openSearch field
-      resultsJson.queryString = '?family_name=' + resultsJson.query + '&snac_service=' + $("input[name='snac_service']:checked").val();
-    } else {
-       if ( resultsJson.query.query['local.GivenName'] === undefined ) {
-        resultsJson.query.query['local.GivenName'] = "";  
-      }
-      resultsJson.queryString = '?family_name=' + resultsJson.query.query['local.FamilyName'] + '&given_name=' + resultsJson.query.query['local.GivenName'] + '&snac_service=' + $("input[name='snac_service']:checked").val();
-    }
+    resultsJson.queryString = '?name_entry=' + resultsJson.query;
   }
 
 
@@ -92,7 +79,7 @@ $(function() {
     dataType: "json",
     type: "GET",
     beforeSubmit: function() {
-      if (!$("#family-name-search-query", $searchForm).val()) {
+      if (!$("#name-entry-search-query", $searchForm).val()) {
           return false;
       }
 
@@ -101,7 +88,6 @@ $(function() {
     success: function(json) {
       $(".btn", $searchForm).removeAttr("disabled").removeClass("disabled").removeClass("busy");
       renderResults(json);
-      result_json = json;
     },
     error: function(err) {
       $(".btn", $searchForm).removeAttr("disabled").removeClass("disabled").removeClass("busy");
@@ -144,7 +130,7 @@ $(function() {
     event.preventDefault();
 
     $.getJSON($(this).attr("href"), function(json) {
-      $("body").scrollTo(0); 
+      $("body").scrollTo(0);
       renderResults(json);
     });
   }).on("click", ".snac-result button.select-record", function(event) {
@@ -157,9 +143,9 @@ $(function() {
     }
   }).on("click", ".snac-result button.show-record", function(e) {
          e.preventDefault();
-         $(this).siblings(".snac-marc").removeClass("hide");
-         $(this).addClass("hide");     
-  }); 
+         $(this).siblings(".snac-show").removeClass("hide");
+         $(this).addClass("hide");
+  });
 
   $selected.on("click", ".remove-selected", function(event) {
     var snacid = $(this).parent().data("snacid");

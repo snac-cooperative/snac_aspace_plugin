@@ -5,7 +5,7 @@
     "type" => "object",
 
     "properties" => {
-      
+
       "agent_id" => {
         "type" => "integer",
         "ifmissing" => "error"
@@ -14,7 +14,7 @@
         "type" => "string",
         "ifmissing" => "error"
       }
-    
+
     }
   }
 }

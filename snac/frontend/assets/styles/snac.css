@@ -1,7 +1,7 @@
 /*
  * modified by SNAC
  */
-.snac-result .alert button { 
+.snac-result .alert button {
   position: relative;
   top: -7px;
 }
@@ -12,16 +12,16 @@
 }
 
 
-.snac-marc { 
+.snac-show {
     height: 200px;
     overflow: auto;
-    margin-top: 1em; 
+    margin-top: 1em;
     margin-bottom: 1em;
     border: 1px solid #ccc; // fallback for IE7-8
     border: 1px solid rgba(0,0,0,.15);
 }
 
-.snac-marc pre {
+.snac-show pre {
     background-color: #fff;
     border: none;
 }

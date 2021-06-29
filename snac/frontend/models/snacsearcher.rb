@@ -1,7 +1,6 @@
 # Modified by SNAC
 require 'net/http'
 
-require_relative 'snacquery'
 require_relative 'snacresultset'
 
 class SNACSearcher
@@ -23,14 +22,14 @@ class SNACSearcher
 
 
   def calculate_start_record(page, records_per_page)
-    ((page - 1) * records_per_page) #+ 1
+    ((page - 1) * records_per_page) + 1
   end
 
 
-  def search(sru_query, page, records_per_page)
+  def search(query, page, records_per_page)
     uri = URI(@search_url)
     start_record = calculate_start_record(page, records_per_page)
-    params = default_params.merge('term' => sru_query.to_s,
+    params = default_params.merge('term' => query.to_s,
                                   'count' => records_per_page,
                                   'start' => start_record)
     uri.query = URI.encode_www_form(params)
@@ -38,7 +37,7 @@ class SNACSearcher
     res = Net::HTTP::get_response(uri)
     raise SNACSearchException.new("Error during SNAC search: #{res.body}") unless res.is_a?(Net::HTTPSuccess)
 
-    SNACResultSet.new(res.body, sru_query, page, records_per_page)
+    SNACResultSet.new(res.body, query, page, records_per_page)
   end
 
 

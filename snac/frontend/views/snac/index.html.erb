@@ -9,14 +9,14 @@
 
     <%= form_tag({:controller => :snac, :action => :search}, {:id => "snac_search", :class => "form-search", :method => "GET"}) do |form| %>
 
-    <div class='control-group form-group required'> 
-      <label class='control-label' for="family-name-search-query"><%= I18n.t("plugins.snac.search.full_name") %></label>
-      <div class='controls'> 
-        <input type="text" name="family_name" class="family-name-search-query snac-name-input input-large" id="family-name-search-query"></input>
+    <div class='control-group form-group required'>
+      <label class='control-label' for="name-entry-search-query"><%= I18n.t("plugins.snac.search.name_entry") %></label>
+      <div class='controls'>
+        <input type="text" name="name_entry" class="name-entry-search-query snac-name-input input-large" id="name-entry-search-query"></input>
       </div>
     </div>
-    
-    <div class='control-group form-group'> 
+
+    <div class='control-group form-group'>
       <button type="submit" class="btn btn-primary btn-default">
         <%= image_tag "archivesspace/btn-busy.gif", :class=>"btn-busy-icon" %>
         <%= I18n.t("plugins.snac.actions.search") %>
@@ -58,12 +58,12 @@
           <span class="pull-right alert alert-success hide"><%= I18n.t("plugins.snac.messages.selected") %></span>
           <button class="pull-right btn btn-default hide select-record" data-snacid="${record.id}" data-name="${record.nameEntries[0].original}"><%= I18n.t("plugins.snac.actions.select") %></button>
 	  <button class="pull-right btn btn-default hide show-record" ><%= I18n.t("plugins.snac.actions.show_record") %></button>
-	  <div class="col-md-12 snac-marc hide"><b>SNAC ID: </b>${record.id}<br><b>ARK: </b>${record.ark}
+	  <div class="col-md-12 snac-show hide"><b>SNAC ID: </b>${record.id}<br><b>ARK: </b>${record.ark}
 	  {if record.biogHists}
 	  <br>${record.biogHists[0].text}</div>
 	  {/if}</div>
-        </div> 
-      </div>   
+        </div>
+      </div>
     </div>
   </div>
 --></div>
@@ -71,7 +71,7 @@
 <div id="template_snac_result_summary"><!--
   <div class="row-fluid">
     <div class="pull-right text-info">
-      <%= I18n.t("plugins.snac.result_summary", :page => "${page + 1}", :first_record_index => "1", :last_record_index => "${count}", :hit_count => "${total}") %>
+      <%= I18n.t("plugins.snac.result_summary", :page => "${page}", :first_record_index => "${first_record_index}", :last_record_index => "${last_record_index}", :hit_count => "${hit_count}") %>
     </div>
     <hr/>
   </div>
@@ -106,10 +106,6 @@
 <div id="template_snac_import_success_message"><!--
   <div class="alert alert-success"><%= I18n.t("plugins.snac.messages.import_success_message") %></div>
 --></div>
-
-<div id="template_snac_service_locked_title"><!--<%= I18n.t("plugins.snac.messages.service_locked") %>--></div>
-
-<div id="template_snac_service_locked_message"><!--<%= I18n.t("plugins.snac.messages.service_locked_message") %>--></div>
 
 <div id="template_snac_search_error_title"><!--
   <%= I18n.t("plugins.snac.messages.search_error") %>

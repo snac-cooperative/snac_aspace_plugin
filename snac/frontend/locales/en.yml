@@ -23,7 +23,7 @@ en:
     snac:
       label: SNAC Import
       search:
-        full_name: Name Entry
+        name_entry: Name Entry
       actions:
         search: Search
         import: Import
@@ -37,7 +37,4 @@ en:
         import_success_message: Redirecting to the job status page...
         import_error: Error while importing from SNAC
         search_error: Search Error
-        service_locked: Items already selected
-        service_locked_message: Please import or remove your selected items before switching record service
-        service_warning: This plugin depends on 3rd party services that may or may not be available or supported.
       result_summary: "Page %{page} - Showing results %{first_record_index} to %{last_record_index} of %{hit_count} matches"

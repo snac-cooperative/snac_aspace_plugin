@@ -23,7 +23,7 @@ fr:
     snac:
       label: Importer SNAC
       search:
-        full_name: Nom
+        name_entry: Nom
       actions:
         search: Rechercher
         import: Importer
@@ -37,7 +37,4 @@ fr:
         import_success_message: Redirection vers la page de statut de tâche...
         import_error: Erreur lors de l'import à partir de SNAC
         search_error: Erreur de recherche
-        service_locked: Items déjà sélectionnés
-        service_locked_message: Veuillez importer ou enlever les items sélectionnés avant de changer de service d'enregistrement
-        service_warning: Ce plugin dépend de services tiers qui peuvent être ou non disponibles ou maintenus.
       result_summary: "Page %{page} - Affichage des résultats %{first_record_index} à %{last_record_index} sur %{hit_count}"
