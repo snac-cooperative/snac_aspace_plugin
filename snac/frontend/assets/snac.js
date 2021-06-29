@@ -57,9 +57,9 @@ $(function() {
     }
   };
 
-  var addSelected = function(snacid, name, $result) {
+  var addSelected = function(snacid, name, type, $result) {
     selected_snacids[snacid] = true;
-    $selected.append(AS.renderTemplate("template_snac_selected", {snacid: snacid, name: name}))
+    $selected.append(AS.renderTemplate("template_snac_selected", {snacid: snacid, name: name, type: type}))
 
     $(".alert-success", $result).removeClass("hide");
     $("button.select-record", $result).addClass("hide");
@@ -136,10 +136,11 @@ $(function() {
   }).on("click", ".snac-result button.select-record", function(event) {
     var snacid = $(this).data("snacid");
     var name = $(this).data("name");
+    var type = $(this).data("type");
     if (selected_snacids[snacid]) {
       removeSelected(snacid);
     } else {
-      addSelected(snacid, name, $(this).closest(".snac-result"));
+      addSelected(snacid, name, type, $(this).closest(".snac-result"));
     }
   }).on("click", ".snac-result button.show-record", function(e) {
          e.preventDefault();

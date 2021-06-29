@@ -23,17 +23,8 @@ class SnacController < ApplicationController
 
 
   def import
-    # eventually this will handle other types of data
-    items = []
-    params[:snacid].each do |id|
-      items << {
-        "type" => "constellation",
-        "id" => id
-      }
-    end
-
     json_file = ASUtils.tempfile('snac_import')
-    json_file.write(items.to_json)
+    json_file.write(params[:items].to_json)
     json_file.flush
     json_file.rewind
 
