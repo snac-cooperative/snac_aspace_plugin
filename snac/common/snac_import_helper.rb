@@ -146,7 +146,7 @@ module SNACImportHelper
 
       name = new_name(entry)
 
-      name['name_order'] = if primary_names.any? then 'indirect' else 'direct' end
+      name['name_order'] = if primary_names.any? then 'Indirect' else 'Direct' end
       name['primary_name'] = primary_name
       name['rest_of_name'] = rest_of_name
       name['qualifier'] = qualifiers.join(', ').gsub(', (', ' (') unless qualifiers.empty?
