@@ -8,6 +8,8 @@ class SnacController < ApplicationController
   class SNACControllerException < StandardError; end
 
   set_access_control "update_agent_record" => [:search, :index, :import, :export]
+  set_access_control "import_records" => [:search, :index, :import]
+  set_access_control "create_job" => [:export]
 
 
   def index
