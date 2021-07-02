@@ -36,3 +36,6 @@ en:
         import_error: Error while importing from SNAC
         search_error: Search Error
       result_summary: "Page %{page} - Showing results %{first_record_index} to %{last_record_index} of %{hit_count} matches"
+      preference_section: SNAC
+    defaults:
+      snac_api_key: SNAC API Key

@@ -54,6 +54,7 @@
             <%= link_to I18n.t("actions.export_marc_auth"), {:controller => :exports, :action => :download_marc_auth, :id => @agent.id, :type => @agent.agent_type}, :class => "btn btn-sm btn-default" %>
           </div>
 
+<%# SNAC PLUGIN CONTENT STARTS HERE %>
           <% if has_snac_link?(@agent) %>
             <div class="btn btn-inline-form">
               <%= link_to I18n.t("actions.snac_view"), snac_url(@agent), :class => "btn btn-sm btn-default", target: '_blank', rel: 'nofollow' %>
@@ -65,6 +66,7 @@
               </div>
             <% end %>
           <% end %>
+<%# SNAC PLUGIN CONTENT ENDS HERE %>
 
         <% end %>
 
@@ -90,6 +92,7 @@
     <div class="clearfix"></div>
   </div>
 
+<%# SNAC PLUGIN CONTENT STARTS HERE %>
   <div id="template_snac_export_failure_title"><!--
     <%= I18n.t("actions.snac_export_failure_title") %>
   --></div>
@@ -102,5 +105,6 @@
     <div class="alert alert-success">
     <%= I18n.t("actions.snac_export_success_message") %></div>
   --></div>
+<%# SNAC PLUGIN CONTENT ENDS HERE %>
 
 <% end %>
