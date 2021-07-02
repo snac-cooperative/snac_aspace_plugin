@@ -1,13 +1,20 @@
-require_relative 'snac_environment'
+require_relative 'snac_preferences'
 require 'net/http'
 require 'json'
 
-module SNACAPIClient
+class SNACAPIClient
 
   class SNACAPIClientException < StandardError; end
 
+  attr_reader :prefs
 
-  def self.read_constellation(id)
+
+  def initialize
+    @prefs = SnacPreferences.new
+  end
+
+
+  def read_constellation(id)
     req = {
       'command' => 'read',
       'constellationid' => id.to_i
@@ -17,10 +24,10 @@ module SNACAPIClient
   end
 
 
-  def self.create_constellation(con)
+  def create_constellation(con)
     req = {
       'command' => 'insert_and_publish_constellation',
-      'apikey': AppConfig[:snac_api_key],
+      'apikey': @prefs.api_key,
       'constellation' => con,
       'message' => 'import from ArchivesSpace'
     }
@@ -32,23 +39,38 @@ module SNACAPIClient
   private
 
 
-  def self.perform_api_request(req)
-    uri = URI(SnacEnvironment.api_url)
+  def perform_api_request(req)
+    uri = URI(@prefs.api_url)
 
     query = JSON.generate(req)
 
     res = Net::HTTP::post(uri, query, 'Content-Type' => 'application/json')
-    raise SNACAPIClientException.new("Error during SNAC API query: #{res.body}") unless res.is_a?(Net::HTTPSuccess)
 
-    body = JSON.parse(res.body, max_nesting: false, create_additions: false)
-
-    if body.key?('result')
-      raise SNACAPIClientException.new("SNAC API: unexpected result: [#{body['result']}]") unless body['result'] == 'success'
-    else
-      raise SNACAPIClientException.new("SNAC API: missing result")
+    begin
+      json = JSON.parse(res.body, max_nesting: false, create_additions: false)
+      valid = true
+    rescue
+      valid = false
+      json = {}
     end
 
-    body
+    # if there was an HTTP error, or if the response from HTTP success could not be
+    # parsed, then build an error message from the actual or a mocked JSON response
+    unless res.is_a?(Net::HTTPSuccess) and valid
+      error = json['error'] || {'type' => 'Error', 'message' => 'Unable to parse SNAC API response'}
+      errmsg = [error['type'], error['message']].compact.join(': ')
+      raise SNACAPIClientException.new("SNAC API: #{errmsg}")
+    end
+
+    # at this point there should be a result field, fail if it doesn't exist or doesn't indicate success
+    if json.key?('result')
+      raise SNACAPIClientException.new("SNAC API: Error: response contained unexpected result: [#{json['result']}]") unless json['result'] == 'success'
+    else
+      raise SNACAPIClientException.new("SNAC API: Error: response is missing result")
+    end
+
+    json
   end
+
 
 end

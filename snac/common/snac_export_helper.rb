@@ -1,6 +1,4 @@
-require_relative 'snac_environment'
-
-module SNACExportHelper
+class SNACExportHelper
 
   class SNACExportHelperException < StandardError; end
 

@@ -1,11 +1,18 @@
-require_relative 'snac_environment'
+require_relative 'snac_preferences'
 
-module SNACImportHelper
+class SNACImportHelper
 
   class SNACImportHelperException < StandardError; end
 
+  attr_reader :prefs
 
-  def self.constellation_to_agent(con)
+
+  def initialize
+    @prefs = SnacPreferences.new
+  end
+
+
+  def constellation_to_agent(con)
     build_agent(con)
   end
 
@@ -13,7 +20,7 @@ module SNACImportHelper
   private
 
 
-  def self.build_agent(con)
+  def build_agent(con)
     @agent_hash = {}
 
     raise SNACImportHelperException.new("missing entity type") unless con.key?('entityType')
@@ -51,12 +58,12 @@ module SNACImportHelper
   end
 
 
-  def self.build_agent_record_identifiers(snacid)
+  def build_agent_record_identifiers(snacid)
     ids = []
 
     ids <<
       {
-        'record_identifier' => "#{SnacEnvironment.web_url}view/#{snacid}",
+        'record_identifier' => @prefs.view_url(snacid),
         'primary_identifier' => true,
         'source' => 'snac'
       }
@@ -65,7 +72,7 @@ module SNACImportHelper
   end
 
 
-  def self.build_agent_names(entity_type, name_entries)
+  def build_agent_names(entity_type, name_entries)
     names = []
 
     case entity_type
@@ -83,7 +90,7 @@ module SNACImportHelper
   end
 
 
-  def self.new_name(entry)
+  def new_name(entry)
     {
       'authorized' => entry['preferenceScore'] == '99',
       'sort_name_auto_generate' => true
@@ -91,7 +98,7 @@ module SNACImportHelper
   end
 
 
-  def self.build_agent_names_person(entries)
+  def build_agent_names_person(entries)
     names = []
 
     entries.each do |entry|
@@ -161,7 +168,7 @@ module SNACImportHelper
   end
 
 
-  def self.build_agent_names_family(entries)
+  def build_agent_names_family(entries)
     names = []
 
     entries.each do |entry|
@@ -205,7 +212,7 @@ module SNACImportHelper
   end
 
 
-  def self.build_agent_names_corporate_body(entries)
+  def build_agent_names_corporate_body(entries)
     names = []
 
     entries.each do |entry|
@@ -267,7 +274,7 @@ module SNACImportHelper
   end
 
 
-  def self.build_agent_languages(langs)
+  def build_agent_languages(langs)
     return if langs == nil or langs.empty?
 
     # default to the first language in the list
