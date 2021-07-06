@@ -1,8 +1,8 @@
 class SnacPreferences
-  include JSONModel
 
   class SnacPreferencesException < StandardError; end
 
+  # these correspond to the snac_environment enum in schemas/defaults_ext.rb
   SNAC_ENV_ALPHA = :alpha
   SNAC_ENV_DEV = :dev
   SNAC_ENV_PROD = :prod
@@ -27,11 +27,19 @@ class SnacPreferences
   }
 
 
-  def initialize
-    @prefs = get_preferences
-puts ''
-puts "########## @prefs: #{@prefs}"
-puts ''
+  def initialize(from)
+    # from will be either:
+    # * Preference.current_preferences (backend)
+    # * user_prefs (frontend)
+
+    if from.key?('defaults')
+      from = from['defaults']
+    end
+
+    key = from['snac_api_key'] || ''
+    env = get_env(from['snac_environment'])
+
+    @prefs = {:key => key, :env => env}
   end
 
 
@@ -55,35 +63,17 @@ puts ''
   end
 
 
+  def environment
+    @prefs[:env]
+  end
+
+
   def view_url(id)
     "#{web_url}view/#{id}"
   end
 
+
   private
-
-
-  def get_preferences
-    # gets the preferences for the current request context
-
-    prefs = Preference.current_preferences
-    #prefs = JSONModel::HTTP::get_json("/current_global_preferences")
-
-puts ''
-puts "########## prefs: #{prefs}"
-puts ''
-
-    key = prefs['defaults']['snac_api_key'] || ''
-    env = get_env(prefs['defaults']['snac_environment'])
-    cfg = get_env_from_config
-
-puts ''
-puts "######### key: #{key}"
-puts "######### env: #{env}"
-puts "######### cfg: #{cfg}"
-puts ''
-
-    {:key => key, :env => cfg}
-  end
 
 
   def get_env(from)
@@ -93,12 +83,6 @@ puts ''
     return SNAC_ENV_DEFAULT unless SNAC_ENV_MAPPINGS.key?(env)
 
     env
-  end
-
-
-  def get_env_from_config
-    return SNAC_ENV_DEFAULT unless AppConfig.has_key?(:snac_environment)
-    get_env(AppConfig[:snac_environment])
   end
 
 

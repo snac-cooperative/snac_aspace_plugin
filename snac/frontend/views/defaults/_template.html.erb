@@ -9,7 +9,18 @@
 
 <%# SNAC PLUGIN CONTENT STARTS HERE %>
       <h3 id="snac"><%= I18n.t("plugins.snac.preference_section") %></h3>
+
       <%= form.label_and_textfield "snac_api_key", {:plugin => true} %>
+
+      <%= # TODO: perhaps read this enum from JSONModel(:defaults) to populate dynamically?
+          # otherwise this must be kept in sync with schemas/defaults_ext.rb
+          snac_envs = [
+            [ I18n.t("plugins.defaults.snac_environment_alpha"),       'alpha' ],
+            [ I18n.t("plugins.defaults.snac_environment_development"), 'dev'   ],
+            [ I18n.t("plugins.defaults.snac_environment_production"),  'prod'  ]
+          ]
+          form.label_and_select "snac_environment", snac_envs, {:default => 'dev', :plugin => true}
+      %>
 <%# SNAC PLUGIN CONTENT ENDS HERE %>
 
       <h3 id="noteorder"><%= I18n.t "defaults.note_order_section" %></h3>

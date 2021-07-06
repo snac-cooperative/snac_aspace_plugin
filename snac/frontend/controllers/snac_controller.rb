@@ -1,11 +1,11 @@
 # Modified by SNAC
 require 'snacsearcher'
 require 'securerandom'
-require_relative '../../common/snac_environment'
+require_relative '../../common/snac_preferences'
 
 class SnacController < ApplicationController
 
-  class SNACControllerException < StandardError; end
+  class SnacControllerException < StandardError; end
 
   set_access_control "update_agent_record" => [:search, :index, :import, :export]
   set_access_control "import_records" => [:search, :index, :import]
@@ -80,6 +80,7 @@ class SnacController < ApplicationController
 
 
   def searcher
-    SNACSearcher.new(SnacEnvironment.search_url)
+    prefs = SnacPreferences.new(user_prefs)
+    SnacSearcher.new(prefs.search_url)
   end
 end

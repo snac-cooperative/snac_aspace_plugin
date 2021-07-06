@@ -33,7 +33,7 @@ $(function() {
   }
 
 
-  var selectedSNACIDs = function() {
+  var selectedSnacIDs = function() {
     var result = [];
     $("[data-snacid]", $selected).each(function() {
       result.push($(this).data("snacid"));
@@ -51,7 +51,7 @@ $(function() {
       $result.siblings(".alert").addClass("hide");
     }
 
-    if (selectedSNACIDs().length === 0) {
+    if (selectedSnacIDs().length === 0) {
       $selected.siblings(".alert-info").removeClass("hide");
       $("#import-selected").attr("disabled", "disabled");
     }

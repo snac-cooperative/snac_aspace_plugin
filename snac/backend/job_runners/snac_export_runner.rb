@@ -1,11 +1,11 @@
-require_relative '../../common/snac_constellation'
+require_relative '../lib/snac_constellation'
 
 class SnacExportRunner < JobRunner
   include JSONModel
 
   register_for_job_type('snac_export_job', :run_concurrently => true)
 
-  class SNACExportRunnerException < StandardError; end
+  class SnacExportRunnerException < StandardError; end
 
   def run
     uris = @json.job['uris']
@@ -119,7 +119,7 @@ class SnacExportRunner < JobRunner
 
     output "Exporting agent to new SNAC constellation..."
 
-    con = SNACConstellation.new
+    con = SnacConstellation.new
     res = con.export(json)
 
     output "SNAC URL: #{con.url}"

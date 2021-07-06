@@ -1,8 +1,8 @@
 require 'json'
-require_relative '../../common/snac_constellation'
+require_relative '../lib/snac_constellation'
 
 class SnacConverter < Converter
-  class SNACConverterException < StandardError; end
+  class SnacConverterException < StandardError; end
 
   include JSONModel
 
@@ -75,7 +75,7 @@ class SnacConverter < Converter
 
 
   def create_agent(data)
-    agent_info = SNACConstellation.new(data).import
+    agent_info = SnacConstellation.new(data).import
 
     agent_hash = agent_info[:hash]
     agent_type = agent_info[:type]

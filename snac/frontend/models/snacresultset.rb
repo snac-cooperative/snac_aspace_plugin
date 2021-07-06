@@ -2,7 +2,7 @@
 require 'asutils'
 require 'json'
 
-class SNACResultSet
+class SnacResultSet
 
   def initialize(response_body, query, page, records_per_page)
     # when there are no results, SNAC sets pagination = 0, so we have caller always

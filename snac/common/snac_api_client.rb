@@ -1,16 +1,15 @@
-require_relative 'snac_preferences'
 require 'net/http'
 require 'json'
 
-class SNACAPIClient
+class SnacApiClient
 
-  class SNACAPIClientException < StandardError; end
+  class SnacApiClientException < StandardError; end
 
   attr_reader :prefs
 
 
-  def initialize
-    @prefs = SnacPreferences.new
+  def initialize(prefs)
+    @prefs = prefs
   end
 
 
@@ -59,14 +58,14 @@ class SNACAPIClient
     unless res.is_a?(Net::HTTPSuccess) and valid
       error = json['error'] || {'type' => 'Error', 'message' => 'Unable to parse SNAC API response'}
       errmsg = [error['type'], error['message']].compact.join(': ')
-      raise SNACAPIClientException.new("SNAC API: #{errmsg}")
+      raise SnacApiClientException.new("SNAC API: #{errmsg}")
     end
 
     # at this point there should be a result field, fail if it doesn't exist or doesn't indicate success
     if json.key?('result')
-      raise SNACAPIClientException.new("SNAC API: Error: response contained unexpected result: [#{json['result']}]") unless json['result'] == 'success'
+      raise SnacApiClientException.new("SNAC API: Error: response contained unexpected result: [#{json['result']}]") unless json['result'] == 'success'
     else
-      raise SNACAPIClientException.new("SNAC API: Error: response is missing result")
+      raise SnacApiClientException.new("SNAC API: Error: response is missing result")
     end
 
     json

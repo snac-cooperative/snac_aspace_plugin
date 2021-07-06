@@ -1,16 +1,17 @@
-require_relative 'snac_api_client'
+require_relative '../../common/snac_api_client'
 require_relative 'snac_export_helper'
 require_relative 'snac_import_helper'
 
-class SNACConstellation
+class SnacConstellation
 
-  class SNACConstellationException < StandardError; end
+  class SnacConstellationException < StandardError; end
 
   attr_accessor :constellation
 
 
-  def initialize(from)
-    @client = SNACAPIClient.new
+  def initialize(from = nil)
+    prefs = SnacPreferences.new(Preference.current_preferences)
+    @client = SnacApiClient.new(prefs)
 
     # determine whether we were passed a SNAC constellation, or an ID to look one up
     if from.is_a?(Hash)
@@ -26,7 +27,7 @@ class SNACConstellation
 
 
   def url
-    raise SNACConstellationException.new("constellation is missing id") unless @constellation.key?('id')
+    raise SnacConstellationException.new("constellation is missing id") unless @constellation.key?('id')
 
     @client.prefs.view_url(@constellation['id'])
   end
@@ -34,13 +35,13 @@ class SNACConstellation
 
   def import
     # returns an ArchivesSpace agent hash (used in snac_import jobs)
-    SNACImportHelper.new.constellation_to_agent(@constellation)
+    SnacImportHelper.new.constellation_to_agent(@constellation)
   end
 
 
   def export(agent)
     # converts the given agent to a SNAC constellation, and uploads it to SNAC
-    stub = normalize(SNACExportHelper.constellation_from_agent(agent))
+    stub = normalize(SnacExportHelper.new.constellation_from_agent(agent))
 
     con = @client.create_constellation(stub)
 

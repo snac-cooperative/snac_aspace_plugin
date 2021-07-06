@@ -3,9 +3,9 @@ require 'net/http'
 
 require_relative 'snacresultset'
 
-class SNACSearcher
+class SnacSearcher
 
-  class SNACSearchException < StandardError; end
+  class SnacSearchException < StandardError; end
 
 
   def initialize(search_url)
@@ -35,9 +35,9 @@ class SNACSearcher
     uri.query = URI.encode_www_form(params)
 
     res = Net::HTTP::get_response(uri)
-    raise SNACSearchException.new("Error during SNAC search: #{res.body}") unless res.is_a?(Net::HTTPSuccess)
+    raise SnacSearchException.new("Error during SNAC search: #{res.body}") unless res.is_a?(Net::HTTPSuccess)
 
-    SNACResultSet.new(res.body, query, page, records_per_page)
+    SnacResultSet.new(res.body, query, page, records_per_page)
   end
 
 

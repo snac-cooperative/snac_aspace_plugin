@@ -1,9 +1,9 @@
-class SNACExportHelper
+class SnacExportHelper
 
-  class SNACExportHelperException < StandardError; end
+  class SnacExportHelperException < StandardError; end
 
 
-  def self.constellation_from_agent(agent)
+  def constellation_from_agent(agent)
     build_constellation(agent)
   end
 
@@ -11,7 +11,7 @@ class SNACExportHelper
   private
 
 
-  def self.build_constellation(agent)
+  def build_constellation(agent)
     type = agent['jsonmodel_type']
 
     case type
@@ -28,7 +28,7 @@ class SNACExportHelper
       name_entries = build_name_entries_corporate_body(agent['names'])
 
     else
-      raise SNACExportHelperException.new("unhandled agent type: [#{type}]")
+      raise SnacExportHelperException.new("unhandled agent type: [#{type}]")
     end
 
     con = {
@@ -42,7 +42,7 @@ class SNACExportHelper
   end
 
 
-  def self.build_entity_type_person
+  def build_entity_type_person
     {
       'type' => 'entity_type',
       'dataType' => 'Term',
@@ -52,7 +52,7 @@ class SNACExportHelper
   end
 
 
-  def self.build_entity_type_family
+  def build_entity_type_family
     {
       'type' => 'entity_type',
       'dataType' => 'Term',
@@ -62,7 +62,7 @@ class SNACExportHelper
   end
 
 
-  def self.build_entity_type_corporate_body
+  def build_entity_type_corporate_body
     {
       'type' => 'entity_type',
       'dataType' => 'Term',
@@ -72,7 +72,7 @@ class SNACExportHelper
   end
 
 
-  def self.build_name_component(order, text, id, term)
+  def build_name_component(order, text, id, term)
     return nil if text.nil? or text.empty?
 
     {
@@ -89,7 +89,7 @@ class SNACExportHelper
   end
 
 
-  def self.build_name_entries_person(names)
+  def build_name_entries_person(names)
     name_entries = []
 
     names.each do |name|
@@ -140,7 +140,7 @@ class SNACExportHelper
   end
 
 
-  def self.build_name_entries_family(names)
+  def build_name_entries_family(names)
     name_entries = []
 
     names.each do |name|
@@ -167,7 +167,7 @@ class SNACExportHelper
   end
 
 
-  def self.build_name_entries_corporate_body(names)
+  def build_name_entries_corporate_body(names)
     name_entries = []
 
     names.each do |name|
@@ -202,7 +202,7 @@ class SNACExportHelper
   end
 
 
-  def self.build_combined_name_heading_person(components)
+  def build_combined_name_heading_person(components)
     parts = []
 
     components.each_with_index do |component, index|
@@ -232,7 +232,7 @@ class SNACExportHelper
   end
 
 
-  def self.build_combined_name_heading_family(components)
+  def build_combined_name_heading_family(components)
     parts = []
 
     opened_paren = false
@@ -264,7 +264,7 @@ class SNACExportHelper
   end
 
 
-  def self.build_combined_name_heading_corporate_body(components)
+  def build_combined_name_heading_corporate_body(components)
     parts = []
 
     opened_paren = false

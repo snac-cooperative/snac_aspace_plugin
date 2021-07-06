@@ -39,3 +39,7 @@ en:
       preference_section: SNAC Settings
     defaults:
       snac_api_key: SNAC API Key
+      snac_environment: SNAC Environment
+      snac_environment_alpha: Alpha
+      snac_environment_development: Development
+      snac_environment_production: Production
