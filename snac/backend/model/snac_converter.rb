@@ -63,7 +63,7 @@ class SnacConverter < Converter
 
     case data['type']
     when 'constellation'
-      item = create_agent(data['id'])
+      item = create_agent(data)
     else
       return
     end
@@ -75,7 +75,17 @@ class SnacConverter < Converter
 
 
   def create_agent(data)
-    agent_info = SnacConstellation.new(data).import
+    # determine whether data was passed as id or json, preferring id
+
+    if data.key?('id')
+      from = data['id']
+    elsif data.key?('json')
+      from = data['json']
+    else
+      return
+    end
+
+    agent_info = SnacConstellation.new(from).import
 
     agent_hash = agent_info[:hash]
     agent_type = agent_info[:type]
