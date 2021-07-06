@@ -13,7 +13,7 @@
       <%= # TODO: perhaps read this enum from JSONModel(:defaults) to populate dynamically?
           # otherwise this must be kept in sync with schemas/defaults_ext.rb
           snac_envs = []
-          ['production', 'development'].each do |env|
+          ['unspecified', 'production', 'development'].each do |env|
             snac_envs << [ I18n.t("plugins.defaults.snac_environment_#{env}"), env ]
           end
           form.label_and_select "snac_environment", snac_envs, {:default => 'production', :plugin => true}

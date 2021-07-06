@@ -42,3 +42,4 @@ fr:
       snac_environment: Environnement SNAC
       snac_environment_production: Production
       snac_environment_development: Développement
+      snac_environment_unspecified: (non spécifié)
