@@ -40,6 +40,5 @@ fr:
     defaults:
       snac_api_key: Clé API SNAC
       snac_environment: Environnement SNAC
-      snac_environment_alpha: Alpha
-      snac_environment_development: Développement
       snac_environment_production: Production
+      snac_environment_development: Développement
