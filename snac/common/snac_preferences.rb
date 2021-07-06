@@ -3,8 +3,8 @@ class SnacPreferences
   class SnacPreferencesException < StandardError; end
 
   # these correspond to the snac_environment enum in schemas/defaults_ext.rb
-  SNAC_ENV_PROD = :prod
-  SNAC_ENV_DEV = :dev
+  SNAC_ENV_PROD = :production
+  SNAC_ENV_DEV = :development
   SNAC_ENV_DEFAULT = SNAC_ENV_PROD
 
   SNAC_ENV_MAPPINGS = {
