@@ -27,6 +27,7 @@ en:
         import: Import
         select: Select
         show_record: Show Record
+        hide_record: Hide Record
       messages:
         none_selected: No Results Selected
         no_results: No Results For Query

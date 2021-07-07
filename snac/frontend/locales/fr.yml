@@ -27,6 +27,7 @@ fr:
         import: Importer
         select: Sélectionner
         show_record: Afficher la notice
+        hide_record: Masquer la notice
       messages:
         none_selected: Aucun résultat sélectionné
         no_results: Pas de résultat pour la requête
