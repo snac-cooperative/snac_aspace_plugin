@@ -24,7 +24,7 @@ class SnacResultSet
 
 
   def first_record_index
-    if @total_results < 1
+    if total_records < 1
       # purely cosmetic for the case when there are no results, as this value is used
       # to populate "Showing results ${first_record_index} to ... of ... matches".
       0
