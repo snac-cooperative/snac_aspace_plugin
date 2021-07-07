@@ -53,7 +53,7 @@ Browse to the Import Data Background Job (ArchivesSpace -> Create -> Background 
 
 The JSON input file must contain either a single instance of or an array of objects in the following format:
 
-```json
+```
   {
     "type": "constellation",
     "id": "12345678",
