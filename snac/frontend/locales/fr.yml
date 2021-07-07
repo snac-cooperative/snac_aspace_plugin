@@ -25,13 +25,13 @@ fr:
       actions:
         search: Rechercher
         import: Importer
-        select: Sélectionner
-        show_record: Afficher la notice
-        hide_record: Masquer la notice
+        select_record: Sélectionner
+        deselect_record: Désélectionner
+        show_record: Afficher les détails
+        hide_record: Masquer les détails
       messages:
         none_selected: Aucun résultat sélectionné
         no_results: Pas de résultat pour la requête
-        selected: Sélectionné
         import_success: Tâche d'import créée
         import_success_message: Redirection vers la page de statut de tâche...
         import_error: Erreur lors de l'import à partir de SNAC

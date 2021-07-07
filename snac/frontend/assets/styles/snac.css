@@ -8,9 +8,8 @@
 
 .snac-result .alert-success {
   position: relative;
-  top: -16px;
+  /*top: -16px;*/
 }
-
 
 .snac-show {
     height: 200px;
@@ -37,7 +36,6 @@
   background-color: #F1F1F1;
   padding: 10px;
 }
-
 
 #import-selected {
     width: 100%;

@@ -8,6 +8,34 @@ $(function() {
 
   var selected_snacids = {};
 
+  var setRecordSelected = function($record) {
+    var button = $("button.select-record", $record);
+    button.addClass("selected");
+    button.html(button.data("text-deselect"));
+    $(".alert", $record).removeClass("alert-info").addClass("alert-success");
+  };
+
+  var setRecordDeselected = function($record) {
+    var button = $("button.select-record", $record);
+    button.removeClass("selected");
+    button.html(button.data("text-select"));
+    $(".alert", $record).removeClass("alert-success").addClass("alert-info");
+  };
+
+  var setRecordDetailsShown = function($record) {
+    var button = $("button.show-record", $record);
+    button.addClass("shown");
+    button.html(button.data("text-hide"));
+    $(".snac-show", $record).removeClass("hide");
+  };
+
+  var setRecordDetailsHidden = function($record) {
+    var button = $("button.show-record", $record);
+    button.removeClass("shown");
+    button.html(button.data("text-show"));
+    $(".snac-show", $record).addClass("hide");
+  };
+
   var renderResults = function(json) {
     decorateResults(json);
 
@@ -15,12 +43,17 @@ $(function() {
     $results.append(AS.renderTemplate("template_snac_result_summary", json));
     $.each(json.records, function(i, record) {
       var $result = $(AS.renderTemplate("template_snac_result", {record: record, selected: selected_snacids}));
-      if (selected_snacids[record.id]) {
-        $(".alert-success", $result).removeClass("hide");
-      }
-      $results.append($result);
 
+      setRecordDetailsHidden($result);
+      if (selected_snacids[record.id]) {
+        setRecordSelected($result);
+      } else {
+        setRecordDeselected($result);
+      }
+
+      $results.append($result);
     });
+
     $results.append(AS.renderTemplate("template_snac_pagination", json));
     $('.snac-show', $results).each(function(i, e) {hljs.highlightBlock(e)});
   };
@@ -28,7 +61,7 @@ $(function() {
 
   var decorateResults = function(resultsJson) {
     resultsJson.queryString = '?name_entry=' + resultsJson.query;
-  }
+  };
 
 
   var selectedSnacIDs = function() {
@@ -39,14 +72,15 @@ $(function() {
     return result;
   };
 
+
   var removeSelected = function(snacid) {
     selected_snacids[snacid] = false;
     $("[data-snacid="+snacid+"]", $selected).remove();
+
     var $result = $("[data-snacid="+snacid+"]", $results);
     if ($result.length > 0) {
-      $result.removeClass("hide");
-      $(".alert-success", $result).removeClass("alert-success").addClass("alert-info");
-      $result.siblings(".alert").addClass("hide");
+      var $record = $result.closest(".snac-result");
+      setRecordDeselected($record);
     }
 
     if (selectedSnacIDs().length === 0) {
@@ -55,14 +89,13 @@ $(function() {
     }
   };
 
-  var addSelected = function(snacid, name, type, $result) {
+  var addSelected = function(snacid, name, type) {
+    if (selected_snacids[snacid]) {
+      return;
+    }
+
     selected_snacids[snacid] = true;
     $selected.append(AS.renderTemplate("template_snac_selected", {snacid: snacid, name: name, type: type}))
-
-    $(".alert-success", $result).removeClass("hide");
-    $("button.select-record", $result).addClass("hide");
-    $(".alert-info", $result).removeClass("alert-info").addClass("alert-success");
-
     $selected.siblings(".alert-info").addClass("hide");
     $("#import-selected").removeAttr("disabled", "disabled");
   };
@@ -131,34 +164,37 @@ $(function() {
       $("body").scrollTo(0);
       renderResults(json);
     });
-  }).on("click", ".snac-result button.select-record", function(event) {
+  }).on("click", ".snac-result button.select-record", function(e) {
+    e.preventDefault();
+
+    var $record = $(this).closest(".snac-result");
     var snacid = $(this).data("snacid");
     var name = $(this).data("name");
     var type = $(this).data("type");
-    if (selected_snacids[snacid]) {
+
+    if ($(this).hasClass("selected")) {
       removeSelected(snacid);
+      setRecordDeselected($record);
     } else {
-      addSelected(snacid, name, type, $(this).closest(".snac-result"));
+      addSelected(snacid, name, type, $record);
+      setRecordSelected($record);
     }
   }).on("click", ".snac-result button.show-record", function(e) {
     e.preventDefault();
 
-    $(this).siblings(".snac-show").removeClass("hide");
-    $(this).addClass("hide");
-    $(this).siblings("button.hide-record").removeClass("hide");
-  }).on("click", ".snac-result button.hide-record", function(e) {
-    e.preventDefault();
+    var $record = $(this).closest(".snac-result");
 
-    $(this).siblings(".snac-show").addClass("hide");
-    $(this).addClass("hide");
-    $(this).siblings("button.show-record").removeClass("hide");
+    if ($(this).hasClass("shown")) {
+      setRecordDetailsHidden($record);
+    } else {
+      setRecordDetailsShown($record);
+    }
   });
 
   $selected.on("click", ".remove-selected", function(event) {
     var snacid = $(this).parent().data("snacid");
     removeSelected(snacid);
   });
-
 
 
   $(window).resize(resizeSelectedBox);

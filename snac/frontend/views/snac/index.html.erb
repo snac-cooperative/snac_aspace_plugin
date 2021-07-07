@@ -54,15 +54,26 @@
   <div class="snac-result">
     <div class="row">
       <div class="col-md-12">
-        <div class='alert alert-info'>${record.nameEntries[0].original}
-          <span class="pull-right alert alert-success hide"><%= I18n.t("plugins.snac.messages.selected") %></span>
-          <button class="pull-right btn btn-default select-record" data-snacid="${record.id}" data-name="${record.nameEntries[0].original}" data-type="constellation"><%= I18n.t("plugins.snac.actions.select") %></button>
-	  <button class="pull-right btn btn-default show-record" ><%= I18n.t("plugins.snac.actions.show_record") %></button>
-	  <button class="pull-right btn btn-default hide hide-record" ><%= I18n.t("plugins.snac.actions.hide_record") %></button>
-	  <div class="col-md-12 snac-show hide"><b>SNAC ID: </b>${record.id}<br><b>ARK: </b>${record.ark}
-	  {if record.biogHists}
-	  <br>${record.biogHists[0].text}</div>
-	  {/if}</div>
+        <div class='alert'>
+          ${record.nameEntries[0].original}
+          <button class="pull-right btn btn-default select-record"
+            data-snacid="${record.id}"
+            data-name="${record.nameEntries[0].original}"
+            data-type="constellation"
+            data-text-select="<%= I18n.t("plugins.snac.actions.select_record") %>"
+            data-text-deselect="<%= I18n.t("plugins.snac.actions.deselect_record") %>">
+          </button>
+	      <button class="pull-right btn btn-default show-record"
+            data-text-show="<%= I18n.t("plugins.snac.actions.show_record") %>"
+            data-text-hide="<%= I18n.t("plugins.snac.actions.hide_record") %>">
+          </button>
+	      <div class="col-md-12 snac-show hide">
+            <b>SNAC ID:</b> ${record.id}
+            <br><b>ARK:</b> ${record.ark}
+	        {if record.biogHists}
+	          <br>${record.biogHists[0].text}
+	        {/if}
+          </div>
         </div>
       </div>
     </div>

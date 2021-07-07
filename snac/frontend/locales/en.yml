@@ -25,13 +25,13 @@ en:
       actions:
         search: Search
         import: Import
-        select: Select
-        show_record: Show Record
-        hide_record: Hide Record
+        select_record: Select
+        deselect_record: Deselect
+        show_record: Show Details
+        hide_record: Hide Details
       messages:
         none_selected: No Results Selected
         no_results: No Results For Query
-        selected: Selected
         import_success: Import job created
         import_success_message: Redirecting to the job status page...
         import_error: Error while importing from SNAC
