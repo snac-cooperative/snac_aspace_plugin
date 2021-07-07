@@ -57,7 +57,7 @@ The JSON input file must contain either a single instance of or an array of obje
   {
     "type": "constellation",
     "id": "12345678",
-    "json": "stringified SNAC constellation JSON"
+    "json": { SNAC Constellation JSON, either from API or exported from identity page }
   }
 ```
 
