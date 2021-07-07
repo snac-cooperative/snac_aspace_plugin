@@ -5,8 +5,6 @@ class SnacApiClient
 
   class SnacApiClientException < StandardError; end
 
-  attr_reader :prefs
-
 
   def initialize(prefs)
     @prefs = prefs

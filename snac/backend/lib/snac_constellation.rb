@@ -10,8 +10,8 @@ class SnacConstellation
 
 
   def initialize(from = nil)
-    prefs = SnacPreferences.new(Preference.current_preferences)
-    @client = SnacApiClient.new(prefs)
+    @prefs = SnacPreferences.new(Preference.current_preferences)
+    @client = SnacApiClient.new(@prefs)
 
     # determine whether we were passed a SNAC constellation, or an ID to look one up
     if from.is_a?(Hash)
@@ -29,7 +29,7 @@ class SnacConstellation
   def url
     raise SnacConstellationException.new("constellation is missing id") unless @constellation.key?('id')
 
-    @client.prefs.view_url(@constellation['id'])
+    @prefs.view_url(@constellation['id'])
   end
 
 
