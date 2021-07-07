@@ -126,11 +126,17 @@ class SnacExportRunner < JobRunner
 
     output "Linking SNAC constellation to this agent..."
 
-    # add snac constellation url to agent
+    # add snac constellation url and ark to agent
     ids << {
       'record_identifier' => con.url,
       'primary_identifier' => !has_primary,
       'source' => 'snac'
+    }
+
+    ids << {
+      'record_identifier' => con.ark,
+      'primary_identifier' => false,
+      'source' => 'nad'
     }
 
     json['agent_record_identifiers'] = ids

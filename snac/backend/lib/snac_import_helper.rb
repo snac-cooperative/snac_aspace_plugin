@@ -43,7 +43,7 @@ class SnacImportHelper
     end
 
     # build individual pieces of the agent
-    build_agent_record_identifiers(con['id'])
+    build_agent_record_identifiers(con['id'], con['ark'])
     build_agent_names(entity_type, con['nameEntries'])
     # TODO: more pieces?
     #build_agent_languages(con['languagesUsed'])
@@ -58,15 +58,20 @@ class SnacImportHelper
   end
 
 
-  def build_agent_record_identifiers(snacid)
+  def build_agent_record_identifiers(snacid, ark)
     ids = []
 
-    ids <<
-      {
-        'record_identifier' => @prefs.view_url(snacid),
-        'primary_identifier' => true,
-        'source' => 'snac'
-      }
+    ids << {
+      'record_identifier' => @prefs.view_url(snacid),
+      'primary_identifier' => true,
+      'source' => 'snac'
+    }
+
+    ids << {
+      'record_identifier' => ark,
+      'primary_identifier' => false,
+      'source' => 'nad'
+    }
 
     @agent_hash['agent_record_identifiers'] = ids
   end

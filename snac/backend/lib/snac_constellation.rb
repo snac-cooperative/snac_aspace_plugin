@@ -33,6 +33,13 @@ class SnacConstellation
   end
 
 
+  def ark
+    raise SnacConstellationException.new("constellation is missing ark") unless @constellation.key?('ark')
+
+    @constellation['ark']
+  end
+
+
   def import
     # returns an ArchivesSpace agent hash (used in snac_import jobs)
     SnacImportHelper.new.constellation_to_agent(@constellation)

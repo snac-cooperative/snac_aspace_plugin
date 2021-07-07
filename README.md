@@ -6,14 +6,18 @@ It also allows an ArchivesSpace user to export an Agent to SNAC from within the 
 
 ## Installation
 
-Clone this repository and copy the `snac` directory into the `plugins` directory of ArchivesSpace.  Then, add `snac` to your list of plugins in the ArchivesSpace config file located at `config/config.rb`.  As an example:
+Clone this repository and copy the `snac` directory into the `plugins` directory of ArchivesSpace.
+Then, add `snac` to your list of plugins in the ArchivesSpace config file located at `config/config.rb`.
+As an example:
+
 ```
-AppConfig[:plugins] = ['local',  'lcnaf', 'snac']
+AppConfig[:plugins] = ['local', 'lcnaf', 'snac']
 ```
 
 ## Configuration
 
-SNAC settings can be specified like other ArchivesSpace preferences at the Global, Repository, and/or User levels.  Simply browse to the desired Preferences page and set your preferences in the SNAC Settings section, just below General Settings.
+SNAC settings can be specified like other ArchivesSpace preferences at the Global, Repository, and/or User levels.
+Simply browse to the desired Preferences page and set your preferences in the SNAC Settings section, just below General Settings.
 
 ### SNAC Environment
 
@@ -24,13 +28,14 @@ This setting controls which instance of SNAC you wish to work with (default is P
 
 ### SNAC API Key
 
-This is only required if you want to export Agents to SNAC.  Enter your SNAC API key here, making sure it's valid for the SNAC Environment specified above.
+This is only required if you want to export Agents to SNAC.Enter your SNAC API key here, making sure it's valid for the SNAC Environment specified above.
 
 ## Importing from SNAC
 
-SNAC identities can be imported using the SNAC Import plugin, or via an Import Data Background Job.  Each scenario is detailed below.
+SNAC identities can be imported using the SNAC Import plugin, or via an Import Data Background Job.
+Each scenario is detailed below.
 
-Importing is done using the current Agent model, reading and storing the preferred nameEntry heading, and creating a link to the SNAC identity within the Agent's Record ID section.
+Importing is done using the current Agent model, reading and storing the preferred nameEntry heading, and creating links to the SNAC identity within the Agent's Record ID section.
 
 **NOTE:** importing from SNAC, whatever the method, requires an ArchivesSpace user to have `update_agent_record` and `import_records` permissions.
 
@@ -67,6 +72,8 @@ Notes:
 
 ## Exporting to SNAC
 
-Agents display a new button in the Agent toolbar, between the `Download ...` and `Merge` buttons.  If there is an existing SNAC record identifier, this button is labeled `View in SNAC` and will take you to the SNAC page for that Agent.  Otherwise, it will be labeled `Export to SNAC`, and will create a new background job to export the Agent to SNAC, storing a link to the SNAC constellation within the Agent's Record ID section.
+Agents display a new button in the Agent toolbar, between the `Download ...` and `Merge` buttons.
+If there is an existing SNAC record identifier, this button is labeled `View in SNAC` and will take you to the SNAC page for that Agent.
+Otherwise, it will be labeled `Export to SNAC`, and will create a new background job to export the Agent to SNAC, storing links to the SNAC identity within the Agent's Record ID section.
 
 **NOTE:** exporting to SNAC requires an ArchivesSpace user to have `update_agent_record` and `create_job` permissions.
