@@ -12,6 +12,7 @@ $(function() {
     var button = $("button.select-record", $record);
     button.addClass("selected");
     button.html(button.data("text-deselect"));
+
     $(".alert", $record).removeClass("alert-info").addClass("alert-success");
   };
 
@@ -19,6 +20,7 @@ $(function() {
     var button = $("button.select-record", $record);
     button.removeClass("selected");
     button.html(button.data("text-select"));
+
     $(".alert", $record).removeClass("alert-success").addClass("alert-info");
   };
 
@@ -26,7 +28,8 @@ $(function() {
     var button = $("button.show-record", $record);
     button.addClass("shown");
     button.html(button.data("text-hide"));
-    $(".snac-show", $record).removeClass("hide");
+
+    $(".snac-show", $record).removeClass("hide").scrollTop(0);
 
     // load embedded iframe as well, if not already loaded
     var iframe = $(".snac-details-snippet", $record);
@@ -40,6 +43,7 @@ $(function() {
     var button = $("button.show-record", $record);
     button.removeClass("shown");
     button.html(button.data("text-show"));
+
     $(".snac-show", $record).addClass("hide");
   };
 
