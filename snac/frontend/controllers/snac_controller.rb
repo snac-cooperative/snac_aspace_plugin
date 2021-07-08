@@ -13,12 +13,16 @@ class SnacController < ApplicationController
 
 
   def index
+    get_prefs
+
     @page = 1
     @records_per_page = 15
   end
 
 
   def search
+    get_prefs
+
     results = do_search(params)
     render :json => results.to_json
   end
@@ -74,13 +78,19 @@ class SnacController < ApplicationController
   private
 
 
+  def get_prefs
+    @prefs = SnacPreferences.new(user_prefs) unless @prefs
+  end
+
+
   def do_search(params)
     searcher.search(params[:name_entry], params[:page].to_i, params[:records_per_page].to_i)
   end
 
 
   def searcher
-    prefs = SnacPreferences.new(user_prefs)
-    SnacSearcher.new(prefs.search_url)
+    SnacSearcher.new(@prefs.search_url)
   end
+
+
 end
