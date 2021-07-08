@@ -69,12 +69,12 @@
           </button>
           <div class="col-md-12 snac-show hide">
             <div class="snac-details-header">
-              <b>SNAC ID:</b> ${record.id}
+              <b>SNAC ID:</b> <a href="<%= @prefs.view_url %>/${record.id}">${record.id}</a>
               <b>ARK:</b> ${record.ark}
             </div>
             <div class="snac-details-body">
               <iframe class="snac-details-snippet"
-                data-src="<%= @prefs.web_url %>snippet/${record.id}"
+                data-src="<%= @prefs.snippet_url %>/${record.id}"
                 data-title="<%= I18n.t("plugins.snac.actions.details_title") %> ${record.id}">
               </iframe>
             </div>

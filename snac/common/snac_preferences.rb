@@ -69,17 +69,26 @@ class SnacPreferences
   end
 
 
-  def view_url(id)
-    "#{web_url}view/#{id}"
+  def view_url(id = nil)
+    url_with_id("#{web_url}view", id)
   end
 
 
-  def snippet_url(id)
-    "#{web_url}snippet/#{id}"
+  def snippet_url(id = nil)
+    url_with_id("#{web_url}snippet", id)
   end
 
 
   private
+
+
+  def url_with_id(url, id)
+    if id
+      url + "/#{id}"
+    else
+      url
+    end
+  end
 
 
   def get_env(from)
