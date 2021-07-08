@@ -2,7 +2,7 @@ fr:
   actions:
     snac_view: Voir dans SNAC
     snac_export: Exporter vers SNAC
-    snac_export_confirm: Are you sure you want to create a new SNAC constellation?
+    snac_export_confirm: Êtes-vous sûr de vouloir créer une nouvelle constellation SNAC?
     snac_export_success_title: Tâche d'exportation créée
     snac_export_success_message: Redirection vers la page de statut de tâche...
     snac_export_failure_title: Erreur lors de la création de la tâche d'exportation
@@ -25,6 +25,7 @@ fr:
       actions:
         search: Rechercher
         import: Importer
+        import_confirm: Voulez-vous vraiment importer ces enregistrements depuis SNAC?
         select_record: Sélectionner
         deselect_record: Désélectionner
         show_record: Afficher les détails

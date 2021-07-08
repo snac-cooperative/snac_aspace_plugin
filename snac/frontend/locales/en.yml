@@ -25,6 +25,7 @@ en:
       actions:
         search: Search
         import: Import
+        import_confirm: Are you sure you want to import these records from SNAC?
         select_record: Select
         deselect_record: Deselect
         show_record: Show Details

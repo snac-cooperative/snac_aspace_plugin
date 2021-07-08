@@ -33,7 +33,7 @@
     <div class="selected-container" data-spy="affix">
       <div class="alert alert-info"><%= I18n.t("plugins.snac.messages.none_selected") %></div>
       <div id="selected"></div>
-      <button id="import-selected" class="btn btn-primary btn-default" disabled="disabled">
+      <button id="import-selected" class="btn btn-primary btn-default" disabled="disabled" data-confirm="<%= I18n.t("plugins.snac.actions.import_confirm") %>">
         <%= image_tag "archivesspace/btn-busy.gif", :class=>"btn-busy-icon" %>
         <%= I18n.t("plugins.snac.actions.import") %>
       </button>
