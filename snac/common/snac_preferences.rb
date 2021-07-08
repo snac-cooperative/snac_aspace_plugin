@@ -74,6 +74,11 @@ class SnacPreferences
   end
 
 
+  def snippet_url(id)
+    "#{web_url}snippet/#{id}"
+  end
+
+
   private
 
 

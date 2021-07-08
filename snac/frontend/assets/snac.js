@@ -27,6 +27,13 @@ $(function() {
     button.addClass("shown");
     button.html(button.data("text-hide"));
     $(".snac-show", $record).removeClass("hide");
+
+    // load embedded iframe as well, if not already loaded
+    var iframe = $(".snac-details-snippet", $record);
+    if (!iframe.prop("src")) {
+      iframe.prop("title", iframe.data("title"));
+      iframe.prop("src", iframe.data("src"));
+    }
   };
 
   var setRecordDetailsHidden = function($record) {
@@ -42,7 +49,7 @@ $(function() {
     $results.empty();
     $results.append(AS.renderTemplate("template_snac_result_summary", json));
     $.each(json.records, function(i, record) {
-      var $result = $(AS.renderTemplate("template_snac_result", {record: record, selected: selected_snacids}));
+      var $result = $(AS.renderTemplate("template_snac_result", {record: record}));
 
       setRecordDetailsHidden($result);
       if (selected_snacids[record.id]) {

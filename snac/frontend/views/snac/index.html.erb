@@ -63,16 +63,21 @@
             data-text-select="<%= I18n.t("plugins.snac.actions.select_record") %>"
             data-text-deselect="<%= I18n.t("plugins.snac.actions.deselect_record") %>">
           </button>
-	      <button class="pull-right btn btn-default show-record"
+          <button class="pull-right btn btn-default show-record"
             data-text-show="<%= I18n.t("plugins.snac.actions.show_record") %>"
             data-text-hide="<%= I18n.t("plugins.snac.actions.hide_record") %>">
           </button>
-	      <div class="col-md-12 snac-show hide">
-            <b>SNAC ID:</b> ${record.id}
-            <br><b>ARK:</b> ${record.ark}
-	        {if record.biogHists}
-	          <br>${record.biogHists[0].text}
-	        {/if}
+          <div class="col-md-12 snac-show hide">
+            <div class="snac-details-header">
+              <b>SNAC ID:</b> ${record.id}
+              <b>ARK:</b> ${record.ark}
+            </div>
+            <div class="snac-details-body">
+              <iframe class="snac-details-snippet"
+                data-src="<%= @prefs.web_url %>snippet/${record.id}"
+                data-title="<%= I18n.t("plugins.snac.actions.details_title") %> ${record.id}">
+              </iframe>
+            </div>
           </div>
         </div>
       </div>

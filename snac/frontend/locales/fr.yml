@@ -30,6 +30,7 @@ fr:
         deselect_record: Désélectionner
         show_record: Afficher les détails
         hide_record: Masquer les détails
+        details_title: Détails de l'identifiant SNAC
       messages:
         none_selected: Aucun résultat sélectionné
         no_results: Pas de résultat pour la requête
