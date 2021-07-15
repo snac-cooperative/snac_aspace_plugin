@@ -8,6 +8,11 @@ class SnacExportHelper
   end
 
 
+  def resource_from_resource(resource)
+    build_resource(resource)
+  end
+
+
   private
 
 
@@ -31,12 +36,21 @@ class SnacExportHelper
       raise SnacExportHelperException.new("unhandled agent type: [#{type}]")
     end
 
+    resource_relations = []
+    linked_resources = agent['linked_resources'] || []
+    linked_resources.each do |res|
+      resource_relations.concat(build_resource_relations(res))
+    end
+    resource_relations.compact!
+
     con = {
       'dataType' => 'Constellation',
       'operation' => 'insert',
       'entityType' => entity_type,
       'nameEntries' => name_entries
     }
+
+    con['resourceRelations'] = resource_relations unless resource_relations.empty?
 
     con
   end
@@ -302,5 +316,200 @@ class SnacExportHelper
 
     name
   end
+
+
+  def build_document_type_archival_resource
+    {
+      'type' => 'document_type',
+      'id' => 696,
+      'term' => 'ArchivalResource'
+    }
+  end
+
+
+  def build_document_type_bibliographic_resource
+    {
+      'type' => 'document_type',
+      'id' => 697,
+      'term' => 'BibliographicResource'
+    }
+  end
+
+
+  def build_document_type_digital_archival_resource
+    {
+      'type' => 'document_type',
+      'id' => 400479,
+      'term' => 'DigitalArchivalResource'
+    }
+  end
+
+
+  def build_document_type_oral_history_resource
+    {
+      'type' => 'document_type',
+      'id' => 400623,
+      'term' => 'OralHistoryResource'
+    }
+  end
+
+
+  def build_resource(resource)
+    title = resource['title']
+
+    # AS default resource types: ["collection", "publications", "papers", "records"]
+    # but these can be modified.  unsure how to map, so default to archival resource for now
+
+    doc_type = build_document_type_archival_resource
+
+    # optional
+
+    # "link": "https:\/\/mylink.com",
+    #
+    # unsure where to get this in AS resource... external documents maybe?
+    link = ''
+
+    # "abstract": "This is a full abstract",
+    #
+    # AS default note types:
+    # ["accruals", "appraisal", "arrangement", "bioghist", "accessrestrict",
+    # "userestrict", "custodhist", "dimensions", "altformavail", "originalsloc",
+    # "fileplan", "odd", "acqinfo", "legalstatus", "otherfindaid", "phystech",
+    # "prefercite", "processinfo", "relatedmaterial", "scopecontent", "separatedmaterial"]
+    #
+    # but these can be modified.  which to use?
+    abstract = ''
+
+    # "source": "My full citation",
+    #
+    # maybe note with type 'prefercite'?
+    source = ''
+
+    # "extent": "20 pages",
+    #
+    # concatenate extents[]
+    extents = []
+    resource['extents'].each do |ext|
+      type = I18n.t("enumerations.extent_extent_type.#{ext['extent_type']}")
+      portion = I18n.t("enumerations.extent_portion.#{ext['portion']}")
+      s = "#{ext['number']} #{type} (#{portion})"
+
+      ['container_summary', 'physical_details', 'dimensions'].each do |field|
+        if ext[field] and ext[field] != ''
+          label = I18n.t("extent.#{field}")
+          s += ", #{label}: #{ext[field]}"
+        end
+      end
+
+      extents << s
+    end
+
+    # "repository": {
+    #   "ark": "http:\/\/n2t.net\/ark:\/99166\/w6kq8qkp",
+    #   "dataType": "Constellation",
+    #   "id": "76763300"
+    # },
+    #
+    # unsure where to get this in AS resource
+    repository = nil
+
+    res = {
+      'dataType' => 'Resource',
+      'operation' => 'insert',
+      'title' => title,
+      'documentType' => doc_type
+    }
+
+    res['link'] = link unless link == ''
+    res['abstract'] = abstract unless abstract == ''
+    res['source'] = source unless source == ''
+    res['extent'] = extents.join('; ') unless extents.empty?
+    res['repository'] = repository unless repository.nil?
+
+    res
+  end
+
+
+  def build_resource_relation_creator_of
+    {
+      'type' => 'document_role',
+      'id' => 692,
+      'term' => 'creatorOf'
+    }
+  end
+
+
+  def build_resource_relation_contributor_of
+    {
+      'type' => 'document_role',
+      'id' => 695,
+      'term' => 'contributorOf'
+    }
+  end
+
+
+  def build_resource_relation_editor_of
+    {
+      'type' => 'document_role',
+      'id' => 694,
+      'term' => 'editorOf'
+    }
+  end
+
+
+  def build_resource_relation_referenced_in
+    {
+      'type' => 'document_role',
+      'id' => 693,
+      'term' => 'referencedIn'
+    }
+  end
+
+
+  def existing_resource(resource)
+    # id determined from external documents snac url
+
+    src = resource['external_documents'].find { |doc| doc['title'] == 'snac' }
+
+    raise SnacExportHelperException.new("linked resource is not linked to SNAC") unless src
+
+    id = src['location'].split('/').last
+
+    {
+      'dataType' => 'Resource',
+      'id' => id
+    }
+  end
+
+
+  def build_resource_relations(linked_resource)
+    relations = []
+
+    relation = {
+      'dataType' => 'ResourceRelation',
+      'operation' => 'insert',
+      'resource' => existing_resource(linked_resource['json'])
+    }
+
+    # "creator", "source", "subject"
+    linked_resource['roles'].each do |role|
+      case role
+      when 'creator'
+        role = build_resource_relation_creator_of
+      when 'source'
+        role = build_resource_relation_contributor_of
+      when 'subject'
+        role = build_resource_relation_referenced_in
+      else
+        next
+      end
+
+      relation['role'] = role
+      relations << relation
+    end
+
+    relations
+  end
+
 
 end

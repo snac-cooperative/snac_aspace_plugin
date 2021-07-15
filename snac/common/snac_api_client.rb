@@ -33,6 +33,28 @@ class SnacApiClient
   end
 
 
+  def read_resource(id)
+    req = {
+      'command' => 'read_resource',
+      'resourceid' => id.to_i
+    }
+
+    perform_api_request(req)
+  end
+
+
+  def create_resource(res)
+    req = {
+      'command' => 'insert_resource',
+      'apikey': @prefs.api_key,
+      'resource' => res,
+      'message' => 'import from ArchivesSpace'
+    }
+
+    perform_api_request(req)
+  end
+
+
   private
 
 
@@ -45,16 +67,22 @@ class SnacApiClient
 
     begin
       json = JSON.parse(res.body, max_nesting: false, create_additions: false)
+      raise SnacApiClientException.new("expected JSON response") unless json.is_a?(Hash)
       valid = true
     rescue
       valid = false
-      json = {}
+      json = {
+        'error' => {
+          'type' => 'Parse Error',
+          'message' => $!
+        }
+      }
     end
 
     # if there was an HTTP error, or if the response from HTTP success could not be
     # parsed, then build an error message from the actual or a mocked JSON response
     unless res.is_a?(Net::HTTPSuccess) and valid
-      error = json['error'] || {'type' => 'Error', 'message' => 'Unable to parse SNAC API response'}
+      error = json['error'] || {'type' => 'General Error', 'message' => 'Unable to determine error from SNAC API response'}
       errmsg = [error['type'], error['message']].compact.join(': ')
       raise SnacApiClientException.new("SNAC API: #{errmsg}")
     end

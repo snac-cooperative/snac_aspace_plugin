@@ -79,6 +79,11 @@ class SnacPreferences
   end
 
 
+  def resource_url(id = nil)
+    url_with_id("#{web_url}vocab_administrator/resources", id)
+  end
+
+
   private
 
 

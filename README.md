@@ -2,7 +2,7 @@
 
 This is a *beta* version of a working SNAC ArchivesSpace plugin, compatible with ArchivesSpace 3.0 (earlier versions may work but are untested).
 It allows an ArchivesSpace user to search SNAC for an identity, then choose and import that identity as an Agent in ArchivesSpace.
-It also allows an ArchivesSpace user to export an Agent to SNAC from within the Agent display page.
+It also allows an ArchivesSpace user to export Agents and Resources to SNAC from within their respective display pages.
 
 ## Installation
 
@@ -28,7 +28,8 @@ This setting controls which instance of SNAC you wish to work with (default is P
 
 ### SNAC API Key
 
-This is only required if you want to export Agents to SNAC.Enter your SNAC API key here, making sure it's valid for the SNAC Environment specified above.
+This is only required if you want to export Agents or Resources to SNAC.
+Enter your SNAC API key here, making sure it's valid for the SNAC Environment specified above.
 
 ## Importing from SNAC
 
@@ -37,7 +38,9 @@ Each scenario is detailed below.
 
 Importing is done using the current Agent model, reading and storing the preferred nameEntry heading, and creating links to the SNAC identity within the Agent's Record ID section.
 
-**NOTE:** importing from SNAC, whatever the method, requires an ArchivesSpace user to have `update_agent_record` and `import_records` permissions.
+**NOTE:** importing from SNAC, whatever the method, requires an ArchivesSpace user to have the following permissions:
+`update_agent_record`,
+`import_records`
 
 ### Importing from SNAC (using the SNAC Import plugin)
 
@@ -72,8 +75,15 @@ Notes:
 
 ## Exporting to SNAC
 
-Agents display a new button in the Agent toolbar, between the `Download ...` and `Merge` buttons.
-If there is an existing SNAC record identifier, this button is labeled `View in SNAC` and will take you to the SNAC page for that Agent.
-Otherwise, it will be labeled `Export to SNAC`, and will create a new background job to export the Agent to SNAC, storing links to the SNAC identity within the Agent's Record ID section.
+Agents and Resources display a new button in their respective display page toolbars, just before the `Merge` button.
+If there is an existing SNAC record identifier, this button is labeled `View in SNAC` and will take you to the SNAC page for that Agent or Resource.
+Otherwise, it will be labeled `Export to SNAC`, and will create a new background job to export that record to SNAC.
 
-**NOTE:** exporting to SNAC requires an ArchivesSpace user to have `update_agent_record` and `create_job` permissions.
+Agents are linked to SNAC via links to the SNAC identity within the Agent's Record ID section.
+
+Resources are linked to SNAC via links to the SNAC resource within the Resource's External Documents section.
+
+**NOTE:** exporting to SNAC requires an ArchivesSpace user to have the following permissions:
+`update_agent_record`,
+`update_resource_record`,
+`create_job`

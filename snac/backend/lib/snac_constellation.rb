@@ -26,10 +26,10 @@ class SnacConstellation
   end
 
 
-  def url
+  def id
     raise SnacConstellationException.new("constellation is missing id") unless @constellation.key?('id')
 
-    @prefs.view_url(@constellation['id'])
+    @constellation['id']
   end
 
 
@@ -37,6 +37,11 @@ class SnacConstellation
     raise SnacConstellationException.new("constellation is missing ark") unless @constellation.key?('ark')
 
     @constellation['ark']
+  end
+
+
+  def url
+    @prefs.view_url(id)
   end
 
 
@@ -71,5 +76,6 @@ class SnacConstellation
 
     con
   end
+
 
 end

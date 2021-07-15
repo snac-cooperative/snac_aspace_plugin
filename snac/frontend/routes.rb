@@ -5,5 +5,6 @@ ArchivesSpace::Application.routes.draw do
     match '/plugins/snac/search' => 'snac#search', :via => [:get]
     match '/plugins/snac/import' => 'snac#import', :via => [:post]
     match 'agents/:agent_type/:id/export' => 'snac#export', :via => [:get, :post]
+    match 'resources/:id/export' => 'snac#export', :via => [:get, :post]
   end
 end
