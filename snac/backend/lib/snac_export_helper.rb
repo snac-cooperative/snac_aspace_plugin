@@ -355,39 +355,32 @@ class SnacExportHelper
 
 
   def build_resource(resource)
+    # required:
+
+    # title
     title = resource['title']
 
+    # documentType
     # AS default resource types: ["collection", "publications", "papers", "records"]
-    # but these can be modified.  unsure how to map, so default to archival resource for now
-
+    # but these can be modified.  no reliable way to map, so default to archival resource
     doc_type = build_document_type_archival_resource
 
-    # optional
+    # optional:
 
+    # link
     # "link": "https:\/\/mylink.com",
-    #
-    # unsure where to get this in AS resource... external documents maybe?
+    # TODO: link to this AS repo, if public?
     link = ''
 
-    # "abstract": "This is a full abstract",
-    #
-    # AS default note types:
-    # ["accruals", "appraisal", "arrangement", "bioghist", "accessrestrict",
-    # "userestrict", "custodhist", "dimensions", "altformavail", "originalsloc",
-    # "fileplan", "odd", "acqinfo", "legalstatus", "otherfindaid", "phystech",
-    # "prefercite", "processinfo", "relatedmaterial", "scopecontent", "separatedmaterial"]
-    #
-    # but these can be modified.  which to use?
-    abstract = ''
+    abs_note = resource['notes'].find { |note| note['type'] == 'abstract' }
+    abstract = if abs_note then abs_note['content'].join("\n") else '' end
 
+    # source
     # "source": "My full citation",
-    #
-    # maybe note with type 'prefercite'?
+    # TODO: from where?
     source = ''
 
-    # "extent": "20 pages",
-    #
-    # concatenate extents[]
+    # extents
     extents = []
     resource['extents'].each do |ext|
       type = I18n.t("enumerations.extent_extent_type.#{ext['extent_type']}")
@@ -404,13 +397,15 @@ class SnacExportHelper
       extents << s
     end
 
+    # repository
     # "repository": {
     #   "ark": "http:\/\/n2t.net\/ark:\/99166\/w6kq8qkp",
     #   "dataType": "Constellation",
     #   "id": "76763300"
     # },
     #
-    # unsure where to get this in AS resource
+    # should link to SNAC entry for this AS repository
+    # TODO: automatically create/use this holding repo in SNAC
     repository = nil
 
     res = {

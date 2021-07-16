@@ -14,6 +14,18 @@
           "type" => "string",
           "ifmissing" => "error"
         }
+      },
+
+      "include_linked_records" => {
+        "type" => "boolean",
+        "required" => "false",
+        "default" => "false"
+      },
+
+      "include_linked_agents" => {
+        "type" => "boolean",
+        "required" => "false",
+        "default" => "false"
       }
 
     }

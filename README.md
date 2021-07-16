@@ -80,8 +80,12 @@ If there is an existing SNAC record identifier, this button is labeled `View in 
 Otherwise, it will be labeled `Export to SNAC`, and will create a new background job to export that record to SNAC.
 
 Agents are linked to SNAC via links to the SNAC identity within the Agent's Record ID section.
+Currently, exporting an Agent will also export any Resources that link to that Agent.
+This will become a selectable option.
 
 Resources are linked to SNAC via links to the SNAC resource within the Resource's External Documents section.
+Currently, exporting a Resource will not also export any Linked Agents.
+This may become a selectable option.
 
 **NOTE:** exporting to SNAC requires an ArchivesSpace user to have the following permissions:
 `update_agent_record`,

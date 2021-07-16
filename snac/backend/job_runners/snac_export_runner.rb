@@ -149,8 +149,7 @@ class SnacExportRunner < JobRunner
 
 
   def export_linked_resources(agent_uri)
-    # FIXME: implement flag
-    #return [] unless @json.job['include_linked_resources']
+    return [] unless @json.job['include_linked_resources']
 
     linked_resources = get_linked_resources(agent_uri)
 

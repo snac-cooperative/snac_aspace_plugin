@@ -8,6 +8,7 @@ class SnacController < ApplicationController
   class SnacControllerException < StandardError; end
 
   set_access_control "update_agent_record" => [:search, :index, :import, :export]
+  set_access_control "update_resource_record" => [:export]
   set_access_control "import_records" => [:search, :index, :import]
   set_access_control "create_job" => [:export]
 
@@ -59,7 +60,9 @@ class SnacController < ApplicationController
       job = Job.new("snac_export_job", {
                       "job_type" => "snac_export_job",
                       "jsonmodel_type" => "snac_export_job",
-                      "uris" => params[:uris]
+                      "uris" => params[:uris],
+                      "include_linked_records" => params[:include_linked_records],
+                      "include_linked_agents" => params[:include_linked_agents]
                     },
                     {})
 
