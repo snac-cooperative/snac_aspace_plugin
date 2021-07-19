@@ -9,10 +9,26 @@ en:
     snac_export_failure_title: Error while creating export job
   snac_export_job:
     _singular: SNAC Export Job
-    message: This background job type is intended to be used from within Agent records only.
+    message: This background job type is intended to be used from within Agent, Resource, or Repository records only.
     uris: URIs
     include_linked_records: Include Linked Records
     include_linked_agents: Include Linked Agents
+    exporting_item: "Exporting item %{index} of %{length}"
+    skipping_item: Skipping unhandled type
+    success_label: SUCCESS
+    success_message: "Exported %{count} items"
+    error_label: ERROR
+    processing_linked_resources: Processing linked resources...
+    processing_agent: Processing agent
+    processing_top_level_agent: Processing top-level agent
+    processing_resource: Processing resource
+    processing_top_level_resource: Processing top-level resource
+    already_exported: Already exported
+    exported_to_snac: Exported to SNAC
+    agent_label: agent
+    resource_label: resource
+    linked_resource_label: "linked resource %{index} of %{length}"
+    holding_repository_label: holding repository
   job:
     types:
       snac_export_job: SNAC Export

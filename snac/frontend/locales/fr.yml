@@ -13,6 +13,22 @@ fr:
     uris: URIs
     include_linked_records: Inclure les Enregistrements Liés
     include_linked_agents: Inclure les Agents Liés
+    exporting_item: "Exportation de l'élément %{index} sur %{length}"
+    skipping_item: Ignorer le type non géré
+    success_label: SUCCÈS
+    success_message: "%{count} articles exportés"
+    error_label: ERREUR
+    processing_linked_resources: Traitement des ressources liées...
+    processing_agent: Traitement de l'agent
+    processing_top_level_agent: Traitement de l'agent de haut niveau
+    processing_resource: Traitement de la ressource
+    processing_top_level_resource: Traitement de la ressource de haut niveau
+    already_exported: Déjà exporté
+    exported_to_snac: Exporté vers SNAC
+    agent_label: agent
+    resource_label: ressource
+    linked_resource_label: "ressource liée %{index} sur %{length}"
+    holding_repository_label: dépôt de stockage
   job:
     types:
       snac_export_job: Exportation SNAC

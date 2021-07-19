@@ -24,22 +24,22 @@ class SnacExportRunner < JobRunner
 
             uris.each_with_index do |uri, index|
               output ""
-              output "=====================[ Exporting item #{index+1} of #{uris.length} ]====================="
+              output "=====================[ #{I18n.t('snac_export_job.exporting_item', :index => index+1, :length => uris.length)} ]====================="
 
               parsed = JSONModel.parse_reference(uri)
               type = parsed[:type]
 
               case type
               when /^agent/
-                pfx = "[agent]"
+                pfx = "[#{I18n.t('snac_export_job.agent_label')}]"
                 export_top_level_agent(pfx, uri)
 
               when /^resource/
-                pfx = "[resource]"
+                pfx = "[#{I18n.t('snac_export_job.resource_label')}]"
                 export_top_level_resource(pfx, json)
 
               else
-                output "Skipping unhandled type: #{type} (URI: #{uri})"
+                output "#{I18n.t('snac_export_job.skipping_item')}: #{type} (#{uri})"
                 next
               end
             end
@@ -49,7 +49,7 @@ class SnacExportRunner < JobRunner
           @modified.uniq!
 
           output "==================================================================="
-          output "SUCCESS: Exported #{@modified.length} item#{"s" unless @modified.length == 1}"
+          output "#{I18n.t('snac_export_job.success_label')}: #{I18n.t('snac_export_job.success_message', :count => @modified.length)}"
 
           self.success!
 
@@ -67,7 +67,7 @@ class SnacExportRunner < JobRunner
 
     if terminal_error
       output "==================================================================="
-      output "ERROR: #{terminal_error.message}"
+      output "#{I18n.t('snac_export_job.error_label')}: #{terminal_error.message}"
 
       terminal_error.backtrace.each do |line|
         log "TRACE: #{line}"
@@ -132,7 +132,7 @@ class SnacExportRunner < JobRunner
       return @holding_repo_id
     end
 
-    pfx = "  + [holding repository]"
+    pfx = "  + [#{I18n.t('snac_export_job.holding_repository_label')}]"
     @holding_repo_id = export_agent(pfx, agent_uri)
     # cosmetic: also add the repo to the list of modified records (to go along with agent representation)
     # actually it's not so cosmetic (displays as '/resolve/readonly?uri=%2Frepositories%2F3')
@@ -179,11 +179,13 @@ class SnacExportRunner < JobRunner
   def export_linked_resources(pfx, agent_uri)
     return [] unless @json.job['include_linked_records']
 
+    output "#{pfx} #{I18n.t('snac_export_job.processing_linked_resources')}"
+
     linked_resources = get_linked_resources(agent_uri)
 
     # export each linked resource
     linked_resources.each_with_index do |linked_resource, index|
-      pfx = "  + [linked resource #{index+1} of #{linked_resources.length}]"
+      pfx = "  + [#{I18n.t('snac_export_job.linked_resource_label', :index => index+1, :length => linked_resources.length)}]"
       id = export_resource(pfx, linked_resource['json']['uri'])
       linked_resource['snac_id'] = id
     end
@@ -214,7 +216,7 @@ class SnacExportRunner < JobRunner
     # returns the SNAC id for the constellation in either case.
 
     output ""
-    output "#{pfx} Processing agent: #{uri}"
+    output "#{pfx} #{I18n.t('snac_export_job.processing_agent')}: #{uri}"
 
     agent = SnacRecordHelper.new(uri)
     json = agent.load
@@ -222,7 +224,7 @@ class SnacExportRunner < JobRunner
     # check for existing snac link
     snac_entry = agent_snac_entry(json)
     unless snac_entry.nil?
-      output "#{pfx} Already exported: #{snac_entry['record_identifier']}"
+      output "#{pfx} #{I18n.t('snac_export_job.already_exported')}: #{snac_entry['record_identifier']}"
       return agent_snac_id(json)
     end
 
@@ -232,7 +234,7 @@ class SnacExportRunner < JobRunner
     con = SnacConstellation.new
     con.export(snac_agent)
 
-    output "#{pfx} Exported to SNAC: #{con.url}"
+    output "#{pfx} #{I18n.t('snac_export_job.exported_to_snac')}: #{con.url}"
 
     # add snac constellation url and ark to agent
     has_primary_id = json['agent_record_identifiers'].map { |id| id['primary_identifier'] }.any?
@@ -260,7 +262,7 @@ class SnacExportRunner < JobRunner
     # exports an agent to a SNAC constellation,
     # possibly including any resources linked to it
 
-    output "#{pfx} Processing top-level agent: #{uri}"
+    output "#{pfx} #{I18n.t('snac_export_job.processing_top_level_agent')}: #{uri}"
 
     # first, export linked resources (if specified, and if not already in SNAC)
     linked_resources = export_linked_resources(pfx, uri)
@@ -295,7 +297,7 @@ class SnacExportRunner < JobRunner
     repo_id = export_repository
 
     output ""
-    output "#{pfx} Processing resource: #{uri}"
+    output "#{pfx} #{I18n.t('snac_export_job.processing_resource')}: #{uri}"
 
     resource = SnacRecordHelper.new(uri)
     json = resource.load
@@ -303,7 +305,7 @@ class SnacExportRunner < JobRunner
     # check for existing snac link
     snac_entry = resource_snac_entry(json)
     unless snac_entry.nil?
-      output "#{pfx} Already exported: #{snac_entry['location']}"
+      output "#{pfx} #{I18n.t('snac_export_job.already_exported')}: #{snac_entry['location']}"
       return resource_snac_id(json)
     end
 
@@ -313,7 +315,7 @@ class SnacExportRunner < JobRunner
     res = SnacResource.new
     res.export(snac_resource)
 
-    output "#{pfx} Exported to SNAC: #{res.url}"
+    output "#{pfx} #{I18n.t('snac_export_job.exported_to_snac')}: #{res.url}"
 
     # add snac resource url to AS resource
     json['external_documents'] << {
@@ -331,7 +333,7 @@ class SnacExportRunner < JobRunner
   def export_top_level_resource(pfx, uri)
     # exports a resource to a SNAC resource
 
-    output "#{pfx} Processing top-level resource: #{uri}"
+    output "#{pfx} #{I18n.t('snac_export_job.processing_top_level_resource')}: #{uri}"
 
     # TODO: implement linked agent export
 
