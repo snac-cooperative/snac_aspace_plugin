@@ -23,54 +23,32 @@ class SnacExportRunner < JobRunner
                               :repo_id => @job.repo_id) do
 
             uris.each_with_index do |uri, index|
-              output "================[ Exporting item #{index+1} of #{uris.length} ]================"
+              output ""
+              output "=====================[ Exporting item #{index+1} of #{uris.length} ]====================="
 
               parsed = JSONModel.parse_reference(uri)
-              id = parsed[:id]
               type = parsed[:type]
 
-              output "Processing URI: #{uri}"
-
-              # get cleaned record
-              model = Kernel.const_get(type.camelize)
-              json = JSONModel(type.to_sym).from_hash(model.to_jsonmodel(id).to_hash)
-
               case type
-
               when /^agent/
                 pfx = "[agent]"
-                # 1. export linked resources (if specified, and if not already in SNAC)
-                linked_resources = export_linked_resources(json['uri'])
-
-                # 2. export agent with resource relations that reference resources above
-                #    (reload agent since lock_version may have changed due to linked resource updates)
-                json = JSONModel(type.to_sym).from_hash(model.to_jsonmodel(id).to_hash)
-                json = export_agent(pfx, json, linked_resources)
+                export_top_level_agent(pfx, uri)
 
               when /^resource/
                 pfx = "[resource]"
-                json = export_resource(pfx, json)
+                export_top_level_resource(pfx, json)
 
               else
-                output "Skipping unhandled record type: #{type}"
+                output "Skipping unhandled type: #{type} (URI: #{uri})"
                 next
               end
-
-              next unless json
-
-              output "#{pfx} Updating ArchivesSpace #{type} record"
-
-              model.any_repo[id].update_from_json(json)
-              @modified << json.uri if json.uri
-
-              output "#{pfx} Done"
             end
 
           end
 
           @modified.uniq!
 
-          output "========================================================="
+          output "==================================================================="
           output "SUCCESS: Exported #{@modified.length} item#{"s" unless @modified.length == 1}"
 
           self.success!
@@ -88,7 +66,7 @@ class SnacExportRunner < JobRunner
     end
 
     if terminal_error
-      output "============================================="
+      output "==================================================================="
       output "ERROR: #{terminal_error.message}"
 
       terminal_error.backtrace.each do |line|
@@ -111,6 +89,56 @@ class SnacExportRunner < JobRunner
   def output(msg)
     log msg
     @job.write_output(msg)
+  end
+
+
+  class SnacRecordHelper
+    include JSONModel
+
+    def initialize(uri)
+      parsed = JSONModel.parse_reference(uri)
+
+      @id = parsed[:id]
+      @type = parsed[:type]
+      @model = Kernel.const_get(@type.camelize)
+    end
+
+    def load
+      JSONModel(@type.to_sym).from_hash(@model.to_jsonmodel(@id).to_hash)
+    end
+
+    def save(json)
+      @model.any_repo[@id].update_from_json(json)
+    end
+
+  end
+
+
+  def export_repository
+    # exports the current repository to a SNAC constellation, if not already exported.
+    # returns the SNAC id for the constellation in either case.
+
+    return @holding_repo_id if @holding_repo_id
+
+    repo = Repository.to_jsonmodel(@job.repo_id)
+
+    agent_uri = repo['agent_representation']['ref']
+
+    agent = SnacRecordHelper.new(agent_uri)
+    json = agent.load
+
+    if agent_exported?(json)
+      @holding_repo_id = agent_snac_id(json)
+      return @holding_repo_id
+    end
+
+    pfx = "  + [holding repository]"
+    @holding_repo_id = export_agent(pfx, agent_uri)
+    # cosmetic: also add the repo to the list of modified records (to go along with agent representation)
+    # actually it's not so cosmetic (displays as '/resolve/readonly?uri=%2Frepositories%2F3')
+    #@modified << repo['uri'] if repo['uri']
+
+    @holding_repo_id
   end
 
 
@@ -148,132 +176,166 @@ class SnacExportRunner < JobRunner
   end
 
 
-  def export_linked_resources(agent_uri)
-    return [] unless @json.job['include_linked_resources']
+  def export_linked_resources(pfx, agent_uri)
+    return [] unless @json.job['include_linked_records']
 
     linked_resources = get_linked_resources(agent_uri)
 
     # export each linked resource
     linked_resources.each_with_index do |linked_resource, index|
-      pfx = "  + [linked resource]"
-      output "#{pfx} ========[ Exporting resource #{index+1} of #{linked_resources.length} ]========"
-
-      uri = linked_resource['json']['uri']
-
-      output "#{pfx} Processing URI: #{uri}"
-
-      parsed = JSONModel.parse_reference(uri)
-      id = parsed[:id]
-      type = parsed[:type]
-
-      model = Kernel.const_get(type.camelize)
-      json = JSONModel(type.to_sym).from_hash(model.to_jsonmodel(id).to_hash)
-      linked_resource['json'] = json
-
-      json = export_resource(pfx, json)
-
-      next unless json
-
-      linked_resource['json'] = json
-
-      output "#{pfx} Updating ArchivesSpace #{type} record"
-
-      model.any_repo[id].update_from_json(json)
-      @modified << json.uri if json.uri
-
-      output "#{pfx} Done"
+      pfx = "  + [linked resource #{index+1} of #{linked_resources.length}]"
+      id = export_resource(pfx, linked_resource['json']['uri'])
+      linked_resource['snac_id'] = id
     end
 
     linked_resources
   end
 
 
-  def export_agent(pfx, agent, linked_resources)
-    # exports an agent to a SNAC constellation, and returns
-    # a modified Agent with a link to the entry in SNAC
+  def agent_snac_entry(json)
+    json['agent_record_identifiers'].find { |id| id['source'] == 'snac' }
+  end
 
-    output "#{pfx} Preparing to export this agent to SNAC"
 
-    # check for existing snac link, as well as whether this
-    # this agent already has a primary identifier (used later)
+  def agent_snac_id(json)
+    snac_entry = agent_snac_entry(json)
+    return 0 if snac_entry.nil?
+    snac_entry['record_identifier'].split('/').last.to_i
+  end
 
-    ids = agent['agent_record_identifiers']
-    has_primary = false
 
-    ids.each do |id|
-      if id['source'] == 'snac'
-        output "#{pfx} Skipping export because this agent is already linked to SNAC: #{id['record_identifier']}"
-        return nil
-      end
-      has_primary ||= id['primary_identifier']
+  def agent_exported?(json)
+    return !agent_snac_entry(json).nil?
+  end
+
+
+  def export_agent(pfx, uri, linked_resources = [])
+    # exports an agent to a SNAC constellation, if not already exported.
+    # returns the SNAC id for the constellation in either case.
+
+    output ""
+    output "#{pfx} Processing agent: #{uri}"
+
+    agent = SnacRecordHelper.new(uri)
+    json = agent.load
+
+    # check for existing snac link
+    snac_entry = agent_snac_entry(json)
+    unless snac_entry.nil?
+      output "#{pfx} Already exported: #{snac_entry['record_identifier']}"
+      return agent_snac_id(json)
     end
 
-    output "#{pfx} Exporting agent to new SNAC constellation"
-
-    snac_agent = agent
+    snac_agent = json
     snac_agent['linked_resources'] = linked_resources
 
     con = SnacConstellation.new
     con.export(snac_agent)
 
-    output "#{pfx} SNAC URL: #{con.url}"
-
-    output "#{pfx} Linking SNAC constellation to this agent"
+    output "#{pfx} Exported to SNAC: #{con.url}"
 
     # add snac constellation url and ark to agent
-    ids << {
+    has_primary_id = json['agent_record_identifiers'].map { |id| id['primary_identifier'] }.any?
+
+    json['agent_record_identifiers'] << {
       'record_identifier' => con.url,
-      'primary_identifier' => !has_primary,
+      'primary_identifier' => !has_primary_id,
       'source' => 'snac'
     }
 
-    ids << {
+    json['agent_record_identifiers'] << {
       'record_identifier' => con.ark,
       'primary_identifier' => false,
       'source' => 'nad'
     }
 
-    agent['agent_record_identifiers'] = ids
+    agent.save(json)
+    @modified << json.uri if json.uri
 
-    agent
+    con.id
   end
 
 
-  def export_resource(pfx, resource)
-    # exports a resource to a SNAC resource, and returns
-    # a modified Resource with a link to the entry in SNAC
+  def export_top_level_agent(pfx, uri)
+    # exports an agent to a SNAC constellation,
+    # possibly including any resources linked to it
 
-    output "#{pfx} Preparing to export this resource to SNAC"
+    output "#{pfx} Processing top-level agent: #{uri}"
+
+    # first, export linked resources (if specified, and if not already in SNAC)
+    linked_resources = export_linked_resources(pfx, uri)
+
+    # now export this agent
+    export_agent(pfx, uri, linked_resources)
+  end
+
+
+  def resource_snac_entry(json)
+    json['external_documents'].find { |ext| ext['title'] == 'snac' }
+  end
+
+
+  def resource_snac_id(json)
+    snac_entry = resource_snac_entry(json)
+    return 0 if snac_entry.nil?
+    snac_entry['location'].split('/').last.to_i
+  end
+
+
+  def resource_exported?(json)
+    return !resource_snac_entry(json).nil?
+  end
+
+
+  def export_resource(pfx, uri, linked_agents = [])
+    # exports a resource to a SNAC resource, if not already exported.
+    # returns the SNAC id for the resource in either case.
+
+    # first, ensure this repository exists as a holding repository in SNAC
+    repo_id = export_repository
+
+    output ""
+    output "#{pfx} Processing resource: #{uri}"
+
+    resource = SnacRecordHelper.new(uri)
+    json = resource.load
 
     # check for existing snac link
-
-    external = resource['external_documents']
-
-    external.each do |ext|
-      if ext['title'] == 'snac'
-        output "#{pfx} Skipping export because this resource is already linked to SNAC: #{ext['location']}"
-        return nil
-      end
+    snac_entry = resource_snac_entry(json)
+    unless snac_entry.nil?
+      output "#{pfx} Already exported: #{snac_entry['location']}"
+      return resource_snac_id(json)
     end
 
-    output "#{pfx} Exporting resource to new SNAC resource"
+    snac_resource = json
+    snac_resource['holding_repo_id'] = repo_id
 
     res = SnacResource.new
-    res.export(resource)
+    res.export(snac_resource)
 
-    output "#{pfx} SNAC URL: #{res.url}"
-
-    output "#{pfx} Linking SNAC resource to this resource"
+    output "#{pfx} Exported to SNAC: #{res.url}"
 
     # add snac resource url to AS resource
-    external << {
+    json['external_documents'] << {
       'location' => res.url,
       'title' => 'snac'
     }
 
-    resource['external_documents'] = external
+    resource.save(json)
+    @modified << json.uri if json.uri
 
-    resource
+    res.id
+  end
+
+
+  def export_top_level_resource(pfx, uri)
+    # exports a resource to a SNAC resource
+
+    output "#{pfx} Processing top-level resource: #{uri}"
+
+    # TODO: implement linked agent export
+
+    export_resource(pfx, uri)
   end
 
 

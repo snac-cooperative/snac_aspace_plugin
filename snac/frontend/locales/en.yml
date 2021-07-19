@@ -10,8 +10,9 @@ en:
   snac_export_job:
     _singular: SNAC Export Job
     message: This background job type is intended to be used from within Agent records only.
-    agent_id: Agent ID
-    agent_type: Agent Type
+    uris: URIs
+    include_linked_records: Include Linked Records
+    include_linked_agents: Include Linked Agents
   job:
     types:
       snac_export_job: SNAC Export

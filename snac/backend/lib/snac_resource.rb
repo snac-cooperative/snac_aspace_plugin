@@ -29,7 +29,7 @@ class SnacResource
   def id
     raise SnacResourceException.new("resource is missing id") unless @resource.key?('id')
 
-    @resource['id']
+    @resource['id'].to_i
   end
 
 

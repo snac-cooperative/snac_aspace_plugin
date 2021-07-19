@@ -397,16 +397,7 @@ class SnacExportHelper
       extents << s
     end
 
-    # repository
-    # "repository": {
-    #   "ark": "http:\/\/n2t.net\/ark:\/99166\/w6kq8qkp",
-    #   "dataType": "Constellation",
-    #   "id": "76763300"
-    # },
-    #
-    # should link to SNAC entry for this AS repository
-    # TODO: automatically create/use this holding repo in SNAC
-    repository = nil
+    repository = existing_repository(resource['holding_repo_id'])
 
     res = {
       'dataType' => 'Resource',
@@ -461,17 +452,17 @@ class SnacExportHelper
   end
 
 
-  def existing_resource(resource)
-    # id determined from external documents snac url
-
-    src = resource['external_documents'].find { |doc| doc['title'] == 'snac' }
-
-    raise SnacExportHelperException.new("linked resource is not linked to SNAC") unless src
-
-    id = src['location'].split('/').last
-
+  def existing_resource(id)
     {
       'dataType' => 'Resource',
+      'id' => id
+    }
+  end
+
+
+  def existing_repository(id)
+    {
+      'dataType' => 'Constellation',
       'id' => id
     }
   end
@@ -483,7 +474,7 @@ class SnacExportHelper
     relation = {
       'dataType' => 'ResourceRelation',
       'operation' => 'insert',
-      'resource' => existing_resource(linked_resource['json'])
+      'resource' => existing_resource(linked_resource['snac_id'])
     }
 
     # "creator", "source", "subject"

@@ -62,7 +62,7 @@
           <% else %>
             <% if user_can?('create_job') %>
               <div class="btn btn-inline-form">
-                <%= link_to I18n.t("actions.snac_export"), {:controller => :snac, :action => :export, :uris => [@agent.uri], :include_linked_records => true}, :class => "btn btn-sm btn-default", :id => "snac-export", data: { confirm: I18n.t("actions.snac_export_agent_confirm"), disable_with: I18n.t("actions.snac_export") }, remote: true %>
+                <%= link_to I18n.t("actions.snac_export"), {:controller => :snac, :action => :export, :uris => [@agent.uri], :include_linked_records => '1'}, :class => "btn btn-sm btn-default", :id => "snac-export", data: { confirm: I18n.t("actions.snac_export_agent_confirm"), disable_with: I18n.t("actions.snac_export") }, remote: true %>
               </div>
             <% end %>
           <% end %>

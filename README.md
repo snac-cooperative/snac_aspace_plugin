@@ -80,7 +80,7 @@ If there is an existing SNAC record identifier, this button is labeled `View in 
 Otherwise, it will be labeled `Export to SNAC`, and will create a new background job to export that record to SNAC.
 
 Agents are linked to SNAC via links to the SNAC identity within the Agent's Record ID section.
-Currently, exporting an Agent will also export any Resources that link to that Agent.
+Currently, exporting an Agent will also export any Resource Records that link to that Agent.
 This will become a selectable option.
 
 Resources are linked to SNAC via links to the SNAC resource within the Resource's External Documents section.

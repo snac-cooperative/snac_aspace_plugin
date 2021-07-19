@@ -1,8 +1,14 @@
 <div class="form-group">
-  <label class="col-sm-3 control-label"><%= I18n.t("snac_export_job.agent_id")  %></label>
-  <div class="col-sm-9 controls label-only"><%= job['agent_id'] %></div>
+  <label class="col-sm-3 control-label"><%= I18n.t("snac_export_job.include_linked_records")  %></label>
+  <div class="col-sm-9 controls label-only"><%= job['include_linked_records'] %></div>
+</div>
 
-  <label class="col-sm-3 control-label"><%= I18n.t("snac_export_job.agent_type")  %></label>
-  <div class="col-sm-9 controls label-only"><%= job['agent_type'] %></div>
+<div class="form-group">
+  <label class="col-sm-3 control-label"><%= I18n.t("snac_export_job.include_linked_agents")  %></label>
+  <div class="col-sm-9 controls label-only"><%= job['include_linked_agents'] %></div>
+</div>
 
+<div class="form-group">
+  <label class="col-sm-3 control-label"><%= I18n.t("snac_export_job.uris")  %></label>
+  <div class="col-sm-9 controls label-only"><%= job['uris'] %></div>
 </div>

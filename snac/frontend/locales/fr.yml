@@ -10,8 +10,9 @@ fr:
   snac_export_job:
     _singular: Travail d'exportation SNAC
     message: Ce type de tâche d'arrière-plan est destiné à être utilisé à partir des enregistrements d'agent uniquement.
-    agent_id: Identifiant de l'agent
-    agent_type: Type d'agent
+    uris: URIs
+    include_linked_records: Inclure les Enregistrements Liés
+    include_linked_agents: Inclure les Agents Liés
   job:
     types:
       snac_export_job: Exportation SNAC

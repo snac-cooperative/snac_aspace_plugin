@@ -29,7 +29,7 @@ class SnacConstellation
   def id
     raise SnacConstellationException.new("constellation is missing id") unless @constellation.key?('id')
 
-    @constellation['id']
+    @constellation['id'].to_i
   end
 
 
