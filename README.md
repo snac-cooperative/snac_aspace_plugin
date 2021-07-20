@@ -75,9 +75,9 @@ Notes:
 
 ## Exporting to SNAC
 
-Agents and Resources display a new button in their respective display page toolbars, just before the `Merge` button.
-If there is an existing SNAC record identifier, this button is labeled `View in SNAC` and will take you to the SNAC page for that Agent or Resource.
-Otherwise, it will be labeled `Export to SNAC`, and will create a new background job to export that record to SNAC.
+Agents, Resources, and Repositories expose a new `SNAC` dropdown in their respective display page toolbars, just before the `Merge` dropdown.
+If there is an existing SNAC record identifier, this dropdown will contain a button labeled `View in SNAC` that will take you to the SNAC page for that Agent or Resource.
+Otherwise, it will contain a button labeled `Export to SNAC` that will create a new background job to export the record to SNAC.
 
 Agents are linked to SNAC via links to the SNAC identity within the Agent's Record ID section.
 Currently, exporting an Agent will also export any Resource Records that link to that Agent.
