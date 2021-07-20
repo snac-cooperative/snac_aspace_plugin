@@ -1,8 +1,11 @@
 en:
   actions:
+    snac_label: SNAC
     snac_view: View in SNAC
     snac_export: Export to SNAC
+    snac_export_agent_include_linked_resources: Include linked resources?
     snac_export_agent_confirm: Are you sure you want to create a new SNAC constellation?
+    snac_export_resource_include_linked_agents: Include linked agents?
     snac_export_resource_confirm: Are you sure you want to create a new SNAC resource?
     snac_export_success_title: Export job created
     snac_export_success_message: Redirecting to the job status page...
@@ -11,7 +14,7 @@ en:
     _singular: SNAC Export Job
     message: This background job type is intended to be used from within Agent, Resource, or Repository records only.
     uris: URIs
-    include_linked_records: Include Linked Records
+    include_linked_resources: Include Linked Resources
     include_linked_agents: Include Linked Agents
     exporting_item: "Exporting item %{index} of %{length}"
     skipping_item: Skipping unhandled type

@@ -1,0 +1,26 @@
+  <div id="snac-dropdown" class="btn-group dropdown" data-no-change-tracking="true">
+    <a class="btn btn-sm btn-default dropdown-toggle snac-action" data-toggle="dropdown" href="#" title="<%= I18n.t("actions.snac_label") %>">
+      <%= I18n.t("actions.snac_label") %> <span class="caret"></span>
+    </a>
+
+    <ul class="dropdown-menu snac-form open-aligned-right">
+      <li>
+        <% if has_snac_link?(type, obj) %>
+          <div class="btn btn-inline-form">
+            <%= link_to I18n.t("actions.snac_view"), snac_url(type, obj), :class => "btn btn-sm btn-default", target: '_blank', rel: 'nofollow' %>
+          </div>
+        <% else %>
+          <div class="btn btn-inline-form">
+            <%= link_to I18n.t("actions.snac_export"),
+                  {:controller => :snac, :action => :export, :uris => [obj.uri], :include_linked_resources => '1', :include_linked_agents => '0'},
+                  :class => "btn btn-sm btn-default",
+                  :id => "snac-export",
+                  data: { confirm: I18n.t("actions.snac_export_#{type}_confirm"), disable_with: I18n.t("actions.snac_export") },
+                  remote: true
+            %>
+          </div>
+        <% end %>
+      </li>
+    </ul>
+
+  </div>

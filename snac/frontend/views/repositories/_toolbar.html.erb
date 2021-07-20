@@ -9,17 +9,7 @@
       <div class="pull-right">
 
 <%# SNAC PLUGIN CONTENT STARTS HERE %>
-          <% if repository_has_snac_link?(@repository) %>
-            <div class="btn btn-inline-form">
-              <%= link_to I18n.t("actions.snac_view"), repository_snac_url(@repository), :class => "btn btn-sm btn-default", target: '_blank', rel: 'nofollow' %>
-            </div>
-          <% else %>
-            <% if user_can?('update_agent_record') && user_can?('create_job') %>
-              <div class="btn btn-inline-form">
-                <%= link_to I18n.t("actions.snac_export"), {:controller => :snac, :action => :export, :uris => [@repository.agent_representation['uri']]}, :class => "btn btn-sm btn-default", :id => "snac-export", data: { confirm: I18n.t("actions.snac_export_agent_confirm"), disable_with: I18n.t("actions.snac_export") }, remote: true %>
-              </div>
-            <% end %>
-          <% end %>
+          <%= render_aspace_partial :partial => "shared/snac_dropdown", :locals => {:type => 'agent', :obj => @repository['agent_representation']} %>
 <%# SNAC PLUGIN CONTENT ENDS HERE %>
 
         <% if session[:repo_id] != @repository.id and @repositories.any?{|r| r['uri'] === @repository.uri} %>
@@ -43,18 +33,7 @@
   </div>
 
 <%# SNAC PLUGIN CONTENT STARTS HERE %>
-  <div id="template_snac_export_failure_title"><!--
-    <%= I18n.t("actions.snac_export_failure_title") %>
-  --></div>
-
-  <div id="template_snac_export_success_title"><!--
-    <%= I18n.t("actions.snac_export_success_title") %>
-  --></div>
-
-  <div id="template_snac_export_success_message"><!--
-    <div class="alert alert-success">
-    <%= I18n.t("actions.snac_export_success_message") %></div>
-  --></div>
+   <%= render_aspace_partial :partial => "shared/snac_export" %>
 <%# SNAC PLUGIN CONTENT ENDS HERE %>
 
 </div>

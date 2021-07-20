@@ -55,17 +55,7 @@
           </div>
 
 <%# SNAC PLUGIN CONTENT STARTS HERE %>
-          <% if agent_has_snac_link?(@agent) %>
-            <div class="btn btn-inline-form">
-              <%= link_to I18n.t("actions.snac_view"), agent_snac_url(@agent), :class => "btn btn-sm btn-default", target: '_blank', rel: 'nofollow' %>
-            </div>
-          <% else %>
-            <% if user_can?('create_job') %>
-              <div class="btn btn-inline-form">
-                <%= link_to I18n.t("actions.snac_export"), {:controller => :snac, :action => :export, :uris => [@agent.uri], :include_linked_records => '1'}, :class => "btn btn-sm btn-default", :id => "snac-export", data: { confirm: I18n.t("actions.snac_export_agent_confirm"), disable_with: I18n.t("actions.snac_export") }, remote: true %>
-              </div>
-            <% end %>
-          <% end %>
+          <%= render_aspace_partial :partial => "shared/snac_dropdown", :locals => {:type => 'agent', :obj => @agent} %>
 <%# SNAC PLUGIN CONTENT ENDS HERE %>
 
         <% end %>
@@ -93,18 +83,7 @@
   </div>
 
 <%# SNAC PLUGIN CONTENT STARTS HERE %>
-  <div id="template_snac_export_failure_title"><!--
-    <%= I18n.t("actions.snac_export_failure_title") %>
-  --></div>
-
-  <div id="template_snac_export_success_title"><!--
-    <%= I18n.t("actions.snac_export_success_title") %>
-  --></div>
-
-  <div id="template_snac_export_success_message"><!--
-    <div class="alert alert-success">
-    <%= I18n.t("actions.snac_export_success_message") %></div>
-  --></div>
+   <%= render_aspace_partial :partial => "shared/snac_export" %>
 <%# SNAC PLUGIN CONTENT ENDS HERE %>
 
 <% end %>

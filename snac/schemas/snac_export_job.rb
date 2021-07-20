@@ -16,7 +16,7 @@
         }
       },
 
-      "include_linked_records" => {
+      "include_linked_resources" => {
         "type" => "boolean",
         "required" => "false",
         "default" => "false"

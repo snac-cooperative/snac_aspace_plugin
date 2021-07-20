@@ -177,7 +177,7 @@ class SnacExportRunner < JobRunner
 
 
   def export_linked_resources(pfx, agent_uri)
-    return [] unless @json.job['include_linked_records']
+    return [] unless @json.job['include_linked_resources']
 
     output "#{pfx} #{I18n.t('snac_export_job.processing_linked_resources')}"
 

@@ -36,12 +36,26 @@ ArchivesSpace::Application.config.after_initialize do
       ''
     end
 
-    def repository_has_snac_link?(repository)
-      agent_has_snac_link?(repository['agent_representation'])
+    def has_snac_link?(type, obj)
+      case type
+      when 'agent'
+        agent_has_snac_link?(obj)
+      when 'resource'
+        resource_has_snac_link?(obj)
+      else
+        false
+      end
     end
 
-    def repository_snac_url(repository)
-      agent_snac_url(repository['agent_representation'])
+    def snac_url(type, obj)
+      case type
+      when 'agent'
+        agent_snac_url(obj)
+      when 'resource'
+        resource_snac_url(obj)
+      else
+        ''
+      end
     end
 
   end
