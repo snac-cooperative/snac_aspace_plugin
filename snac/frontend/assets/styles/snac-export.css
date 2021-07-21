@@ -1,0 +1,25 @@
+.snac-export-form {
+  padding: 10px;
+}
+.snac-export-form .controls {
+  /* margin-left: 0; */
+  clear: both;
+}
+.snac-export-form .control-label {
+  /* width: 100%; */
+  /* text-align: left; */
+  /* margin-left: 0; */
+}
+.snac-export-form form {
+  margin: 0;
+}
+.snac-export-form fieldset {
+  width: 300px;
+  padding: 10px;
+}
+.snac-export-form fieldset #template {
+  display: none;
+}
+.snac-export-form .form-actions {
+  margin: 0;
+}

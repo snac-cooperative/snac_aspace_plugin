@@ -3,9 +3,9 @@ fr:
     snac_label: SNAC
     snac_view: Voir dans SNAC
     snac_export: Exporter vers SNAC
-    snac_export_agent_include_linked_resources: Inclure les ressources liées?
+    snac_export_agent_include_linked_resources: Inclure les ressources liées
     snac_export_agent_confirm: Êtes-vous sûr de vouloir créer une nouvelle constellation SNAC?
-    snac_export_resource_include_linked_agents: Inclure les agents liés?
+    snac_export_resource_include_linked_agents: Inclure les agents liés
     snac_export_resource_confirm: Êtes-vous sûr de vouloir créer une nouvelle ressource SNAC?
     snac_export_success_title: Tâche d'exportation créée
     snac_export_success_message: Redirection vers la page de statut de tâche...

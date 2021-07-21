@@ -1,0 +1,36 @@
+$(function () {
+
+  var init = function () {
+
+    $('.snac-export-form .btn-cancel').on('click', function () {
+      $('.snac-export-action').trigger("click");
+    });
+
+    // Override the default bootstrap dropdown behaviour here to
+    // ensure that this modal stays open even when another modal is
+    // opened within it.
+    $(".snac-export-action").on("click", function(event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      if ($(this).attr('disabled')) {
+        return;
+      }
+
+      if ($(".snac-export-form")[0].style.display === "block") {
+        // Hide it
+        $(".snac-export-form").css("display", "");
+      } else {
+        // Show it
+        $(".snac-export-form").css("display", "block");
+      }
+    });
+  };
+
+  if ($('.snac-export-form').length > 0) {
+    init();
+  } else {
+    $(document).bind("loadedrecordform.aspace", init);
+  }
+
+});

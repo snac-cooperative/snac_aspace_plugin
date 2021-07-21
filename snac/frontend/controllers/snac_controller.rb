@@ -51,9 +51,6 @@ class SnacController < ApplicationController
 
 
   def export
-    include_linked_resources = params[:include_linked_resources] == '1'
-    include_linked_agents = params[:include_linked_agents] == '1'
-
     res = {
       :job_uri => '',
       :error => ''
@@ -64,8 +61,8 @@ class SnacController < ApplicationController
                       "job_type" => "snac_export_job",
                       "jsonmodel_type" => "snac_export_job",
                       "uris" => params[:uris],
-                      "include_linked_resources" => include_linked_resources,
-                      "include_linked_agents" => include_linked_agents
+                      "include_linked_resources" => params[:include_linked_resources] == '1',
+                      "include_linked_agents" => params[:include_linked_agents] == '1'
                     },
                     {})
 

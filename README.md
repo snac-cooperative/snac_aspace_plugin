@@ -31,6 +31,8 @@ This setting controls which instance of SNAC you wish to work with (default is P
 This is only required if you want to export Agents or Resources to SNAC.
 Enter your SNAC API key here, making sure it's valid for the SNAC Environment specified above.
 
+**NOTE:** this setting is intended to be used at the User level only, in order to associate SNAC changes with specific users.
+
 ## Importing from SNAC
 
 SNAC identities can be imported using the SNAC Import plugin, or via an Import Data Background Job.
@@ -77,15 +79,28 @@ Notes:
 
 Agents, Resources, and Repositories expose a new `SNAC` dropdown in their respective display page toolbars, just before the `Merge` dropdown.
 If there is an existing SNAC record identifier, this dropdown will contain a button labeled `View in SNAC` that will take you to the SNAC page for that Agent or Resource.
-Otherwise, it will contain a button labeled `Export to SNAC` that will create a new background job to export the record to SNAC.
+Otherwise, it will contain a form (possibly with selectable options) and a button labeled `Export to SNAC` that will create a new background job to export the record to SNAC.
 
 Agents are linked to SNAC via links to the SNAC identity within the Agent's Record ID section.
-Currently, exporting an Agent will also export any Resource Records that link to that Agent.
-This will become a selectable option.
-
 Resources are linked to SNAC via links to the SNAC resource within the Resource's External Documents section.
-Currently, exporting a Resource will not also export any Linked Agents.
-This may become a selectable option.
+
+# Agent Export Options
+* `Include linked resources` --
+selecting this option will export any Resource records that link to this agent,
+and generate resource relations for them within the newly-created SNAC identity.
+If any of the linked Resources have already been exported to SNAC,
+the existing SNAC resource will be used (i.e. duplicate SNAC resources are not created).
+
+# Resource Export Options
+* `Include linked agents` (NOT YET IMPLEMENTED) --
+selecting this option will export any Agent records that are linked by this resource
+that have not already been exported to SNAC.
+Linked Resources for agents are currently not included when exporting agents via a Resource.
+
+# Repository Export Options
+Repositories in ArchivesSpace have an Agent representation (see above for options).
+Repositories can be exported manually, but will also be exported automatically whenever a Resource
+is exported, so that the resource can be associatied with a holding repository in SNAC.
 
 **NOTE:** exporting to SNAC requires an ArchivesSpace user to have the following permissions:
 `update_agent_record`,
