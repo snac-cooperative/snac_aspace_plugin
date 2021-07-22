@@ -375,11 +375,6 @@ class SnacExportHelper
     abs_note = resource['notes'].find { |note| note['type'] == 'abstract' }
     abstract = if abs_note then abs_note['content'].join("\n") else '' end
 
-    # source
-    # "source": "My full citation",
-    # TODO: from where?
-    source = ''
-
     # extents
     extents = []
     resource['extents'].each do |ext|
@@ -408,7 +403,6 @@ class SnacExportHelper
 
     res['link'] = link unless link == ''
     res['abstract'] = abstract unless abstract == ''
-    res['source'] = source unless source == ''
     res['extent'] = extents.join('; ') unless extents.empty?
     res['repository'] = repository unless repository.nil?
 
