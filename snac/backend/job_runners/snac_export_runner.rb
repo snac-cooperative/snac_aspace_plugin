@@ -36,7 +36,7 @@ class SnacExportRunner < JobRunner
 
               when /^resource/
                 pfx = "[#{I18n.t('snac_export_job.resource_label')}]"
-                export_top_level_resource(pfx, json)
+                export_top_level_resource(pfx, uri)
 
               else
                 output "#{I18n.t('snac_export_job.skipping_item')}: #{type} (#{uri})"
