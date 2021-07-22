@@ -143,33 +143,40 @@ class SnacExportRunner < JobRunner
 
 
   def get_linked_resources(agent_uri)
-    # FIXME: implement pagination.  for now, grab a whole bunch
+    resources = []
 
     params = {
       :q => "agent_uris:\"#{agent_uri}\" AND primary_type:\"resource\"",
       :fields => ['json'],
-      :page => 1,
-      :page_size => 1000,
+      :page_size => 10,
       :sort => ''
     }
 
     begin
-      search = Search.search(params, nil)
-      results = search['results']
-    rescue
-      results = []
-    end
+      # iterate over search result pages, collecting resource relations as we go
+      page = 0
+      loop do
+        page = page + 1
+        params[:page] = page
 
-    resources = []
-    results.each do |result|
-      json = ASUtils.json_parse(result['json'])
-      # find roles matching this agent
-      # "creator", "source", "subject"
-      roles = json['linked_agents'].select { |a| a['ref'] == agent_uri }.map { |a| a['role'] }
-      resources << {
-        'roles' => roles,
-        'json' => json
-      }
+        search = Search.search(params, @job.repo_id)
+
+        search['results'].each do |result|
+          json = ASUtils.json_parse(result['json'])
+          # find roles matching this agent
+          # "creator", "source", "subject"
+          roles = json['linked_agents'].select { |a| a['ref'] == agent_uri }.map { |a| a['role'] }
+          resources << {
+            'roles' => roles,
+            'uri' => json['uri']
+          }
+        end
+
+        last_page = search['last_page']
+        break if page == last_page
+      end
+    rescue
+      # just use what we've collected thus far?
     end
 
     resources
@@ -186,7 +193,7 @@ class SnacExportRunner < JobRunner
     # export each linked resource
     linked_resources.each_with_index do |linked_resource, index|
       pfx = "  + [#{I18n.t('snac_export_job.linked_resource_label', :index => index+1, :length => linked_resources.length)}]"
-      id = export_resource(pfx, linked_resource['json']['uri'])
+      id = export_resource(pfx, linked_resource['uri'])
       linked_resource['snac_id'] = id
     end
 
