@@ -372,8 +372,20 @@ class SnacExportHelper
     # TODO: link to this AS repo, if public?
     link = ''
 
-    abs_note = resource['notes'].find { |note| note['type'] == 'abstract' }
-    abstract = if abs_note then abs_note['content'].join("\n") else '' end
+    # abstract
+    # get source note, preferring prefer abstract over scope and contents
+    # FIXME: should only grab first paragraph of scope and contents
+    abstract = ''
+    src_note = resource['notes'].find { |note| note['type'] == 'abstract' }
+    src_note = resource['notes'].find { |note| note['type'] == 'scopecontent' } unless src_note
+    if src_note
+      case src_note['jsonmodel_type']
+      when 'note_singlepart'
+        abstract = src_note['content'].join("\n\n\n")
+      when 'note_multipart'
+        abstract = src_note['subnotes'].select { |s| s['jsonmodel_type'] == 'note_text' }.map { |s| s['content'] }.join("\n\n\n")
+      end
+    end
 
     # extents
     extents = []
