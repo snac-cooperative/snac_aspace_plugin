@@ -172,8 +172,7 @@ class SnacExportRunner < JobRunner
           }
         end
 
-        last_page = search['last_page']
-        break if page == last_page
+        break if page == search['last_page'] || search['last_page'] == 0 || search['total_results'] == 0
       end
     rescue
       # just use what we've collected thus far?
