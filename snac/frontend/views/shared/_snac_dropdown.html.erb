@@ -9,7 +9,7 @@
           <%= link_to I18n.t("actions.snac_view"), snac_url(type, obj), :class => "btn btn-sm center btn-default", target: '_blank', rel: 'nofollow' %>
         <% else %>
 
-          <%= form_with url: url_for({:controller => :snac, :action => :export, :uris => [obj.uri]}), local: false do |f| %>
+          <%= form_with url: url_for({:controller => :snac, :action => :export, :uris => [obj['uri']]}), local: false do |f| %>
 
             <fieldset>
               <% case type %>
