@@ -114,9 +114,12 @@ class SnacExportRunner < JobRunner
   end
 
 
+  ### repository export functions ###
+
+
   def export_repository
-    # exports the current repository to a SNAC constellation, if not already exported.
-    # returns the SNAC id for the constellation in either case.
+    # exports the current repository to a snac constellation, if not already exported.
+    # returns the snac id for the constellation in either case.
 
     return @holding_repo_id if @holding_repo_id
 
@@ -135,14 +138,40 @@ class SnacExportRunner < JobRunner
     pfx = "  + [#{I18n.t('snac_export_job.holding_repository_label')}]"
     @holding_repo_id = export_agent(pfx, agent_uri)
     # cosmetic: also add the repo to the list of modified records (to go along with agent representation)
-    # actually it's not so cosmetic (displays as '/resolve/readonly?uri=%2Frepositories%2F3')
+    # ...actually it's not so cosmetic, so maybe not (it displays as '/resolve/readonly?uri=%2Frepositories%2F...')
     #@modified << repo['uri'] if repo['uri']
 
     @holding_repo_id
   end
 
 
+  ### agent export functions ###
+
+
+  def agent_snac_entry(json)
+    # returns the entry containing the snac link, if any
+    json['agent_record_identifiers'].find { |id| id['source'] == 'snac' }
+  end
+
+
+  def agent_snac_id(json)
+    # returns the snac constellation id for the snac link if it exists, otherwise 0
+    snac_entry = agent_snac_entry(json)
+    return 0 if snac_entry.nil?
+    snac_entry['record_identifier'].split('/').last.to_i
+  end
+
+
+  def agent_exported?(json)
+    # returns true if this agent has a snac link
+    return !agent_snac_entry(json).nil?
+  end
+
+
   def get_linked_resources(agent_uri)
+    # returns a list of resources that link to this agent,
+    # along with any roles that agent has with it.
+
     resources = []
 
     params = {
@@ -183,8 +212,11 @@ class SnacExportRunner < JobRunner
 
 
   def export_linked_resources(pfx, agent_uri)
+    # exports each linked resource, if specified
+
     return [] unless @json.job['include_linked_resources']
 
+    output ""
     output "#{pfx} #{I18n.t('snac_export_job.processing_linked_resources')}"
 
     linked_resources = get_linked_resources(agent_uri)
@@ -200,26 +232,9 @@ class SnacExportRunner < JobRunner
   end
 
 
-  def agent_snac_entry(json)
-    json['agent_record_identifiers'].find { |id| id['source'] == 'snac' }
-  end
-
-
-  def agent_snac_id(json)
-    snac_entry = agent_snac_entry(json)
-    return 0 if snac_entry.nil?
-    snac_entry['record_identifier'].split('/').last.to_i
-  end
-
-
-  def agent_exported?(json)
-    return !agent_snac_entry(json).nil?
-  end
-
-
   def export_agent(pfx, uri, linked_resources = [])
-    # exports an agent to a SNAC constellation, if not already exported.
-    # returns the SNAC id for the constellation in either case.
+    # exports an agent to a snac constellation, if not already exported.
+    # returns the snac id for the constellation in either case.
 
     output ""
     output "#{pfx} #{I18n.t('snac_export_job.processing_agent')}: #{uri}"
@@ -265,12 +280,12 @@ class SnacExportRunner < JobRunner
 
 
   def export_top_level_agent(pfx, uri)
-    # exports an agent to a SNAC constellation,
-    # possibly including any resources linked to it
+    # exports an agent, optionally including any resources linked to it.
 
+    output ""
     output "#{pfx} #{I18n.t('snac_export_job.processing_top_level_agent')}: #{uri}"
 
-    # first, export linked resources (if specified, and if not already in SNAC)
+    # first, export linked resources (if specified, and if not already in snac)
     linked_resources = export_linked_resources(pfx, uri)
 
     # now export this agent
@@ -278,12 +293,17 @@ class SnacExportRunner < JobRunner
   end
 
 
+  ### resource export functions ###
+
+
   def resource_snac_entry(json)
+    # returns the entry containing the snac link, if any
     json['external_documents'].find { |ext| ext['title'] == 'snac' }
   end
 
 
   def resource_snac_id(json)
+    # returns the snac resource id for the snac link if it exists, otherwise 0
     snac_entry = resource_snac_entry(json)
     return 0 if snac_entry.nil?
     snac_entry['location'].split('/').last.to_i
@@ -291,15 +311,70 @@ class SnacExportRunner < JobRunner
 
 
   def resource_exported?(json)
+    # returns true if this resource has a snac link
     return !resource_snac_entry(json).nil?
   end
 
 
-  def export_resource(pfx, uri, linked_agents = [])
-    # exports a resource to a SNAC resource, if not already exported.
-    # returns the SNAC id for the resource in either case.
+  def get_linked_agents(resource_uri)
+    # returns a list of agents that are linked with this resource,
+    # each containing a single linked resource entry for the passed
+    # resource along with any roles that agent has with it.
 
-    # first, ensure this repository exists as a holding repository in SNAC
+    agents = []
+
+    resource = SnacRecordHelper.new(resource_uri)
+    json = resource.load
+
+    # accumulate roles per agent
+    agent_roles = {}
+    json['linked_agents'].each do |agent|
+      ref = agent['ref']
+      agent_roles[ref] = [] unless agent_roles[ref]
+      agent_roles[ref] << agent['role']
+    end
+
+    agents = []
+    agent_roles.each do |uri, roles|
+      agents << {
+        'uri' => uri,
+        'linked_resources' => {
+          'roles' => roles,
+          'uri' => resource_uri
+        }
+      }
+    end
+
+    agents
+  end
+
+
+  def export_linked_agents(pfx, resource_uri)
+    # exports each linked agent, if specified
+
+    return [] unless @json.job['include_linked_agents']
+
+    output ""
+    output "#{pfx} #{I18n.t('snac_export_job.processing_linked_agents')}"
+
+    linked_agents = get_linked_agents(resource_uri)
+
+    # export each linked agent
+    linked_agents.each_with_index do |linked_agent, index|
+      pfx = "  + [#{I18n.t('snac_export_job.linked_agent_label', :index => index+1, :length => linked_agents.length)}]"
+      id = export_agent(pfx, linked_agent['uri'], linked_agent['linked_resource'])
+      linked_agent['snac_id'] = id
+    end
+
+    linked_agents
+  end
+
+
+  def export_resource(pfx, uri, linked_agents = [])
+    # exports a resource to a snac resource, if not already exported.
+    # returns the snac id for the resource in either case.
+
+    # first, ensure this repository exists as a holding repository in snac
     repo_id = export_repository
 
     output ""
@@ -337,13 +412,16 @@ class SnacExportRunner < JobRunner
 
 
   def export_top_level_resource(pfx, uri)
-    # exports a resource to a SNAC resource
+    # exports a resource, optionally including any agents linked to it.
 
+    output ""
     output "#{pfx} #{I18n.t('snac_export_job.processing_top_level_resource')}: #{uri}"
 
-    # TODO: implement linked agent export
-
+    # first, export this resource
     export_resource(pfx, uri)
+
+    # now export linked agents (if specified, and if not already in snac)
+    export_linked_agents(pfx, uri)
   end
 
 

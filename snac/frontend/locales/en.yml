@@ -21,6 +21,7 @@ en:
     success_label: SUCCESS
     success_message: "Exported %{count} items"
     error_label: ERROR
+    processing_linked_agents: Processing linked agents...
     processing_linked_resources: Processing linked resources...
     processing_agent: Processing agent
     processing_top_level_agent: Processing top-level agent
@@ -30,6 +31,7 @@ en:
     exported_to_snac: Exported to SNAC
     agent_label: agent
     resource_label: resource
+    linked_agent_label: "linked agent %{index} of %{length}"
     linked_resource_label: "linked resource %{index} of %{length}"
     holding_repository_label: holding repository
   job:
