@@ -325,6 +325,7 @@ class SnacExportRunner < JobRunner
 
     resource = SnacRecordHelper.new(resource_uri)
     json = resource.load
+    snac_id = resource_snac_id(json)
 
     # accumulate roles per agent
     agent_roles = {}
@@ -338,10 +339,13 @@ class SnacExportRunner < JobRunner
     agent_roles.each do |uri, roles|
       agents << {
         'uri' => uri,
-        'linked_resources' => {
-          'roles' => roles,
-          'uri' => resource_uri
-        }
+        'linked_resources' => [
+          {
+            'roles' => roles,
+            'uri' => resource_uri,
+            'snac_id' => snac_id
+          }
+        ]
       }
     end
 
@@ -362,7 +366,7 @@ class SnacExportRunner < JobRunner
     # export each linked agent
     linked_agents.each_with_index do |linked_agent, index|
       pfx = "  + [#{I18n.t('snac_export_job.linked_agent_label', :index => index+1, :length => linked_agents.length)}]"
-      id = export_agent(pfx, linked_agent['uri'], linked_agent['linked_resource'])
+      id = export_agent(pfx, linked_agent['uri'], linked_agent['linked_resources'])
       linked_agent['snac_id'] = id
     end
 
