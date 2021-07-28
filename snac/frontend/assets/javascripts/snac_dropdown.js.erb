@@ -33,6 +33,15 @@ $(function () {
         $(".snac-dropdown-menu").css("display", "block");
       }
     });
+
+    // disable snac link submit button if snac source isn't valid
+    // (snac source is expected to be a numeric id, may also be urls later)
+    $('#link_snac_source').keyup(function() {
+      var id = $(this).val();
+      var valid = (id.length > 0) && (!isNaN(id));
+      $('#link_submit').prop('disabled', !valid);
+    });
+
   };
 
   if ($('.snac-dropdown-menu').length > 0) {

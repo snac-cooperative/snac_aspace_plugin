@@ -43,6 +43,7 @@
 
                 <div class="form-actions">
                   <%= f.submit I18n.t("actions.snac.unlink.label"),
+                        :id => "unlink_submit",
                         :class => "btn snac-unlink-button btn-default pull-left",
                         data: { confirm: I18n.t("actions.snac.unlink.#{type}_confirm"), disable_with: I18n.t("actions.snac.unlink.label") }
                   %>
@@ -99,6 +100,7 @@
 
                 <div class="form-actions">
                   <%= f.submit I18n.t("actions.snac.export.label"),
+                        :id => "export_submit",
                         :class => "btn snac-export-button btn-default pull-left",
                         data: { confirm: I18n.t("actions.snac.export.#{type}_confirm"), disable_with: I18n.t("actions.snac.export.label") }
                   %>
@@ -117,13 +119,15 @@
                 <fieldset>
                   <div>
                     <%= I18n.t('actions.snac.options.snac_source') %>:
-                    <%= f.text_field "snac_source" %>
+                    <%= f.text_field "snac_source", id: "link_snac_source" %>
                   </div>
                 </fieldset>
 
                 <div class="form-actions">
                   <%= f.submit I18n.t("actions.snac.link.label"),
+                        :id => "link_submit",
                         :class => "btn snac-link-button btn-default pull-left",
+                        :disabled => "",
                         data: { confirm: I18n.t("actions.snac.link.#{type}_confirm"), disable_with: I18n.t("actions.snac.link.label") }
                   %>
 
