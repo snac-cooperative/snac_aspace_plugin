@@ -15,8 +15,10 @@ fr:
       link:
         label: Lien avec la SNAC
         agent_desc: Cela créera un lien au sein de cet agent vers une identité SNAC existante.
+        agent_note: L'ID SNAC doit correspondre à une identité dans votre environnement SNAC préféré
         agent_confirm: Voulez-vous vraiment créer un lien vers SNAC pour cet agent?
         resource_desc: Cela créera un lien au sein de cette ressource vers une ressource SNAC existante.
+        resource_note: L'ID SNAC doit correspondre à une ressource dans votre environnement SNAC préféré
         resource_confirm: Voulez-vous vraiment créer un lien vers SNAC pour cette ressource?
       unlink:
         label: Dissocier avec SNAC

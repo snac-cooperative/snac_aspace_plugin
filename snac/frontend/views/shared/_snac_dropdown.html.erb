@@ -114,6 +114,11 @@
             <div class="tab-pane" id="snac-link-pane" role="tabpanel" aria-labelledby="snac-link-tab">
               <p><%= I18n.t("actions.snac.link.#{type}_desc") %></p>
 
+              <p>
+                <% snac_prefs = SnacPreferences.new(user_prefs) %>
+                <%= I18n.t("actions.snac.link.#{type}_note") %>: <%= link_to snac_prefs.env_name, snac_prefs.web_url, target: '_blank', rel: 'nofollow' %>
+              </p>
+
               <%= form_with url: url_for({:controller => :snac, :action => :link, :uris => [obj['uri']]}), local: false do |f| %>
 
                 <fieldset>

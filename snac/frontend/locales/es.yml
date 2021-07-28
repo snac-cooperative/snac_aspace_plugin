@@ -15,8 +15,10 @@ es:
       link:
         label: Vincular con SNAC
         agent_desc: Esto creará un enlace dentro de este agente a una identidad SNAC existente.
+        agent_note: El ID de SNAC debe corresponder a una identidad en su entorno SNAC preferido
         agent_confirm: ¿Está seguro de que desea crear un enlace a SNAC para este agente?
         resource_desc: Esto creará un enlace dentro de este recurso a un recurso SNAC existente.
+        resource_note: El ID de SNAC debe corresponder a un recurso en su entorno SNAC preferido
         resource_confirm: ¿Está seguro de que desea crear un enlace a SNAC para este recurso?
       unlink:
         label: Desvincular con SNAC
