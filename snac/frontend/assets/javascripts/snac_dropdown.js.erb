@@ -2,6 +2,14 @@ $(function () {
 
   var init = function () {
 
+    // prevent double-initialization that leads to cancel button
+    // clicks quickly closing/reopening the dropdown
+    if ($(document).data('snac.dropdown_initialized') === 'true') {
+      return;
+    }
+
+    $(document).data('snac.dropdown_initialized', 'true')
+
     $('.snac-dropdown-menu .btn-cancel').on('click', function () {
       $('.snac-dropdown-toggle').trigger("click");
     });
