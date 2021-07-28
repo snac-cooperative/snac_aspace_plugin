@@ -39,7 +39,7 @@ class SnacApiClient
       'resourceid' => id.to_i
     }
 
-    perform_api_request(req)
+    perform_api_request(req, 'resource')
   end
 
 
@@ -58,12 +58,22 @@ class SnacApiClient
   private
 
 
-  def perform_api_request(req)
+  def perform_api_request(req, success_key = nil)
     uri = URI(@prefs.api_url)
 
     query = JSON.generate(req)
 
     res = Net::HTTP::post(uri, query, 'Content-Type' => 'application/json')
+
+puts ''
+puts 'SNAC request:'
+puts ''
+puts "#{query}"
+puts ''
+puts 'SNAC response:'
+puts ''
+puts "#{res.body}"
+puts ''
 
     begin
       json = JSON.parse(res.body, max_nesting: false, create_additions: false)
@@ -91,7 +101,8 @@ class SnacApiClient
     if json.key?('result')
       raise SnacApiClientException.new("SNAC API: Error: response contained unexpected result: [#{json['result']}]") unless json['result'] == 'success'
     else
-      raise SnacApiClientException.new("SNAC API: Error: response is missing result")
+      # welp, turns out a resource read doesn't contain a result... so let's check for an expected key in the response instead
+      raise SnacApiClientException.new("SNAC API: Error: response is missing result") unless json.key?(success_key)
     end
 
     json

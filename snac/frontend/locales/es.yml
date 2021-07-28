@@ -1,0 +1,113 @@
+es:
+  actions:
+    snac:
+      label: SNAC
+      view:
+        label: Ver en SNAC
+        agent_desc: Haga clic para ver este agente en SNAC. Esto abrirá una nueva ventana.
+        resource_desc: Haga clic para ver este recurso en SNAC. Esto abrirá una nueva ventana.
+      export:
+        label: Exportar a SNAC
+        agent_desc: Esto creará una nueva identidad dentro de SNAC a partir de este agente.
+        agent_confirm: ¿Está seguro de que desea crear una nueva identidad SNAC?
+        resource_desc: Esto creará un nuevo recurso dentro de SNAC a partir de este recurso.
+        resource_confirm: ¿Está seguro de que desea crear un nuevo recurso SNAC?
+      link:
+        label: Vincular con SNAC
+        agent_desc: Esto creará un enlace dentro de este agente a una identidad SNAC existente.
+        agent_confirm: ¿Está seguro de que desea crear un enlace a SNAC para este agente?
+        resource_desc: Esto creará un enlace dentro de este recurso a un recurso SNAC existente.
+        resource_confirm: ¿Está seguro de que desea crear un enlace a SNAC para este recurso?
+      unlink:
+        label: Desvincular con SNAC
+        agent_desc: Esto eliminará cualquier vínculo dentro de este agente a las identidades de SNAC.
+        agent_confirm: ¿Está seguro de que desea eliminar los enlaces a SNAC de este agente?
+        resource_desc: Esto eliminará cualquier vínculo dentro de este recurso a los recursos de SNAC.
+        resource_confirm: ¿Está seguro de que desea eliminar los enlaces a SNAC para este recurso?
+      options:
+        snac_source: ID de SNAC
+        include_linked_resources: Incluir recursos vinculados
+        include_linked_agents: Incluir agentes vinculados
+      job:
+        success_title: Trabajo SNAC creado
+        success_message: Redirigiendo a la página de estado del trabajo...
+        failure_title: Error al crear el trabajo SNAC
+  snac_job:
+    common:
+      noninteractive_message: Este tipo de trabajo en segundo plano está diseñado para usarse solo desde los registros de Agente, Recurso o Repositorio.
+      unhandled_action: Acción no controlada
+      unhandled_type: Omitir el tipo no controlado
+      processing_record: "Procesando el registro %{index} de %{length}"
+      agent_label: agente
+      resource_label: recurso
+      holding_repository_label: sosteniendo el repositorio
+      processing_agent: Procesando al agente
+      processing_resource: Procesando el recurso
+      success_label: ÉXITO
+      success_message_singular: "Procesado 1 registro"
+      success_message_plural: "Procesado %{count} registros"
+      error_label: ERROR
+    export:
+      processing_top_level_agent: Procesamiento de agente de nivel superior
+      processing_linked_agents: Procesando agentes vinculados...
+      processing_top_level_resource: Procesamiento de recursos de nivel superior
+      processing_linked_resources: Procesando recursos vinculados...
+      already_exported: Ya exportado
+      exported_to_snac: Exportada a SNAC
+      linked_agent_label: "agente vinculado %{index} de %{length}"
+      linked_resource_label: "recurso vinculado %{index} de %{length}"
+    link:
+      looking_up_snac_id: Buscando el ID de SNAC
+      already_linked: Ya vinculado
+      linked_with_snac: Vinculado con SNAC
+    unlink:
+      already_unlinked: Ya no vinculado
+      unlinked_with_snac: No vinculado con SNAC
+    options:
+      uris: URIs
+      include_linked_resources: Incluir Recursos Vinculados
+      include_linked_agents: Incluir Agentes Vinculados
+      snac_source: Fuente SNAC
+  snac_export_job:
+    _singular: Trabajo de Exportación SNAC
+  snac_link_job:
+    _singular: Trabajo de Enlace SNAC
+  snac_unlink_job:
+    _singular: Trabajo de Desvinculación de SNAC
+  job:
+    types:
+      snac_export_job: Exportación SNAC
+      snac_link_job: Enlace SNAC
+      snac_unlink_job: Desvincular SNAC
+  import_job:
+    import_type_snac_json: SNAC JSON
+    import_type_snac_json_desc: Importar datos de SNAC JSON (ya sea una sola entrada o una matriz de ellos)
+  plugins:
+    snac:
+      label: Importación SNAC
+      search:
+        name_entry: Entrada de Nombre
+      actions:
+        search: Búsqueda
+        import: Importar
+        import_confirm: ¿Está seguro de que desea importar estos registros de SNAC?
+        select_record: Seleccionar
+        deselect_record: Deseleccionar
+        show_record: Mostrar detalles
+        hide_record: Ocultar detalles
+        details_title: Detalles para SNAC ID
+      messages:
+        none_selected: No se Seleccionaron Resultados
+        no_results: No hay Resultados para la Consulta
+        import_success: Importar trabajo creado
+        import_success_message: Redirigiendo a la página de estado del trabajo...
+        import_error: Error al importar desde SNAC
+        search_error: Error de Búsqueda
+      result_summary: "Página %{page} - Mostrando resultados %{first_record_index} a %{last_record_index} de %{hit_count} coincidencias"
+      preference_section: Configuración de SNAC
+    defaults:
+      snac_api_key: Clave de API SNAC
+      snac_environment: Entorno SNAC
+      snac_environment_production: Producción
+      snac_environment_development: Desarrollo
+      snac_environment_unspecified: (no especificado)

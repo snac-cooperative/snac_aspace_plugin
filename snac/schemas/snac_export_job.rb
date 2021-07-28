@@ -3,18 +3,8 @@
     "$schema" => "http://www.archivesspace.org/archivesspace.json",
     "version" => 1,
     "type" => "object",
-
+    "parent" => "snac_job",
     "properties" => {
-
-      "uris" => {
-        "type" => "array",
-        "ifmissing" => "error",
-        "minItems" => 1,
-        "items" => {
-          "type" => "string",
-          "ifmissing" => "error"
-        }
-      },
 
       "include_linked_resources" => {
         "type" => "boolean",

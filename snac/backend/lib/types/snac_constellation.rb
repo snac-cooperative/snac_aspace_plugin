@@ -1,6 +1,6 @@
-require_relative '../../common/snac_api_client'
-require_relative 'snac_export_helper'
-require_relative 'snac_import_helper'
+require_relative '../../../common/snac_api_client'
+require_relative '../convert/snac_export'
+require_relative '../convert/snac_import'
 
 class SnacConstellation
 
@@ -47,13 +47,13 @@ class SnacConstellation
 
   def import
     # returns an ArchivesSpace agent hash (used in snac_import jobs)
-    SnacImportHelper.new.constellation_to_agent(@constellation)
+    SnacImport.new.constellation_to_agent(@constellation)
   end
 
 
   def export(agent)
     # converts the given agent to a SNAC constellation, and uploads it to SNAC
-    stub = normalize(SnacExportHelper.new.constellation_from_agent(agent))
+    stub = normalize(SnacExport.new.constellation_from_agent(agent))
 
     con = @client.create_constellation(stub)
 

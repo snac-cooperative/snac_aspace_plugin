@@ -1,8 +1,8 @@
-require_relative '../../common/snac_preferences'
+require_relative '../../../common/snac_preferences'
 
-class SnacImportHelper
+class SnacImport
 
-  class SnacImportHelperException < StandardError; end
+  class SnacImportException < StandardError; end
 
   attr_reader :prefs
 
@@ -23,7 +23,7 @@ class SnacImportHelper
   def build_agent(con)
     @agent_hash = {}
 
-    raise SnacImportHelperException.new("missing entity type") unless con.key?('entityType')
+    raise SnacImportException.new("missing entity type") unless con.key?('entityType')
 
     entity_type = con['entityType']['term']
 
@@ -39,7 +39,7 @@ class SnacImportHelper
       agent_type = :agent_corporate_entity
       uri_part = 'corporate_entities'
     else
-      raise SnacImportHelperException.new("unhandled entity type: #{entity_type}")
+      raise SnacImportException.new("unhandled entity type: #{entity_type}")
     end
 
     # build individual pieces of the agent

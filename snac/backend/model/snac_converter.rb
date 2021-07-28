@@ -1,5 +1,5 @@
 require 'json'
-require_relative '../lib/snac_constellation'
+require_relative '../lib/types/snac_constellation'
 
 class SnacConverter < Converter
   class SnacConverterException < StandardError; end

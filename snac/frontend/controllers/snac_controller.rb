@@ -7,10 +7,10 @@ class SnacController < ApplicationController
 
   class SnacControllerException < StandardError; end
 
-  set_access_control "update_agent_record" => [:search, :index, :import, :export]
-  set_access_control "update_resource_record" => [:export]
+  set_access_control "update_agent_record" => [:search, :index, :import, :export, :link, :unlink]
+  set_access_control "update_resource_record" => [:export, :link, :unlink]
   set_access_control "import_records" => [:search, :index, :import]
-  set_access_control "create_job" => [:export]
+  set_access_control "create_job" => [:export, :link, :unlink]
 
 
   def index
@@ -35,39 +35,69 @@ class SnacController < ApplicationController
     json_file.flush
     json_file.rewind
 
-    begin
-      job = Job.new("import_job", {
-                      "import_type" => "snac_json",
-                      "jsonmodel_type" => "import_job"
-                      },
-                    {"snac_import_#{SecureRandom.uuid}" => json_file})
-
-      response = job.upload
-      render :json => {'job_uri' => url_for(:controller => :jobs, :action => :show, :id => response['id'])}
-    rescue
-      render :json => {'error' => $!.to_s}
-    end
+    create_job("import_job", {
+                 "import_type" => "snac_json",
+                 "jsonmodel_type" => "import_job"
+               },
+               { "snac_import_#{SecureRandom.uuid}" => json_file })
   end
 
 
   def export
+    create_job("snac_job", {
+                 "job_type" => "snac_job",
+                 "jsonmodel_type" => "snac_export_job",
+                 "action" => "export",
+                 "uris" => params[:uris],
+                 "include_linked_resources" => params[:include_linked_resources] == '1',
+                 "include_linked_agents" => params[:include_linked_agents] == '1'
+               },
+               {})
+  end
+
+
+  def link
+    create_job("snac_job", {
+                 "job_type" => "snac_job",
+                 "jsonmodel_type" => "snac_link_job",
+                 "action" => "link",
+                 "uris" => params[:uris],
+                 "snac_source" => params[:snac_source]
+               },
+               {})
+  end
+
+
+  def unlink
+    create_job("snac_job", {
+                 "job_type" => "snac_job",
+                 "jsonmodel_type" => "snac_unlink_job",
+                 "action" => "unlink",
+                 "uris" => params[:uris],
+                 "include_linked_resources" => params[:include_linked_resources] == '1',
+                 "include_linked_agents" => params[:include_linked_agents] == '1'
+               },
+               {})
+  end
+
+
+  private
+
+
+  def create_job(job_name, job_data, job_files)
     res = {
       :job_uri => '',
       :error => ''
     }
 
     begin
-      job = Job.new("snac_export_job", {
-                      "job_type" => "snac_export_job",
-                      "jsonmodel_type" => "snac_export_job",
-                      "uris" => params[:uris],
-                      "include_linked_resources" => params[:include_linked_resources] == '1',
-                      "include_linked_agents" => params[:include_linked_agents] == '1'
-                    },
-                    {})
-
+      job = Job.new(job_name, job_data, job_files)
       response = job.upload
-      res[:job_uri] = url_for(:controller => :jobs, :action => :show, :id => JSONModel(:job).id_for(response['uri']))
+
+      # response differs for uploads vs. non-uploads; determine job id accordingly
+      id = response.key?('uri') ? JSONModel(:job).id_for(response['uri']) : response['id']
+
+      res[:job_uri] = url_for(:controller => :jobs, :action => :show, :id => id)
     rescue
       res[:error] = $!.to_s
     end
@@ -76,9 +106,6 @@ class SnacController < ApplicationController
       format.js { render :locals => {:res => res} }
     end
   end
-
-
-  private
 
 
   def get_prefs

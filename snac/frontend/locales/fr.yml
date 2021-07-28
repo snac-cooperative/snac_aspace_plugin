@@ -1,42 +1,84 @@
 fr:
   actions:
-    snac_label: SNAC
-    snac_view: Voir dans SNAC
-    snac_export: Exporter vers SNAC
-    snac_export_agent_include_linked_resources: Inclure les ressources liées
-    snac_export_agent_confirm: Êtes-vous sûr de vouloir créer une nouvelle constellation SNAC?
-    snac_export_resource_include_linked_agents: Inclure les agents liés
-    snac_export_resource_confirm: Êtes-vous sûr de vouloir créer une nouvelle ressource SNAC?
-    snac_export_success_title: Tâche d'exportation créée
-    snac_export_success_message: Redirection vers la page de statut de tâche...
-    snac_export_failure_title: Erreur lors de la création de la tâche d'exportation
+    snac:
+      label: SNAC
+      view:
+        label: Voir dans SNAC
+        agent_desc: Cliquez pour afficher cet agent dans SNAC. Cela ouvrira une nouvelle fenêtre.
+        resource_desc: Cliquez pour afficher cette ressource dans SNAC. Cela ouvrira une nouvelle fenêtre.
+      export:
+        label: Exporter vers SNAC
+        agent_desc: Cela créera une nouvelle identité au sein de SNAC à partir de cet agent.
+        agent_confirm: Êtes-vous sûr de vouloir créer une nouvelle identité SNAC?
+        resource_desc: Cela créera une nouvelle ressource dans SNAC à partir de cette ressource.
+        resource_confirm: Êtes-vous sûr de vouloir créer une nouvelle ressource SNAC?
+      link:
+        label: Lien avec la SNAC
+        agent_desc: Cela créera un lien au sein de cet agent vers une identité SNAC existante.
+        agent_confirm: Voulez-vous vraiment créer un lien vers SNAC pour cet agent?
+        resource_desc: Cela créera un lien au sein de cette ressource vers une ressource SNAC existante.
+        resource_confirm: Voulez-vous vraiment créer un lien vers SNAC pour cette ressource?
+      unlink:
+        label: Dissocier avec SNAC
+        agent_desc: Cela supprimera tous les liens au sein de cet agent vers les identités SNAC.
+        agent_confirm: Voulez-vous vraiment supprimer les liens vers SNAC pour cet agent?
+        resource_desc: Cela supprimera tous les liens au sein de cette ressource vers les ressources SNAC.
+        resource_confirm: Voulez-vous vraiment supprimer les liens vers SNAC pour cette ressource?
+      options:
+        snac_source: SNAC ID
+        include_linked_resources: Inclure les ressources liées
+        include_linked_agents: Inclure les agents liés
+      job:
+        success_title: Emploi SNAC créé
+        success_message: Redirection vers la page d'état du travail...
+        failure_title: Erreur lors de la création du travail SNAC
+  snac_job:
+    common:
+      noninteractive_message: Ce type de tâche d'arrière-plan est destiné à être utilisé à partir des enregistrements d'agent uniquement.
+      unhandled_action: Action non gérée
+      unhandled_type: Ignorer le type non géré
+      processing_record: "Traitement de l'enregistrement %{index} sur %{length}"
+      agent_label: agent
+      resource_label: ressource
+      holding_repository_label: dépôt de stockage
+      processing_agent: Traitement de l'agent
+      processing_resource: Traitement de la ressource
+      success_label: SUCCÈS
+      success_message_singular: "1 enregistrement traité"
+      success_message_plural: "%{count} enregistrements traités"
+      error_label: ERREUR
+    export:
+      processing_top_level_agent: Traitement de l'agent de haut niveau
+      processing_linked_agents: Traitement des agents liées...
+      processing_top_level_resource: Traitement de la ressource de haut niveau
+      processing_linked_resources: Traitement des ressources liées...
+      already_exported: Déjà exporté
+      exported_to_snac: Exporté vers SNAC
+      linked_agent_label: "agent liée %{index} sur %{length}"
+      linked_resource_label: "ressource liée %{index} sur %{length}"
+    link:
+      looking_up_snac_id: Recherche de l'identifiant SNAC
+      already_linked: Déjà lié
+      linked_with_snac: Lié à la SNAC
+    unlink:
+      already_unlinked: Déjà dissocié
+      unlinked_with_snac: Non lié à la SNAC
+    options:
+      uris: URIs
+      include_linked_resources: Inclure les ressources liées
+      include_linked_agents: Inclure les Agents Liés
+      snac_source: Source SNAC
   snac_export_job:
     _singular: Travail d'exportation SNAC
-    message: Ce type de tâche d'arrière-plan est destiné à être utilisé à partir des enregistrements d'agent uniquement.
-    uris: URIs
-    include_linked_resources: Inclure les ressources liées
-    include_linked_agents: Inclure les Agents Liés
-    exporting_item: "Exportation de l'élément %{index} sur %{length}"
-    skipping_item: Ignorer le type non géré
-    success_label: SUCCÈS
-    success_message: "%{count} articles exportés"
-    error_label: ERREUR
-    processing_linked_agents: Traitement des agents liées...
-    processing_linked_resources: Traitement des ressources liées...
-    processing_agent: Traitement de l'agent
-    processing_top_level_agent: Traitement de l'agent de haut niveau
-    processing_resource: Traitement de la ressource
-    processing_top_level_resource: Traitement de la ressource de haut niveau
-    already_exported: Déjà exporté
-    exported_to_snac: Exporté vers SNAC
-    agent_label: agent
-    resource_label: ressource
-    linked_agent_label: "agent liée %{index} sur %{length}"
-    linked_resource_label: "ressource liée %{index} sur %{length}"
-    holding_repository_label: dépôt de stockage
+  snac_link_job:
+    _singular: Tâche de liaison SNAC
+  snac_unlink_job:
+    _singular: Tâche de dissociation SNAC
   job:
     types:
       snac_export_job: Exportation SNAC
+      snac_link_job: Lien SNAC
+      snac_unlink_job: SNAC Dissocier
   import_job:
     import_type_snac_json: SNAC JSON
     import_type_snac_json_desc: Importer des données depuis SNAC JSON (soit une seule entrée, soit un tableau d'entre elles)
@@ -44,7 +86,7 @@ fr:
     snac:
       label: Importer SNAC
       search:
-        name_entry: Nom
+        name_entry: Saisie du Nom
       actions:
         search: Rechercher
         import: Importer

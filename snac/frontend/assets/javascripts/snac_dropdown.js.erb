@@ -2,15 +2,14 @@ $(function () {
 
   var init = function () {
 
-    $('.snac-export-form .btn-cancel').on('click', function () {
-      $('.snac-export-action').trigger("click");
+    $('.snac-dropdown-menu .btn-cancel').on('click', function () {
+      $('.snac-dropdown-toggle').trigger("click");
     });
 
-/*
     // Override the default bootstrap dropdown behaviour here to
     // ensure that this modal stays open even when another modal is
     // opened within it.
-    $(".snac-export-action").on("click", function(event) {
+    $(".snac-dropdown-toggle").on("click", function(event) {
       event.preventDefault();
       event.stopImmediatePropagation();
 
@@ -18,18 +17,17 @@ $(function () {
         return;
       }
 
-      if ($(".snac-export-form")[0].style.display === "block") {
+      if ($(".snac-dropdown-menu")[0].style.display === "block") {
         // Hide it
-        $(".snac-export-form").css("display", "");
+        $(".snac-dropdown-menu").css("display", "");
       } else {
         // Show it
-        $(".snac-export-form").css("display", "block");
+        $(".snac-dropdown-menu").css("display", "block");
       }
     });
-*/
   };
 
-  if ($('.snac-export-form').length > 0) {
+  if ($('.snac-dropdown-menu').length > 0) {
     init();
   } else {
     $(document).bind("loadedrecordform.aspace", init);

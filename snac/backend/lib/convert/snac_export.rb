@@ -1,6 +1,6 @@
-class SnacExportHelper
+class SnacExport
 
-  class SnacExportHelperException < StandardError; end
+  class SnacExportException < StandardError; end
 
 
   def constellation_from_agent(agent)
@@ -33,7 +33,7 @@ class SnacExportHelper
       name_entries = build_name_entries_corporate_body(agent['names'])
 
     else
-      raise SnacExportHelperException.new("unhandled agent type: [#{type}]")
+      raise SnacExportException.new("unhandled agent type: [#{type}]")
     end
 
     resource_relations = []

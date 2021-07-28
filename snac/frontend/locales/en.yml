@@ -1,42 +1,84 @@
 en:
   actions:
-    snac_label: SNAC
-    snac_view: View in SNAC
-    snac_export: Export to SNAC
-    snac_export_agent_include_linked_resources: Include linked resources
-    snac_export_agent_confirm: Are you sure you want to create a new SNAC constellation?
-    snac_export_resource_include_linked_agents: Include linked agents
-    snac_export_resource_confirm: Are you sure you want to create a new SNAC resource?
-    snac_export_success_title: Export job created
-    snac_export_success_message: Redirecting to the job status page...
-    snac_export_failure_title: Error while creating export job
+    snac:
+      label: SNAC
+      view:
+        label: View in SNAC
+        agent_desc: Click to view this agent in SNAC. This will open a new window.
+        resource_desc: Click to view this resource in SNAC. This will open a new window.
+      export:
+        label: Export to SNAC
+        agent_desc: This will create a new identity within SNAC from this agent.
+        agent_confirm: Are you sure you want to create a new SNAC identity?
+        resource_desc: This will create a new resource within SNAC from this resource.
+        resource_confirm: Are you sure you want to create a new SNAC resource?
+      link:
+        label: Link with SNAC
+        agent_desc: This will create a link within this agent to an existing SNAC identity.
+        agent_confirm: Are you sure you want to create a link to SNAC for this agent?
+        resource_desc: This will create a link within this resource to an existing SNAC resource.
+        resource_confirm: Are you sure you want to create a link to SNAC for this resource?
+      unlink:
+        label: Unlink with SNAC
+        agent_desc: This will remove any links within this agent to SNAC identities.
+        agent_confirm: Are you sure you want to remove any links to SNAC for this agent?
+        resource_desc: This will remove any links within this resource to SNAC resources.
+        resource_confirm: Are you sure you want to remove any links to SNAC for this resource?
+      options:
+        snac_source: SNAC ID
+        include_linked_resources: Include linked resources
+        include_linked_agents: Include linked agents
+      job:
+        success_title: SNAC job created
+        success_message: Redirecting to the job status page...
+        failure_title: Error while creating SNAC job
+  snac_job:
+    common:
+      noninteractive_message: This background job type is intended to be used from within Agent, Resource, or Repository records only.
+      unhandled_action: Unhandled action
+      unhandled_type: Skipping unhandled type
+      processing_record: "Processing record %{index} of %{length}"
+      agent_label: agent
+      resource_label: resource
+      holding_repository_label: holding repository
+      processing_agent: Processing agent
+      processing_resource: Processing resource
+      success_label: SUCCESS
+      success_message_singular: "Processed 1 record"
+      success_message_plural: "Processed %{count} records"
+      error_label: ERROR
+    export:
+      processing_top_level_agent: Processing top-level agent
+      processing_linked_agents: Processing linked agents...
+      processing_top_level_resource: Processing top-level resource
+      processing_linked_resources: Processing linked resources...
+      already_exported: Already exported
+      exported_to_snac: Exported to SNAC
+      linked_agent_label: "linked agent %{index} of %{length}"
+      linked_resource_label: "linked resource %{index} of %{length}"
+    link:
+      looking_up_snac_id: Looking up SNAC ID
+      already_linked: Already linked
+      linked_with_snac: Linked with SNAC
+    unlink:
+      already_unlinked: Already unlinked
+      unlinked_with_snac: Unlinked with SNAC
+    options:
+      uris: URIs
+      include_linked_resources: Include Linked Resources
+      include_linked_agents: Include Linked Agents
+      snac_source: SNAC Source
   snac_export_job:
     _singular: SNAC Export Job
-    message: This background job type is intended to be used from within Agent, Resource, or Repository records only.
-    uris: URIs
-    include_linked_resources: Include Linked Resources
-    include_linked_agents: Include Linked Agents
-    exporting_item: "Exporting item %{index} of %{length}"
-    skipping_item: Skipping unhandled type
-    success_label: SUCCESS
-    success_message: "Exported %{count} items"
-    error_label: ERROR
-    processing_linked_agents: Processing linked agents...
-    processing_linked_resources: Processing linked resources...
-    processing_agent: Processing agent
-    processing_top_level_agent: Processing top-level agent
-    processing_resource: Processing resource
-    processing_top_level_resource: Processing top-level resource
-    already_exported: Already exported
-    exported_to_snac: Exported to SNAC
-    agent_label: agent
-    resource_label: resource
-    linked_agent_label: "linked agent %{index} of %{length}"
-    linked_resource_label: "linked resource %{index} of %{length}"
-    holding_repository_label: holding repository
+  snac_link_job:
+    _singular: SNAC Link Job
+  snac_unlink_job:
+    _singular: SNAC Unlink Job
   job:
     types:
       snac_export_job: SNAC Export
+      snac_link_job: SNAC Link
+      snac_unlink_job: SNAC Unlink
   import_job:
     import_type_snac_json: SNAC JSON
     import_type_snac_json_desc: Import data from SNAC JSON (either a single entry or an array of them)

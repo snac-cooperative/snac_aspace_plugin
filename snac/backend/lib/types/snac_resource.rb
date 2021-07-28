@@ -1,6 +1,6 @@
-require_relative '../../common/snac_api_client'
-require_relative 'snac_export_helper'
-require_relative 'snac_import_helper'
+require_relative '../../../common/snac_api_client'
+require_relative '../convert/snac_export'
+require_relative '../convert/snac_import'
 
 class SnacResource
 
@@ -40,7 +40,7 @@ class SnacResource
 
   def export(resource)
     # converts the given ArchivesSpace resource to a SNAC resource, and uploads it to SNAC
-    stub = normalize(SnacExportHelper.new.resource_from_resource(resource))
+    stub = normalize(SnacExport.new.resource_from_resource(resource))
 
     res = @client.create_resource(stub)
 
