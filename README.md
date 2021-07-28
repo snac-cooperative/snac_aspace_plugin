@@ -2,7 +2,7 @@
 
 This is a *beta* version of a working SNAC ArchivesSpace plugin, compatible with ArchivesSpace 3.0 (earlier versions may work but are untested).
 It allows an ArchivesSpace user to search SNAC for an identity, then choose and import that identity as an Agent in ArchivesSpace.
-It also allows an ArchivesSpace user to export Agents and Resources to SNAC from within their respective display pages.
+It also allows an ArchivesSpace user to export Agents and Resources to SNAC from within their respective display pages, or create links to existing SNAC records.
 
 ## Installation
 
@@ -75,11 +75,17 @@ Notes:
 * the only currently supported `type` is "constellation"
 * only one of `id` or `json` is required; `id` is preferred if both are supplied
 
-## Exporting to SNAC
+## Exporting to/Linking with SNAC
 
 Agents, Resources, and Repositories expose a new `SNAC` dropdown in their respective display page toolbars, just before the `Merge` dropdown.
-If there is an existing SNAC record identifier, this dropdown will contain a button labeled `View in SNAC` that will take you to the SNAC page for that Agent or Resource.
-Otherwise, it will contain a form (possibly with selectable options) and a button labeled `Export to SNAC` that will create a new background job to export the record to SNAC.
+
+If there is an existing SNAC record identifier, this dropdown will contain navigation panes labeled
+`View in SNAC` (which will contain a link that takes you to the SNAC page for that record), and
+`Unlink with SNAC` (which will allow you to remove the link to SNAC).
+
+Otherwise, it will contain navigation panes labeled
+`Export to SNAC` (which will allow you to create a new background job to export the record to SNAC), and
+`Link with SNAC` (which will allow you to create a link within this record to an existing SNAC record).
 
 Agents are linked to SNAC via links to the SNAC identity within the Agent's Record ID section.
 Resources are linked to SNAC via links to the SNAC resource within the Resource's External Documents section.
@@ -103,7 +109,7 @@ Repositories in ArchivesSpace have an Agent representation (see above for option
 Repositories can be exported manually, but will also be exported automatically whenever a Resource
 is exported, so that the Resource can be associatied with a holding repository in SNAC.
 
-**NOTE:** exporting to SNAC requires an ArchivesSpace user to have the following permissions:
+**NOTE:** exporting, linking, and unlinking requires an ArchivesSpace user to have the following permissions:
 `update_agent_record`,
 `update_resource_record`,
 `create_job`
