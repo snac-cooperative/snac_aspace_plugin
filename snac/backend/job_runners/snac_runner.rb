@@ -33,7 +33,7 @@ class SnacRunner < JobRunner
 
             uris.each_with_index do |uri, index|
               output ""
-              output "=====================[ #{I18n.t('snac_job.common.processing_item', :index => index+1, :length => uris.length)} ]====================="
+              output "=====================[ #{I18n.t('snac_job.common.processing_record', :index => index+1, :length => uris.length)} ]====================="
 
               modified.concat(handler.process_uri(uri))
             end
@@ -48,7 +48,8 @@ class SnacRunner < JobRunner
                               I18n.t('snac_job.common.success_message_plural', :count => modified.length)
                             end
 
-          output "==================================================================="
+          output ""
+          output "======================================================================"
           output "#{I18n.t('snac_job.common.success_label')}: #{success_message}"
 
           self.success!

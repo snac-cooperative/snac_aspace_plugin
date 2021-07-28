@@ -31,7 +31,7 @@ class SnacController < ApplicationController
 
   def import
     json_file = ASUtils.tempfile('snac_import')
-    json_file.write(params[:items].to_json)
+    json_file.write(params[:records].to_json)
     json_file.flush
     json_file.rewind
 

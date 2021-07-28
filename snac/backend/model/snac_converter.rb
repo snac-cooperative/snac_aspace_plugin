@@ -63,14 +63,14 @@ class SnacConverter < Converter
 
     case data['type']
     when 'constellation'
-      item = create_agent(data)
+      record = create_agent(data)
     else
       return
     end
 
-    @batch << item
+    @batch << record
 
-    item.to_json
+    record.to_json
   end
 
 

@@ -44,8 +44,8 @@ fr:
       processing_agent: Traitement de l'agent
       processing_resource: Traitement de la ressource
       success_label: SUCCÈS
-      success_message_singular: "1 enregistrement traité"
-      success_message_plural: "%{count} enregistrements traités"
+      success_message_singular: "1 enregistrement modifié"
+      success_message_plural: "%{count} enregistrements modifiés"
       error_label: ERREUR
     export:
       processing_top_level_agent: Traitement de l'agent de haut niveau

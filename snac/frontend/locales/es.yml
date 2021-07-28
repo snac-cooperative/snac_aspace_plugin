@@ -44,8 +44,8 @@ es:
       processing_agent: Procesando al agente
       processing_resource: Procesando el recurso
       success_label: ÉXITO
-      success_message_singular: "Procesado 1 registro"
-      success_message_plural: "Procesado %{count} registros"
+      success_message_singular: "1 registro modificado"
+      success_message_plural: "%{count} registros modificados"
       error_label: ERROR
     export:
       processing_top_level_agent: Procesamiento de agente de nivel superior

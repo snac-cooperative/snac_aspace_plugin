@@ -44,8 +44,8 @@ en:
       processing_agent: Processing agent
       processing_resource: Processing resource
       success_label: SUCCESS
-      success_message_singular: "Processed 1 record"
-      success_message_plural: "Processed %{count} records"
+      success_message_singular: "Modified 1 record"
+      success_message_plural: "Modified %{count} records"
       error_label: ERROR
     export:
       processing_top_level_agent: Processing top-level agent
