@@ -2,6 +2,7 @@
 require 'snacsearcher'
 require 'securerandom'
 require_relative '../../common/snac_preferences'
+require_relative '../../common/snac_api_client'
 
 class SnacController < ApplicationController
 
@@ -11,6 +12,7 @@ class SnacController < ApplicationController
   set_access_control "update_resource_record" => [:export, :link, :unlink]
   set_access_control "import_records" => [:search, :index, :import]
   set_access_control "create_job" => [:export, :link, :unlink]
+  set_access_control "view_repository" => [:resolve, :lookup]
 
 
   def index
@@ -81,6 +83,82 @@ class SnacController < ApplicationController
   end
 
 
+  def resolve
+    res = { :error => '' }
+
+    client = SnacApiClient.new(get_prefs)
+
+    begin
+      results = []
+
+      case params[:type]
+      when 'agent'
+        json = client.search_constellations(params[:snac_term])
+        json['results'].each do |r|
+          results << {
+            :id => r['id'],
+            :title => r['nameEntries'][0]['original'],
+            :snac_url => get_prefs.view_url(r['id'])
+          }
+        end
+      when 'resource'
+        json = client.search_resources(params[:snac_term])
+        json['results'].each do |r|
+          results << {
+            :id => r['id'],
+            :title => r['title'],
+            :snac_url => get_prefs.resource_url(r['id'])
+          }
+        end
+      end
+
+      res[:results] = results
+    rescue
+      res[:error] = $!
+    end
+
+    respond_to do |format|
+      format.js { render :locals => {:res => res} }
+    end
+  end
+
+
+  def lookup
+    res = { :error => '' }
+
+    client = SnacApiClient.new(get_prefs)
+
+    begin
+      results = []
+
+      case params[:type]
+      when 'agent'
+        json = client.read_constellation(params[:snac_id])
+        results << {
+          :id => json['constellation']['id'],
+          :title => json['constellation']['nameEntries'][0]['original'],
+          :snac_url => get_prefs.view_url(json['constellation']['id'])
+        }
+      when 'resource'
+        json = client.read_resource(params[:snac_id])
+        results << {
+          :id => json['resource']['id'],
+          :title => json['resource']['title'],
+          :snac_url => get_prefs.resource_url(json['resource']['id'])
+        }
+      end
+
+      res[:results] = results
+    rescue
+      res[:error] = $!
+    end
+
+    respond_to do |format|
+      format.js { render :locals => {:res => res} }
+    end
+  end
+
+
   private
 
 
@@ -110,6 +188,7 @@ class SnacController < ApplicationController
 
   def get_prefs
     @prefs = SnacPreferences.new(user_prefs) unless @prefs
+    @prefs
   end
 
 

@@ -60,7 +60,7 @@
           </div>
 
 <%# SNAC PLUGIN CONTENT STARTS HERE %>
-          <%= render_aspace_partial :partial => "shared/snac_dropdown", :locals => {:type => 'resource', :obj => record} %>
+          <%= render_aspace_partial :partial => "shared/snac_dropdown", :locals => {:type => 'resource', :obj => record, :title => record.title} %>
 <%# SNAC PLUGIN CONTENT ENDS HERE %>
 
           <% if user_can?('merge_archival_record') %>

@@ -9,7 +9,7 @@
       <div class="pull-right">
 
 <%# SNAC PLUGIN CONTENT STARTS HERE %>
-          <%= render_aspace_partial :partial => "shared/snac_dropdown", :locals => {:type => 'agent', :obj => @repository['agent_representation']} %>
+          <%= render_aspace_partial :partial => "shared/snac_dropdown", :locals => {:type => 'agent', :obj => @repository['agent_representation'], :title => @repository['agent_representation'].title} %>
 <%# SNAC PLUGIN CONTENT ENDS HERE %>
 
         <% if session[:repo_id] != @repository.id and @repositories.any?{|r| r['uri'] === @repository.uri} %>

@@ -20,6 +20,10 @@ es:
         resource_desc: Esto creará un enlace dentro de este recurso a un recurso SNAC existente.
         resource_note: El ID de SNAC debe corresponder a un recurso en su entorno SNAC preferido
         resource_confirm: ¿Está seguro de que desea crear un enlace a SNAC para este recurso?
+        resolve: Resolver
+        reset: Reiniciar
+        showing_results: "Mostrando %{count} registros coincidentes:"
+        no_results: No se encontraron registros coincidentes
       unlink:
         label: Desvincular con SNAC
         agent_desc: Esto eliminará cualquier vínculo dentro de este agente a las identidades de SNAC.
@@ -30,6 +34,8 @@ es:
         snac_source: ID de SNAC
         include_linked_resources: Incluir recursos vinculados
         include_linked_agents: Incluir agentes vinculados
+        agent_search_term: Entrada de Nombre
+        resource_search_term: Título del Recurso
       job:
         success_title: Trabajo SNAC creado
         success_message: Redirigiendo a la página de estado del trabajo...

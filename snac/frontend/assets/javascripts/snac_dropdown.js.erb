@@ -10,14 +10,14 @@ $(function () {
 
     $(document).data('snac.dropdown_initialized', 'true')
 
-    $('.snac-dropdown-menu .btn-cancel').on('click', function () {
+    $('.snac-dropdown-menu .btn-cancel').click(function(event) {
       $('.snac-dropdown-toggle').trigger("click");
     });
 
     // Override the default bootstrap dropdown behaviour here to
     // ensure that this modal stays open even when another modal is
     // opened within it.
-    $(".snac-dropdown-toggle").on("click", function(event) {
+    $(".snac-dropdown-toggle").click(function(event) {
       event.preventDefault();
       event.stopImmediatePropagation();
 
@@ -36,12 +36,20 @@ $(function () {
 
     // disable snac link submit button if snac source isn't valid
     // (snac source is expected to be a numeric id, may also be urls later)
-    $('#link_snac_source').keyup(function() {
+    $('#snac-link-snac-source').keyup(function() {
       var id = $(this).val();
       var valid = (id.length > 0) && (!isNaN(id));
-      $('#link_submit').prop('disabled', !valid);
+      $('#snac-link-submit-button').prop('disabled', !valid);
+      $('#snac-link-lookup-results').html("");
     });
 
+    $('#snac-link-resolve-button').click(function(event) {
+      $('#snac-link-resolve-results').removeClass("hide").addClass("loading").html("");
+    });
+
+    $('#snac-link-reset-button').click(function(event) {
+      $('#snac-link-resolve-results').addClass("hide");
+    });
   };
 
   if ($('.snac-dropdown-menu').length > 0) {

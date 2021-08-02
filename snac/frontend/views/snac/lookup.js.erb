@@ -1,0 +1,5 @@
+<% if res[:error] != '' %>
+  $('#snac-link-lookup-results').html("<%= res[:error] %>");
+<% else %>
+  $('#snac-link-lookup-results').html("HELLO");
+<% end %>

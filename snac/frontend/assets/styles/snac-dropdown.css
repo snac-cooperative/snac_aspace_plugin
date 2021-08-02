@@ -1,6 +1,9 @@
 .snac-dropdown-menu {
+  width: 400px;
+/*
   padding: 10px;
-  width: 300px;
+*/
+  overflow: auto;
 }
 
 .snac-dropdown-menu .controls {
@@ -19,7 +22,6 @@
 }
 
 .snac-dropdown-menu fieldset {
-/*  width: 300px;*/
   padding: 10px;
 }
 
@@ -33,4 +35,42 @@
 
 .snac-dropdown-menu .form-actions {
   margin: 0;
+}
+
+.snac-dropdown-menu #snac-link-resolve {
+  padding: 10px;
+  overflow: auto;
+}
+
+.snac-dropdown-menu #snac-link-resolve-results {
+  padding: 10px;
+  height: 100px;
+  overflow: auto;
+}
+
+.snac-dropdown-menu .loading {
+  background:url(/assets/archivesspace/managed_container_loading.gif) top 20px center no-repeat;
+}
+
+.snac-dropdown-menu .nav-tabs > li {
+  float: none;
+  display: inline-block;
+  zoom: 1;
+}
+
+.snac-dropdown-menu .nav-tabs {
+  text-align: center;
+}
+
+/*
+.snac-dropdown-menu .container-fluid {
+  margin: 0px;
+}
+*/
+
+.snac-dropdown-menu .row-bordered {
+  content: "";
+  display: block;
+  border-bottom: 1px solid #ccc;
+  margin: 0 15px;
 }

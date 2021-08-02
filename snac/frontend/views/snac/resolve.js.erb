@@ -1,0 +1,35 @@
+<% if res[:error] != '' %>
+  $('#snac-link-resolve-results').html("<%= res[:error] %>");
+<% else %>
+  <% content_for :resolved do %>
+      <% if res[:results].length == 0 %>
+        <p class="text-center">
+          <%= I18n.t("actions.snac.link.no_results") %>
+        </p>
+      <% else %>
+        <p class="text-center">
+          <%= I18n.t("actions.snac.link.showing_results", :count => res[:results].length) %>
+        </p>
+        <div class="container-fluid">
+          <% res[:results].each do |r| %>
+            <div class="row">
+              <div class="col-md-12">
+                <%= link_to r[:title], r[:snac_url], target: '_blank', rel: 'nofollow' %>
+                <a class="btn btn-default btn-sm pull-right snac-resolved-record" data-snac-id="<%= r[:id] %>" href="#"><%= I18n.t("plugins.snac.actions.select_record") %></a>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+  <% end %>
+
+  $('#snac-link-resolve-results').html("<%= j yield :resolved %>");
+  $('#snac-link-resolve-results').removeClass("loading");
+
+  $('.snac-resolved-record').click(function(event) {
+    event.preventDefault();
+    var id = $(this).data("snac-id");
+    $('#snac-link-snac-source').val(id);
+    $('#snac-link-submit-button').prop('disabled', false);
+  });
+<% end %>

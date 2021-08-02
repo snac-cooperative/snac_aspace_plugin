@@ -15,11 +15,15 @@ en:
       link:
         label: Link with SNAC
         agent_desc: This will create a link within this agent to an existing SNAC identity.
-        agent_note: The SNAC ID must correspond to an identity in your preferred SNAC environment
+        agent_note: You can search SNAC for the identity you wish to link with, or provide the SNAC ID if you know it.
         agent_confirm: Are you sure you want to create a link to SNAC for this agent?
         resource_desc: This will create a link within this resource to an existing SNAC resource.
-        resource_note: The SNAC ID must correspond to a resource in your preferred SNAC environment
+        resource_note: You can search SNAC for the resource you wish to link with, or provide the SNAC ID if you know it.
         resource_confirm: Are you sure you want to create a link to SNAC for this resource?
+        resolve: Search
+        reset: Reset
+        showing_results: "Showing %{count} matching records:"
+        no_results: No matching records found
       unlink:
         label: Unlink with SNAC
         agent_desc: This will remove any links within this agent to SNAC identities.
@@ -30,6 +34,8 @@ en:
         snac_source: SNAC ID
         include_linked_resources: Include linked resources
         include_linked_agents: Include linked agents
+        agent_search_term: Name Entry
+        resource_search_term: Resource Title
       job:
         success_title: SNAC job created
         success_message: Redirecting to the job status page...

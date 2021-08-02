@@ -55,7 +55,7 @@
           </div>
 
 <%# SNAC PLUGIN CONTENT STARTS HERE %>
-          <%= render_aspace_partial :partial => "shared/snac_dropdown", :locals => {:type => 'agent', :obj => @agent} %>
+          <%= render_aspace_partial :partial => "shared/snac_dropdown", :locals => {:type => 'agent', :obj => @agent, :title => @agent.title} %>
 <%# SNAC PLUGIN CONTENT ENDS HERE %>
 
         <% end %>

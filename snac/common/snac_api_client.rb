@@ -17,7 +17,7 @@ class SnacApiClient
       'constellationid' => id.to_i
     }
 
-    perform_api_request(req)
+    perform_api_request(req, 'constellation')
   end
 
 
@@ -30,6 +30,19 @@ class SnacApiClient
     }
 
     perform_api_request(req)
+  end
+
+
+  def search_constellations(term)
+    req = {
+      'command' => 'search',
+      'term' => term,
+      'start' => 0,
+      'count' => 50,
+      'entity_type' => ''
+    }
+
+    perform_api_request(req, 'results')
   end
 
 
@@ -52,6 +65,18 @@ class SnacApiClient
     }
 
     perform_api_request(req)
+  end
+
+
+  def search_resources(term)
+    req = {
+      'command' => 'resource_search',
+      'term' => term,
+      'start' => 0,
+      'count' => 50
+    }
+
+    perform_api_request(req, 'results')
   end
 
 
