@@ -26,10 +26,70 @@ class SnacApiClient
       'command' => 'insert_and_publish_constellation',
       'apikey': @prefs.api_key,
       'constellation' => con,
-      'message' => 'import from ArchivesSpace'
+      'message' => 'imported from ArchivesSpace'
     }
 
     perform_api_request(req)
+  end
+
+
+  def edit_constellation(id)
+    req = {
+      'command' => 'edit',
+      'apikey': @prefs.api_key,
+      'constellationid' => id.to_i
+    }
+
+    perform_api_request(req, 'constellation')
+  end
+
+
+  def update_constellation(id, version, data)
+    con = {
+      'dataType' => 'Constellation',
+      'id' => id.to_i,
+      'version' => version.to_i
+    }.merge(data)
+
+    req = {
+      'command' => 'update_constellation',
+      'apikey': @prefs.api_key,
+      'constellation' => con,
+      'message' => 'updated by ArchivesSpace'
+    }
+
+    perform_api_request(req, 'constellation')
+  end
+
+
+  def publish_constellation(id, version)
+    req = {
+      'command' => 'publish_constellation',
+      'apikey': @prefs.api_key,
+      'constellation' => {
+        'dataType' => 'Constellation',
+        'id' => id.to_i,
+        'version' => version.to_i
+      },
+      'message' => 'published by ArchivesSpace'
+    }
+
+    perform_api_request(req, 'constellation')
+  end
+
+
+  def unlock_constellation(id, version)
+    req = {
+      'command' => 'unlock_constellation',
+      'apikey': @prefs.api_key,
+      'constellation' => {
+        'dataType' => 'Constellation',
+        'id' => id.to_i,
+        'version' => version.to_i
+      },
+    }
+
+    perform_api_request(req, 'constellation')
   end
 
 
@@ -61,7 +121,7 @@ class SnacApiClient
       'command' => 'insert_resource',
       'apikey': @prefs.api_key,
       'resource' => res,
-      'message' => 'import from ArchivesSpace'
+      'message' => 'imported from ArchivesSpace'
     }
 
     perform_api_request(req)
@@ -89,16 +149,6 @@ class SnacApiClient
     query = JSON.generate(req)
 
     res = Net::HTTP::post(uri, query, 'Content-Type' => 'application/json')
-
-puts ''
-puts 'SNAC request:'
-puts ''
-puts "#{query}"
-puts ''
-puts 'SNAC response:'
-puts ''
-puts "#{res.body}"
-puts ''
 
     begin
       json = JSON.parse(res.body, max_nesting: false, create_additions: false)

@@ -40,7 +40,7 @@ class SnacResource
 
   def export(resource)
     # converts the given ArchivesSpace resource to a SNAC resource, and uploads it to SNAC
-    stub = normalize(SnacExport.new.resource_from_resource(resource))
+    stub = normalize(SnacExport.resource_from_resource(resource))
 
     res = @client.create_resource(stub)
 

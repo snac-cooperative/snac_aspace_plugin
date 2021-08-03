@@ -101,8 +101,8 @@ the existing SNAC resource will be used (i.e. duplicate SNAC resources are not c
 * `Include linked agents` --
 Selecting this option will export any Agent records that are linked by this Resource,
 and generate a single resource relation to this Resource within the newly-created SNAC identities.
-If any of the linked Agents have already been exported to SNAC, they will not be updated,
-and may need to be manually linked to this resource within SNAC.
+If any of the linked Agents have already been exported to SNAC, they will be updated to
+include resource relations with the newly-created SNAC resource.
 
 ### Repository Export Options
 Repositories in ArchivesSpace have an Agent representation (see above for options).

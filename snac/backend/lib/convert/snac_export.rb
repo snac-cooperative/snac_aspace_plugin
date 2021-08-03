@@ -3,20 +3,20 @@ class SnacExport
   class SnacExportException < StandardError; end
 
 
-  def constellation_from_agent(agent)
+  def self.constellation_from_agent(agent)
     build_constellation(agent)
   end
 
 
-  def resource_from_resource(resource)
+  def self.resource_from_resource(resource)
     build_resource(resource)
   end
 
 
-  private
+  #private
 
 
-  def build_constellation(agent)
+  def self.build_constellation(agent)
     type = agent['jsonmodel_type']
 
     case type
@@ -36,12 +36,7 @@ class SnacExport
       raise SnacExportException.new("unhandled agent type: [#{type}]")
     end
 
-    resource_relations = []
-    linked_resources = agent['linked_resources'] || []
-    linked_resources.each do |res|
-      resource_relations.concat(build_resource_relations(res))
-    end
-    resource_relations.compact!
+    resource_relations = build_resource_relations(agent['linked_resources'])
 
     con = {
       'dataType' => 'Constellation',
@@ -56,7 +51,7 @@ class SnacExport
   end
 
 
-  def build_entity_type_person
+  def self.build_entity_type_person
     {
       'type' => 'entity_type',
       'dataType' => 'Term',
@@ -66,7 +61,7 @@ class SnacExport
   end
 
 
-  def build_entity_type_family
+  def self.build_entity_type_family
     {
       'type' => 'entity_type',
       'dataType' => 'Term',
@@ -76,7 +71,7 @@ class SnacExport
   end
 
 
-  def build_entity_type_corporate_body
+  def self.build_entity_type_corporate_body
     {
       'type' => 'entity_type',
       'dataType' => 'Term',
@@ -86,7 +81,7 @@ class SnacExport
   end
 
 
-  def build_name_component(order, text, id, term)
+  def self.build_name_component(order, text, id, term)
     return nil if text.nil? or text.empty?
 
     {
@@ -95,7 +90,7 @@ class SnacExport
       'operation' => 'insert',
       'order' => order,
       'type' => {
-        'id' => id,
+        'id' => id.to_i,
         'term' => term,
         'type' => 'name_component'
       }
@@ -103,7 +98,7 @@ class SnacExport
   end
 
 
-  def build_name_entries_person(names)
+  def self.build_name_entries_person(names)
     name_entries = []
 
     names.each do |name|
@@ -154,7 +149,7 @@ class SnacExport
   end
 
 
-  def build_name_entries_family(names)
+  def self.build_name_entries_family(names)
     name_entries = []
 
     names.each do |name|
@@ -181,7 +176,7 @@ class SnacExport
   end
 
 
-  def build_name_entries_corporate_body(names)
+  def self.build_name_entries_corporate_body(names)
     name_entries = []
 
     names.each do |name|
@@ -216,7 +211,7 @@ class SnacExport
   end
 
 
-  def build_combined_name_heading_person(components)
+  def self.build_combined_name_heading_person(components)
     parts = []
 
     components.each_with_index do |component, index|
@@ -246,7 +241,7 @@ class SnacExport
   end
 
 
-  def build_combined_name_heading_family(components)
+  def self.build_combined_name_heading_family(components)
     parts = []
 
     opened_paren = false
@@ -278,7 +273,7 @@ class SnacExport
   end
 
 
-  def build_combined_name_heading_corporate_body(components)
+  def self.build_combined_name_heading_corporate_body(components)
     parts = []
 
     opened_paren = false
@@ -318,7 +313,7 @@ class SnacExport
   end
 
 
-  def build_document_type_archival_resource
+  def self.build_document_type_archival_resource
     {
       'type' => 'document_type',
       'id' => 696,
@@ -327,7 +322,7 @@ class SnacExport
   end
 
 
-  def build_document_type_bibliographic_resource
+  def self.build_document_type_bibliographic_resource
     {
       'type' => 'document_type',
       'id' => 697,
@@ -336,7 +331,7 @@ class SnacExport
   end
 
 
-  def build_document_type_digital_archival_resource
+  def self.build_document_type_digital_archival_resource
     {
       'type' => 'document_type',
       'id' => 400479,
@@ -345,7 +340,7 @@ class SnacExport
   end
 
 
-  def build_document_type_oral_history_resource
+  def self.build_document_type_oral_history_resource
     {
       'type' => 'document_type',
       'id' => 400623,
@@ -354,7 +349,7 @@ class SnacExport
   end
 
 
-  def build_resource(resource)
+  def self.build_resource(resource)
     # required:
 
     # title
@@ -422,7 +417,7 @@ class SnacExport
   end
 
 
-  def build_resource_relation_creator_of
+  def self.build_resource_relation_creator_of
     {
       'type' => 'document_role',
       'id' => 692,
@@ -431,7 +426,7 @@ class SnacExport
   end
 
 
-  def build_resource_relation_contributor_of
+  def self.build_resource_relation_contributor_of
     {
       'type' => 'document_role',
       'id' => 695,
@@ -440,7 +435,7 @@ class SnacExport
   end
 
 
-  def build_resource_relation_editor_of
+  def self.build_resource_relation_editor_of
     {
       'type' => 'document_role',
       'id' => 694,
@@ -449,7 +444,7 @@ class SnacExport
   end
 
 
-  def build_resource_relation_referenced_in
+  def self.build_resource_relation_referenced_in
     {
       'type' => 'document_role',
       'id' => 693,
@@ -458,23 +453,23 @@ class SnacExport
   end
 
 
-  def existing_resource(id)
+  def self.existing_resource(id)
     {
       'dataType' => 'Resource',
-      'id' => id
+      'id' => id.to_i
     }
   end
 
 
-  def existing_repository(id)
+  def self.existing_repository(id)
     {
       'dataType' => 'Constellation',
-      'id' => id
+      'id' => id.to_i
     }
   end
 
 
-  def build_resource_relations(linked_resource)
+  def self.build_resource_relations_for_identity(linked_resource)
     relations = []
 
     relation = {
@@ -501,6 +496,19 @@ class SnacExport
     end
 
     relations
+  end
+
+
+  def self.build_resource_relations(linked_resources)
+    return [] unless linked_resources
+
+    resource_relations = []
+    linked_resources.each do |res|
+      resource_relations.concat(build_resource_relations_for_identity(res))
+    end
+    resource_relations.compact!
+
+    resource_relations
   end
 
 

@@ -64,6 +64,9 @@ es:
       exported_to_snac: Exportada a SNAC
       linked_agent_label: "agente vinculado %{index} de %{length}"
       linked_resource_label: "recurso vinculado %{index} de %{length}"
+      linked_agent_checking_relations: Comprobando si se deben crear nuevas relaciones de recursos
+      linked_agent_adding_relations: Agregar nuevas relaciones de recursos
+      linked_agent_relations_exist: Las relaciones de recursos ya existen
     link:
       looking_up_snac_id: Buscando el ID de SNAC
       already_linked: Ya vinculado

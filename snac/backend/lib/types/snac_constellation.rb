@@ -33,6 +33,13 @@ class SnacConstellation
   end
 
 
+  def version
+    raise SnacConstellationException.new("constellation is missing version") unless @constellation.key?('version')
+
+    @constellation['version'].to_i
+  end
+
+
   def ark
     raise SnacConstellationException.new("constellation is missing ark") unless @constellation.key?('ark')
 
@@ -53,11 +60,52 @@ class SnacConstellation
 
   def export(agent)
     # converts the given agent to a SNAC constellation, and uploads it to SNAC
-    stub = normalize(SnacExport.new.constellation_from_agent(agent))
+    stub = normalize(SnacExport.constellation_from_agent(agent))
 
     con = @client.create_constellation(stub)
 
     @constellation = normalize(con)
+  end
+
+
+  def edit
+    con = normalize(@client.edit_constellation(id))
+
+    @constellation['version'] = con['version']
+  end
+
+
+  def update(data)
+    con = normalize(@client.update_constellation(id, version, data))
+
+    @constellation['version'] = con['version']
+  end
+
+
+  def publish
+    con = normalize(@client.publish_constellation(id, version))
+
+    @constellation['version'] = con['version']
+  end
+
+
+  def unlock
+    con = normalize(@client.unlock_constellation(id, version))
+
+    @constellation['version'] = con['version']
+  end
+
+
+  def update_and_publish(data)
+    edit
+
+    begin
+      update(data)
+      publish
+    rescue
+      unlock
+      raise $!
+    end
   end
 
 

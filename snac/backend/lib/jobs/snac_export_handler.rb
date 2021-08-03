@@ -2,6 +2,7 @@ require_relative '../types/snac_constellation'
 require_relative '../types/snac_resource'
 require_relative '../helpers/snac_record_helper'
 require_relative '../helpers/snac_link_helpers'
+require_relative '../convert/snac_export'
 
 class SnacExportHandler
   include JSONModel
@@ -149,6 +150,50 @@ class SnacExportHandler
   end
 
 
+  def update_agent(pfx, id, linked_resources = [])
+    # adds resource relations to this identity in SNAC, if not already present
+
+    return if linked_resources.empty?
+
+    output "#{pfx} #{I18n.t('snac_job.export.linked_agent_checking_relations')}"
+
+    con = SnacConstellation.new(id)
+
+    # determine resource relation changes, if any
+
+    cur_resource_relations = con.constellation['resourceRelations'] || []
+    new_resource_relations = SnacExport.build_resource_relations(linked_resources)
+
+    # collect existing resource id/role pairs in snac
+    cur_id_role_pairs = []
+    cur_resource_relations.each do |r|
+      cur_id_role_pairs << {
+        :resource_id => r['resource']['id'].to_i,
+        :role_id => r['role']['id'].to_i
+      }
+    end
+
+    # for each new linked resource/role pair, queue it for export if not already in snac
+    resource_relations = []
+    new_resource_relations.each do |r|
+      pair = {:resource_id => r['resource']['id'], :role_id => r['role']['id']}
+      next if cur_id_role_pairs.include?({:resource_id => r['resource']['id'], :role_id => r['role']['id']})
+      resource_relations << r
+    end
+
+    # update snac identity with new resource relations, if any
+
+    if resource_relations.empty?
+      output "#{pfx} #{I18n.t('snac_job.export.linked_agent_relations_exist')}"
+      return
+    end
+
+    output "#{pfx} #{I18n.t('snac_job.export.linked_agent_adding_relations')}"
+
+    con.update_and_publish({'resourceRelations' => resource_relations})
+  end
+
+
   def export_agent(pfx, uri, linked_resources = [])
     # exports an agent to a snac constellation, if not already exported.
     # returns the snac id for the constellation in either case.
@@ -163,6 +208,10 @@ class SnacExportHandler
     snac_entry = SnacLinkHelpers.agent_snac_entry(json)
     unless snac_entry.nil?
       output "#{pfx} #{I18n.t('snac_job.export.already_exported')}: #{snac_entry['record_identifier']}"
+
+      # already exported, but might need more resources linked to it...
+      update_agent(pfx, SnacLinkHelpers.agent_snac_id(json), linked_resources)
+
       return SnacLinkHelpers.agent_snac_id(json)
     end
 
