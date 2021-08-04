@@ -150,6 +150,18 @@ class SnacApiClient
 
     res = Net::HTTP::post(uri, query, 'Content-Type' => 'application/json')
 
+    if true # need a devserver check
+      puts '###'
+      puts '### SNAC request:'
+      puts '###'
+      puts "### #{query}"
+      puts '###'
+      puts '### SNAC response:'
+      puts '###'
+      puts "### #{res.body}"
+      puts '###'
+    end
+
     begin
       json = JSON.parse(res.body, max_nesting: false, create_additions: false)
       raise SnacApiClientException.new("expected JSON response") unless json.is_a?(Hash)

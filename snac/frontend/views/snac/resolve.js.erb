@@ -1,5 +1,6 @@
 <% if res[:error] != '' %>
   $('#snac-link-resolve-results').html("<%= res[:error] %>");
+  $('#snac-link-resolve-results').removeClass("loading");
 <% else %>
   <% content_for :resolved do %>
       <% if res[:results].length == 0 %>
