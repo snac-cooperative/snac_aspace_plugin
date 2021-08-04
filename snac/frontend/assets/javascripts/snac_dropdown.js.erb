@@ -40,7 +40,8 @@ $(function () {
       var id = $(this).val();
       var valid = (id.length > 0) && (!isNaN(id));
       $('#snac-link-submit-button').prop('disabled', !valid);
-      $('#snac-link-lookup-results').html("");
+      $('#snac-link-lookup-button').prop('disabled', !valid);
+      $('#snac-link-lookup-results').addClass("hide").html("");
     });
 
     $('#snac-link-resolve-button').click(function(event) {
@@ -49,6 +50,13 @@ $(function () {
 
     $('#snac-link-reset-button').click(function(event) {
       $('#snac-link-resolve-results').addClass("hide");
+    });
+
+    $('#snac-link-lookup-button').click(function(event) {
+      $('#snac-link-lookup-results').removeClass("hide").addClass("loading").html("");
+      event.preventDefault();
+      $('#snac-link-lookup-snac-source').val($('#snac-link-snac-source').val());
+      $('#snac-link-lookup-form').submit();
     });
   };
 

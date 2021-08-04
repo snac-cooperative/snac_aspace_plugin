@@ -1,5 +1,13 @@
 <% if res[:error] != '' %>
   $('#snac-link-lookup-results').html("<%= res[:error] %>");
+  $('#snac-link-lookup-results').removeClass("loading");
 <% else %>
-  $('#snac-link-lookup-results').html("HELLO");
+  <% content_for :lookup do %>
+    <p class="text-center">
+      <%= link_to res[:results][0][:title], res[:results][0][:snac_url], target: '_blank', rel: 'nofollow' %>
+    </p>
+  <% end %>
+
+  $('#snac-link-lookup-results').html("<%= j yield :lookup %>");
+  $('#snac-link-lookup-results').removeClass("loading");
 <% end %>

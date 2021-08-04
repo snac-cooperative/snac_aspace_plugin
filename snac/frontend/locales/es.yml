@@ -22,6 +22,7 @@ es:
         resource_confirm: ¿Está seguro de que desea crear un enlace a SNAC para este recurso?
         resolve: Resolver
         reset: Reiniciar
+        lookup: Buscar
         showing_results: "Mostrando %{count} registros coincidentes:"
         no_results: No se encontraron registros coincidentes
       unlink:

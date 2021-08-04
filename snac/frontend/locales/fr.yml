@@ -22,6 +22,7 @@ fr:
         resource_confirm: Voulez-vous vraiment créer un lien vers SNAC pour cette ressource?
         resolve: Résoudre
         reset: Réinitialiser
+        lookup: Chercher
         showing_results: "Affichage de %{count} enregistrements correspondants:"
         no_results: Aucun enregistrements correspondants trouvés
       unlink:

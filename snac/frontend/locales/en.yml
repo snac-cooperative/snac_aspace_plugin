@@ -22,6 +22,7 @@ en:
         resource_confirm: Are you sure you want to create a link to SNAC for this resource?
         resolve: Search
         reset: Reset
+        lookup: Lookup
         showing_results: "Showing %{count} matching records:"
         no_results: No matching records found
       unlink:

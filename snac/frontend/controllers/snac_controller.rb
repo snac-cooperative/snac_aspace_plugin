@@ -133,14 +133,14 @@ class SnacController < ApplicationController
 
       case params[:type]
       when 'agent'
-        json = client.read_constellation(params[:snac_id])
+        json = client.read_constellation(params[:snac_source])
         results << {
           :id => json['constellation']['id'],
           :title => json['constellation']['nameEntries'][0]['original'],
           :snac_url => get_prefs.view_url(json['constellation']['id'])
         }
       when 'resource'
-        json = client.read_resource(params[:snac_id])
+        json = client.read_resource(params[:snac_source])
         results << {
           :id => json['resource']['id'],
           :title => json['resource']['title'],

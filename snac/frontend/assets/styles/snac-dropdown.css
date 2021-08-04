@@ -48,8 +48,14 @@
   overflow: auto;
 }
 
+.snac-dropdown-menu #snac-link-lookup-results {
+  padding: 5px;
+  height: 50px;
+  overflow: auto;
+}
+
 .snac-dropdown-menu .loading {
-  background:url(/assets/archivesspace/managed_container_loading.gif) top 20px center no-repeat;
+  background:url(/assets/archivesspace/managed_container_loading.gif) center no-repeat;
 }
 
 .snac-dropdown-menu .nav-tabs > li {

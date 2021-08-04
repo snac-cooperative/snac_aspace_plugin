@@ -32,5 +32,7 @@
     var id = $(this).data("snac-id");
     $('#snac-link-snac-source').val(id);
     $('#snac-link-submit-button').prop('disabled', false);
+    $('#snac-link-lookup-button').prop('disabled', false);
+    $('#snac-link-lookup-results').addClass("hide");
   });
 <% end %>

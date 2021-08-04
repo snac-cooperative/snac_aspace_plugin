@@ -150,17 +150,21 @@
 
               </div>
 
+              <%= form_with url: url_for({:controller => :snac, :action => :lookup, :type => type, :uri => obj['uri']}), id: "snac-link-lookup-form", class: "hide", local: false do |f| %>
+                <%= f.text_field "snac_source", id: "snac-link-lookup-snac-source", class: "hide" %>
+              <% end %>
+
               <%= form_with url: url_for({:controller => :snac, :action => :link, :uris => [obj['uri']]}), local: false do |f| %>
 
                 <fieldset>
                   <div class="text-center">
                     <%= I18n.t('actions.snac.options.snac_source') %>:
                     <%= f.text_field "snac_source", id: "snac-link-snac-source", size: 10 %>
-                    <!--<a class="btn btn-sm btn-default pull-right" id="snac-link-lookup-button" href="#"><%= 'Lookup' %></a>-->
+                    <%= button_tag I18n.t("actions.snac.link.lookup"), type: 'button', id: 'snac-link-lookup-button', class: 'btn btn-sm btn-default', disabled: "" %>
                   </div>
                 </fieldset>
 
-                <div class="text-center" id="snac-link-lookup-results">
+                <div class="panel panel-default hide" id="snac-link-lookup-results">
                 </div>
 
                 <div class="form-actions">
