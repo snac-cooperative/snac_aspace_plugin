@@ -63,14 +63,14 @@
           <ul class="nav nav-tabs" id="snac-tabs" role="tablist">
 
             <li class="nav-item active">
-              <a class="nav-link" id="snac-export-tab" data-toggle="tab" href="#snac-export-pane" role="tab" aria-controls="snac-export-pane" aria-selected="false">
-                <%= I18n.t("actions.snac.export.label") %>
+              <a class="nav-link" id="snac-link-tab" data-toggle="tab" href="#snac-link-pane" role="tab" aria-controls="snac-link-pane" aria-selected="true">
+                <%= I18n.t("actions.snac.link.label") %>
               </a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" id="snac-link-tab" data-toggle="tab" href="#snac-link-pane" role="tab" aria-controls="snac-link-pane" aria-selected="true">
-                <%= I18n.t("actions.snac.link.label") %>
+              <a class="nav-link" id="snac-export-tab" data-toggle="tab" href="#snac-export-pane" role="tab" aria-controls="snac-export-pane" aria-selected="false">
+                <%= I18n.t("actions.snac.export.label") %>
               </a>
             </li>
 
@@ -78,40 +78,7 @@
 
           <div class="tab-content" id="snac-tab-content">
 
-            <div class="tab-pane active" id="snac-export-pane" role="tabpanel" aria-labelledby="snac-export-tab">
-              <p><%= I18n.t("actions.snac.export.#{type}_desc") %></p>
-
-              <%= form_with url: url_for({:controller => :snac, :action => :export, :uris => [obj['uri']]}), local: false do |f| %>
-
-                <fieldset>
-                  <% case type %>
-                  <% when 'agent' %>
-                    <div>
-                      <%= f.check_box "include_linked_resources" %>
-                      <%= I18n.t('actions.snac.options.include_linked_resources') %>
-                    </div>
-                  <% when 'resource' %>
-                    <div>
-                      <%= f.check_box "include_linked_agents" %>
-                      <%= I18n.t('actions.snac.options.include_linked_agents') %>
-                    </div>
-                  <% end %>
-                </fieldset>
-
-                <div class="form-actions">
-                  <%= f.submit I18n.t("actions.snac.export.label"),
-                        :id => "snac-export-submit-button",
-                        :class => "btn snac-export-button btn-default pull-left",
-                        data: { confirm: I18n.t("actions.snac.export.#{type}_confirm"), disable_with: I18n.t("actions.snac.export.label") }
-                  %>
-
-                  <a class="btn btn-cancel btn-default pull-right" href="#"><%= I18n.t("actions.cancel") %></a>
-                </div>
-
-              <% end %>
-            </div>
-
-            <div class="tab-pane" id="snac-link-pane" role="tabpanel" aria-labelledby="snac-link-tab">
+            <div class="tab-pane active" id="snac-link-pane" role="tabpanel" aria-labelledby="snac-link-tab">
 
               <p><%= I18n.t("actions.snac.link.#{type}_desc") %> <%= I18n.t("actions.snac.link.#{type}_note") %></p>
 
@@ -173,6 +140,39 @@
                         :class => "btn snac-link-button btn-default pull-left",
                         :disabled => "",
                         data: { confirm: I18n.t("actions.snac.link.#{type}_confirm"), disable_with: I18n.t("actions.snac.link.label") }
+                  %>
+
+                  <a class="btn btn-cancel btn-default pull-right" href="#"><%= I18n.t("actions.cancel") %></a>
+                </div>
+
+              <% end %>
+            </div>
+
+            <div class="tab-pane" id="snac-export-pane" role="tabpanel" aria-labelledby="snac-export-tab">
+              <p><%= I18n.t("actions.snac.export.#{type}_desc") %></p>
+
+              <%= form_with url: url_for({:controller => :snac, :action => :export, :uris => [obj['uri']]}), local: false do |f| %>
+
+                <fieldset>
+                  <% case type %>
+                  <% when 'agent' %>
+                    <div>
+                      <%= f.check_box "include_linked_resources" %>
+                      <%= I18n.t('actions.snac.options.include_linked_resources') %>
+                    </div>
+                  <% when 'resource' %>
+                    <div>
+                      <%= f.check_box "include_linked_agents" %>
+                      <%= I18n.t('actions.snac.options.include_linked_agents') %>
+                    </div>
+                  <% end %>
+                </fieldset>
+
+                <div class="form-actions">
+                  <%= f.submit I18n.t("actions.snac.export.label"),
+                        :id => "snac-export-submit-button",
+                        :class => "btn snac-export-button btn-default pull-left",
+                        data: { confirm: I18n.t("actions.snac.export.#{type}_confirm"), disable_with: I18n.t("actions.snac.export.label") }
                   %>
 
                   <a class="btn btn-cancel btn-default pull-right" href="#"><%= I18n.t("actions.cancel") %></a>
