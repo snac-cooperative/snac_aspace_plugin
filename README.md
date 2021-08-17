@@ -6,12 +6,12 @@ It also allows an ArchivesSpace user to export Agents and Resources to SNAC from
 
 ## Installation
 
-Clone this repository and copy the `snac` directory into the `plugins` directory of ArchivesSpace.
-Then, add `snac` to your list of plugins in the ArchivesSpace config file located at `config/config.rb`.
+Clone this repository under the ArchivesSpace `plugins` directory.
+Then, add `snac_aspace_plugin` to your list of plugins in the ArchivesSpace config file located at `config/config.rb`.
 As an example:
 
 ```
-AppConfig[:plugins] = ['local', 'lcnaf', 'snac']
+AppConfig[:plugins] = ['local', 'lcnaf', 'snac_aspace_plugin']
 ```
 
 ## Configuration
