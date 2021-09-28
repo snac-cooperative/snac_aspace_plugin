@@ -1,0 +1,9 @@
+<% if res[:error] != '' %>
+  $("#import-selected").removeAttr("disabled").removeClass("busy")
+  AS.openQuickModal(AS.renderTemplate("template_snac_import_error_title"), '<%= res[:error] %>');
+<% else %>
+  AS.openQuickModal(AS.renderTemplate("template_snac_import_success_title"), AS.renderTemplate("template_snac_import_success_message"));
+  setTimeout(function() {
+    window.location = '<%= res[:job_uri] %>';
+  }, 2000);
+<% end %>

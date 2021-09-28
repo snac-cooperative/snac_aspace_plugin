@@ -1,7 +1,7 @@
 // Modified by SNAC
 $(function() {
   var $searchForm = $("#snac_search");
-  var $importForm = $("#snac_import");
+  //var $importForm = $("#snac_import");
 
   var $results = $("#results");
   var $selected = $("#selected");
@@ -139,6 +139,7 @@ $(function() {
   });
 
 
+/*
   $importForm.ajaxForm({
     dataType: "json",
     type: "POST",
@@ -166,6 +167,7 @@ $(function() {
       AS.openQuickModal(AS.renderTemplate("template_snac_import_error_title"), JSON.stringify(errBody));
     }
   });
+*/
 
 
   $results.on("click", ".snac-pagination a", function(event) {

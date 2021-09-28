@@ -29,7 +29,7 @@
     <div id="results"></div>
   </div>
   <div class="col-md-4">
-    <%= form_tag({:controller => :snac, :action => :import}, {:id => "snac_import"}) do |form| %>
+    <%= form_tag({:controller => :snac, :action => :import}, {:id => "snac_import", remote: true}) do |form| %>
     <div class="selected-container" data-spy="affix">
       <div class="alert alert-info"><%= I18n.t("plugins.snac.messages.none_selected") %></div>
       <div id="selected"></div>
