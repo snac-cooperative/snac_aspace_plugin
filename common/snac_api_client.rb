@@ -150,7 +150,7 @@ class SnacApiClient
 
     res = Net::HTTP::post(uri, query, 'Content-Type' => 'application/json')
 
-    if true # need a devserver check
+    if false # need a devserver check
       puts '###'
       puts '### SNAC request:'
       puts '###'
