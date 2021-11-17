@@ -1,7 +1,6 @@
 // Modified by SNAC
 $(function() {
   var $searchForm = $("#snac_search");
-  //var $importForm = $("#snac_import");
 
   var $results = $("#results");
   var $selected = $("#selected");
@@ -129,7 +128,11 @@ $(function() {
     },
     success: function(json) {
       $(".btn", $searchForm).removeAttr("disabled").removeClass("disabled").removeClass("busy");
-      renderResults(json);
+      if (json.error) {
+        AS.openQuickModal(AS.renderTemplate("template_snac_search_error_title"), json.error);
+      } else {
+        renderResults(json);
+      }
     },
     error: function(err) {
       $(".btn", $searchForm).removeAttr("disabled").removeClass("disabled").removeClass("busy");
@@ -137,37 +140,6 @@ $(function() {
       AS.openQuickModal(AS.renderTemplate("template_snac_search_error_title"), JSON.stringify(errBody));
     }
   });
-
-
-/*
-  $importForm.ajaxForm({
-    dataType: "json",
-    type: "POST",
-    beforeSubmit: function(data, $form, options) {
-
-      $("#import-selected").attr("disabled", "disabled").addClass("disabled").addClass("busy");
-
-    },
-    success: function(json) {
-      $("#import-selected").removeClass("busy");
-      if (json.job_uri) {
-        AS.openQuickModal(AS.renderTemplate("template_snac_import_success_title"), AS.renderTemplate("template_snac_import_success_message"));
-        setTimeout(function() {
-          window.location = json.job_uri;
-        }, 2000);
-      } else {
-        // error
-        $("#import-selected").removeAttr("disabled").removeClass("busy")
-        AS.openQuickModal(AS.renderTemplate("template_snac_import_error_title"), json.error);
-      }
-    },
-    error: function(err) {
-      $(".btn", $importForm).removeAttr("disabled").removeClass("disabled").removeClass("busy");
-      var errBody = err.hasOwnProperty("responseText") ? err.responseText.replace(/\n/g, "") : "<pre>" + JSON.stringify(err) + "</pre>";
-      AS.openQuickModal(AS.renderTemplate("template_snac_import_error_title"), JSON.stringify(errBody));
-    }
-  });
-*/
 
 
   $results.on("click", ".snac-pagination a", function(event) {
