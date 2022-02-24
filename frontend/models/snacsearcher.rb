@@ -22,7 +22,7 @@ class SnacSearcher
 
 
   def calculate_start_record(page, records_per_page)
-    ((page - 1) * records_per_page) + 1
+    (page - 1) * records_per_page
   end
 
 
