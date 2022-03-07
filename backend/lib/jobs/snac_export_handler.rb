@@ -66,10 +66,10 @@ class SnacExportHandler
     agent_uri = repo['agent_representation']['ref']
 
     agent = SnacRecordHelper.new(agent_uri)
-    json = agent.load
+    agent_json = agent.load
 
-    if SnacLinkHelpers.agent_exported?(json)
-      @holding_repo_id = SnacLinkHelpers.agent_snac_id(json)
+    if SnacLinkHelpers.agent_exported?(agent_json)
+      @holding_repo_id = SnacLinkHelpers.agent_snac_id(agent_json)
       return @holding_repo_id
     end
 
@@ -86,6 +86,16 @@ class SnacExportHandler
   ### agent export functions ###
 
 
+  def include_linked_resources?
+    @json.job['include_linked_resources']
+  end
+
+
+  def include_linked_resource?(json)
+    json['publish']
+  end
+
+
   def get_linked_resources(agent_uri)
     # returns a list of resources that link to this agent,
     # along with any roles that agent has with it.
@@ -94,7 +104,7 @@ class SnacExportHandler
 
     params = {
       :q => "agent_uris:\"#{agent_uri}\" AND primary_type:\"resource\"",
-      :fields => ['json'],
+      :fields => ['*'],
       :page_size => 10,
       :sort => ''
     }
@@ -110,6 +120,9 @@ class SnacExportHandler
 
         search['results'].each do |result|
           json = ASUtils.json_parse(result['json'])
+
+          next unless include_linked_resource?(json)
+
           # find roles matching this agent
           # "creator", "source", "subject"
           roles = json['linked_agents'].select { |a| a['ref'] == agent_uri }.map { |a| a['role'] }
@@ -132,7 +145,7 @@ class SnacExportHandler
   def export_linked_resources(pfx, agent_uri)
     # exports each linked resource, if specified
 
-    return [] unless @json.job['include_linked_resources']
+    return [] unless include_linked_resources?
 
     output ""
     output "#{pfx} #{I18n.t('snac_job.export.processing_linked_resources')}"
@@ -202,20 +215,20 @@ class SnacExportHandler
     output "#{pfx} #{I18n.t('snac_job.common.processing_agent')}: #{uri}"
 
     agent = SnacRecordHelper.new(uri)
-    json = agent.load
+    agent_json = agent.load
 
     # check for existing snac link
-    snac_entry = SnacLinkHelpers.agent_snac_entry(json)
+    snac_entry = SnacLinkHelpers.agent_snac_entry(agent_json)
     unless snac_entry.nil?
       output "#{pfx} #{I18n.t('snac_job.export.already_exported')}: #{snac_entry['record_identifier']}"
 
       # already exported, but might need more resources linked to it...
-      update_agent(pfx, SnacLinkHelpers.agent_snac_id(json), linked_resources)
+      update_agent(pfx, SnacLinkHelpers.agent_snac_id(agent_json), linked_resources)
 
-      return SnacLinkHelpers.agent_snac_id(json)
+      return SnacLinkHelpers.agent_snac_id(agent_json)
     end
 
-    snac_agent = json
+    snac_agent = agent_json
     snac_agent['linked_resources'] = linked_resources
 
     con = SnacConstellation.new
@@ -224,10 +237,10 @@ class SnacExportHandler
     output "#{pfx} #{I18n.t('snac_job.export.exported_to_snac')}: #{con.url}"
 
     # add snac constellation url and ark to agent
-    json = SnacLinkHelpers.agent_link(json, con.url, con.ark)
+    agent_json = SnacLinkHelpers.agent_link(agent_json, con.url, con.ark)
 
-    agent.save(json)
-    @modified << json.uri if json.uri
+    agent.save(agent_json)
+    @modified << agent_json.uri if agent_json.uri
 
     con.id
   end
@@ -250,6 +263,16 @@ class SnacExportHandler
   ### resource export functions ###
 
 
+  def include_linked_agents?
+    @json.job['include_linked_agents']
+  end
+
+
+  def include_linked_agent?(json)
+    json['publish']
+  end
+
+
   def get_linked_agents(resource_uri)
     # returns a list of agents that are linked with this resource,
     # each containing a single linked resource entry for the passed
@@ -258,20 +281,25 @@ class SnacExportHandler
     agents = []
 
     resource = SnacRecordHelper.new(resource_uri)
-    json = resource.load
-    snac_id = SnacLinkHelpers.resource_snac_id(json)
+    resource_json = resource.load
+    snac_id = SnacLinkHelpers.resource_snac_id(resource_json)
 
     # accumulate roles per agent
     agent_roles = {}
-    json['linked_agents'].each do |agent|
-      ref = agent['ref']
+    resource_json['linked_agents'].each do |linked_agent|
+      ref = linked_agent['ref']
+
+      agent = SnacRecordHelper.new(ref)
+      agent_json = agent.load
+      next unless include_linked_agent?(agent_json)
+
       agent_roles[ref] = [] unless agent_roles[ref]
-      agent_roles[ref] << agent['role']
+      agent_roles[ref] << linked_agent['role']
     end
 
-    agents = []
+    linked_agents = []
     agent_roles.each do |uri, roles|
-      agents << {
+      linked_agents << {
         'uri' => uri,
         'linked_resources' => [
           {
@@ -283,14 +311,14 @@ class SnacExportHandler
       }
     end
 
-    agents
+    linked_agents
   end
 
 
   def export_linked_agents(pfx, resource_uri)
     # exports each linked agent, if specified
 
-    return [] unless @json.job['include_linked_agents']
+    return [] unless include_linked_agents?
 
     output ""
     output "#{pfx} #{I18n.t('snac_job.export.processing_linked_agents')}"
@@ -319,16 +347,16 @@ class SnacExportHandler
     output "#{pfx} #{I18n.t('snac_job.common.processing_resource')}: #{uri}"
 
     resource = SnacRecordHelper.new(uri)
-    json = resource.load
+    resource_json = resource.load
 
     # check for existing snac link
-    snac_entry = SnacLinkHelpers.resource_snac_entry(json)
+    snac_entry = SnacLinkHelpers.resource_snac_entry(resource_json)
     unless snac_entry.nil?
       output "#{pfx} #{I18n.t('snac_job.export.already_exported')}: #{snac_entry['location']}"
-      return SnacLinkHelpers.resource_snac_id(json)
+      return SnacLinkHelpers.resource_snac_id(resource_json)
     end
 
-    snac_resource = json
+    snac_resource = resource_json
     snac_resource['holding_repo_id'] = repo_id
 
     res = SnacResource.new
@@ -337,10 +365,10 @@ class SnacExportHandler
     output "#{pfx} #{I18n.t('snac_job.export.exported_to_snac')}: #{res.url}"
 
     # add snac resource url to AS resource
-    json = SnacLinkHelpers.resource_link(json, res.url)
+    resource_json = SnacLinkHelpers.resource_link(resource_json, res.url)
 
-    resource.save(json)
-    @modified << json.uri if json.uri
+    resource.save(resource_json)
+    @modified << resource_json.uri if resource_json.uri
 
     res.id
   end
