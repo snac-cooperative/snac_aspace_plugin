@@ -364,12 +364,12 @@ class SnacExport
 
     # link
     # "link": "https:\/\/mylink.com",
-    # TODO: link to this AS repo, if public?
+    # TODO: link to this AS resource, if public?
     link = ''
 
     # abstract
-    # get source note, preferring prefer abstract over scope and contents
-    # FIXME: should only grab first paragraph of scope and contents
+    # get source note, preferring abstract over scope and contents
+    # FIXME: should only grab first paragraph of scope and contents?
     abstract = ''
     src_note = resource['notes'].find { |note| note['type'] == 'abstract' }
     src_note = resource['notes'].find { |note| note['type'] == 'scopecontent' } unless src_note
