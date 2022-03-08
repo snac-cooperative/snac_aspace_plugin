@@ -51,6 +51,9 @@ class SnacLinkHandler
   end
 
 
+  ### agent link functions ###
+
+
   def link_agent(pfx, uri)
     # adds snac links to the given agent
 
@@ -58,10 +61,10 @@ class SnacLinkHandler
     output "#{pfx} #{I18n.t('snac_job.common.processing_agent')}: #{uri}"
 
     agent = SnacRecordHelper.new(uri)
-    json = agent.load
+    agent_json = agent.load
 
     # check for existing snac link
-    snac_entry = SnacLinkHelpers.agent_snac_entry(json)
+    snac_entry = SnacLinkHelpers.agent_snac_entry(agent_json)
     unless snac_entry.nil?
       output "#{pfx} #{I18n.t('snac_job.link.already_linked')}: #{snac_entry['record_identifier']}"
       return
@@ -72,13 +75,16 @@ class SnacLinkHandler
     output "#{pfx} #{I18n.t('snac_job.link.looking_up_snac_id')}: #{snac_id}"
     con = SnacConstellation.new(snac_id)
 
-    json = SnacLinkHelpers.agent_link(json, con.url, con.ark)
+    agent_json = SnacLinkHelpers.agent_link(agent_json, con.url, con.ark)
 
-    agent.save(json)
-    @modified << json.uri if json.uri
+    agent.save(agent_json)
+    @modified << agent_json.uri if agent_json.uri
 
     output "#{pfx} #{I18n.t('snac_job.link.linked_with_snac')}: #{con.url}"
   end
+
+
+  ### resource link functions ###
 
 
   def link_resource(pfx, uri)
@@ -88,10 +94,10 @@ class SnacLinkHandler
     output "#{pfx} #{I18n.t('snac_job.common.processing_resource')}: #{uri}"
 
     resource = SnacRecordHelper.new(uri)
-    json = resource.load
+    resource_json = resource.load
 
     # check for existing snac link
-    snac_entry = SnacLinkHelpers.resource_snac_entry(json)
+    snac_entry = SnacLinkHelpers.resource_snac_entry(resource_json)
     unless snac_entry.nil?
       output "#{pfx} #{I18n.t('snac_job.link.already_linked')}: #{snac_entry['location']}"
       return
@@ -102,10 +108,10 @@ class SnacLinkHandler
     output "#{pfx} #{I18n.t('snac_job.link.looking_up_snac_id')}: #{snac_id}"
     res = SnacResource.new(snac_id)
 
-    json = SnacLinkHelpers.resource_link(json, res.url)
+    resource_json = SnacLinkHelpers.resource_link(resource_json, res.url)
 
-    resource.save(json)
-    @modified << json.uri if json.uri
+    resource.save(resource_json)
+    @modified << resource_json.uri if resource_json.uri
 
     output "#{pfx} #{I18n.t('snac_job.link.linked_with_snac')}: #{res.url}"
   end

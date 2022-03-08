@@ -52,19 +52,19 @@ en:
       holding_repository_label: holding repository
       processing_agent: Processing agent
       processing_resource: Processing resource
+      processing_linked_agents: Processing linked agents...
+      processing_linked_resources: Processing linked resources...
+      processing_top_level_agent: Processing top-level agent
+      processing_top_level_resource: Processing top-level resource
+      linked_agent_label: "linked agent %{index} of %{length}"
+      linked_resource_label: "linked resource %{index} of %{length}"
       success_label: SUCCESS
       success_message_singular: "Modified 1 record"
       success_message_plural: "Modified %{count} records"
       error_label: ERROR
     export:
-      processing_top_level_agent: Processing top-level agent
-      processing_linked_agents: Processing linked agents...
-      processing_top_level_resource: Processing top-level resource
-      processing_linked_resources: Processing linked resources...
       already_exported: Already exported
       exported_to_snac: Exported to SNAC
-      linked_agent_label: "linked agent %{index} of %{length}"
-      linked_resource_label: "linked resource %{index} of %{length}"
       linked_agent_checking_relations: Checking whether to create new resource relations
       linked_agent_adding_relations: Adding new resource relations
       linked_agent_relations_exist: Resource relations already exist

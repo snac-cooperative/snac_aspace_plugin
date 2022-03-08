@@ -52,19 +52,19 @@ fr:
       holding_repository_label: dépôt de stockage
       processing_agent: Traitement de l'agent
       processing_resource: Traitement de la ressource
+      processing_linked_agents: Traitement des agents liées...
+      processing_linked_resources: Traitement des ressources liées...
+      processing_top_level_agent: Traitement de l'agent de haut niveau
+      processing_top_level_resource: Traitement de la ressource de haut niveau
+      linked_agent_label: "agent liée %{index} sur %{length}"
+      linked_resource_label: "ressource liée %{index} sur %{length}"
       success_label: SUCCÈS
       success_message_singular: "1 enregistrement modifié"
       success_message_plural: "%{count} enregistrements modifiés"
       error_label: ERREUR
     export:
-      processing_top_level_agent: Traitement de l'agent de haut niveau
-      processing_linked_agents: Traitement des agents liées...
-      processing_top_level_resource: Traitement de la ressource de haut niveau
-      processing_linked_resources: Traitement des ressources liées...
       already_exported: Déjà exporté
       exported_to_snac: Exporté vers SNAC
-      linked_agent_label: "agent liée %{index} sur %{length}"
-      linked_resource_label: "ressource liée %{index} sur %{length}"
       linked_agent_checking_relations: Vérifier s'il faut créer de nouvelles relations de ressources
       linked_agent_adding_relations: Ajout de nouvelles relations de ressources
       linked_agent_relations_exist: Des relations de ressources existent déjà

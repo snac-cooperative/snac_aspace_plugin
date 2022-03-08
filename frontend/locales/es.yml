@@ -52,19 +52,19 @@ es:
       holding_repository_label: sosteniendo el repositorio
       processing_agent: Procesando al agente
       processing_resource: Procesando el recurso
+      processing_linked_agents: Procesando agentes vinculados...
+      processing_linked_resources: Procesando recursos vinculados...
+      processing_top_level_agent: Procesamiento de agente de nivel superior
+      processing_top_level_resource: Procesamiento de recursos de nivel superior
+      linked_agent_label: "agente vinculado %{index} de %{length}"
+      linked_resource_label: "recurso vinculado %{index} de %{length}"
       success_label: ÉXITO
       success_message_singular: "1 registro modificado"
       success_message_plural: "%{count} registros modificados"
       error_label: ERROR
     export:
-      processing_top_level_agent: Procesamiento de agente de nivel superior
-      processing_linked_agents: Procesando agentes vinculados...
-      processing_top_level_resource: Procesamiento de recursos de nivel superior
-      processing_linked_resources: Procesando recursos vinculados...
       already_exported: Ya exportado
       exported_to_snac: Exportada a SNAC
-      linked_agent_label: "agente vinculado %{index} de %{length}"
-      linked_resource_label: "recurso vinculado %{index} de %{length}"
       linked_agent_checking_relations: Comprobando si se deben crear nuevas relaciones de recursos
       linked_agent_adding_relations: Agregar nuevas relaciones de recursos
       linked_agent_relations_exist: Las relaciones de recursos ya existen

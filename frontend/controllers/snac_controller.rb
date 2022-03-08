@@ -79,7 +79,9 @@ class SnacController < ApplicationController
                  "job_type" => "snac_job",
                  "jsonmodel_type" => "snac_unlink_job",
                  "action" => "unlink",
-                 "uris" => params[:uris]
+                 "uris" => params[:uris],
+                 "include_linked_resources" => params[:include_linked_resources] == '1',
+                 "include_linked_agents" => params[:include_linked_agents] == '1'
                },
                {})
   end

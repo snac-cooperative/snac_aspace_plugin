@@ -100,7 +100,7 @@ class SnacExportHandler
     # returns a list of resources that link to this agent,
     # along with any roles that agent has with it.
 
-    resources = []
+    linked_resources = []
 
     params = {
       :q => "agent_uris:\"#{agent_uri}\" AND primary_type:\"resource\"",
@@ -126,7 +126,7 @@ class SnacExportHandler
           # find roles matching this agent
           # "creator", "source", "subject"
           roles = json['linked_agents'].select { |a| a['ref'] == agent_uri }.map { |a| a['role'] }
-          resources << {
+          linked_resources << {
             'roles' => roles,
             'uri' => json['uri']
           }
@@ -138,7 +138,7 @@ class SnacExportHandler
       # just use what we've collected thus far?
     end
 
-    resources
+    linked_resources
   end
 
 
@@ -148,13 +148,13 @@ class SnacExportHandler
     return [] unless include_linked_resources?
 
     output ""
-    output "#{pfx} #{I18n.t('snac_job.export.processing_linked_resources')}"
+    output "#{pfx} #{I18n.t('snac_job.common.processing_linked_resources')}"
 
     linked_resources = get_linked_resources(agent_uri)
 
     # export each linked resource
     linked_resources.each_with_index do |linked_resource, index|
-      pfx = "  + [#{I18n.t('snac_job.export.linked_resource_label', :index => index+1, :length => linked_resources.length)}]"
+      pfx = "  + [#{I18n.t('snac_job.common.linked_resource_label', :index => index+1, :length => linked_resources.length)}]"
       id = export_resource(pfx, linked_resource['uri'])
       linked_resource['snac_id'] = id
     end
@@ -250,7 +250,7 @@ class SnacExportHandler
     # exports an agent, optionally including any resources linked to it.
 
     output ""
-    output "#{pfx} #{I18n.t('snac_job.export.processing_top_level_agent')}: #{uri}"
+    output "#{pfx} #{I18n.t('snac_job.common.processing_top_level_agent')}: #{uri}"
 
     # first, export linked resources (if specified, and if not already in snac)
     linked_resources = export_linked_resources(pfx, uri)
@@ -278,7 +278,7 @@ class SnacExportHandler
     # each containing a single linked resource entry for the passed
     # resource along with any roles that agent has with it.
 
-    agents = []
+    linked_agents = []
 
     resource = SnacRecordHelper.new(resource_uri)
     resource_json = resource.load
@@ -287,17 +287,17 @@ class SnacExportHandler
     # accumulate roles per agent
     agent_roles = {}
     resource_json['linked_agents'].each do |linked_agent|
-      ref = linked_agent['ref']
+      agent_uri = linked_agent['ref']
 
-      agent = SnacRecordHelper.new(ref)
+      agent = SnacRecordHelper.new(agent_uri)
       agent_json = agent.load
+
       next unless include_linked_agent?(agent_json)
 
-      agent_roles[ref] = [] unless agent_roles[ref]
-      agent_roles[ref] << linked_agent['role']
+      agent_roles[agent_uri] = [] unless agent_roles[agent_uri]
+      agent_roles[agent_uri] << linked_agent['role']
     end
 
-    linked_agents = []
     agent_roles.each do |uri, roles|
       linked_agents << {
         'uri' => uri,
@@ -321,13 +321,13 @@ class SnacExportHandler
     return [] unless include_linked_agents?
 
     output ""
-    output "#{pfx} #{I18n.t('snac_job.export.processing_linked_agents')}"
+    output "#{pfx} #{I18n.t('snac_job.common.processing_linked_agents')}"
 
     linked_agents = get_linked_agents(resource_uri)
 
     # export each linked agent
     linked_agents.each_with_index do |linked_agent, index|
-      pfx = "  + [#{I18n.t('snac_job.export.linked_agent_label', :index => index+1, :length => linked_agents.length)}]"
+      pfx = "  + [#{I18n.t('snac_job.common.linked_agent_label', :index => index+1, :length => linked_agents.length)}]"
       id = export_agent(pfx, linked_agent['uri'], linked_agent['linked_resources'])
       linked_agent['snac_id'] = id
     end
@@ -378,7 +378,7 @@ class SnacExportHandler
     # exports a resource, optionally including any agents linked to it.
 
     output ""
-    output "#{pfx} #{I18n.t('snac_job.export.processing_top_level_resource')}: #{uri}"
+    output "#{pfx} #{I18n.t('snac_job.common.processing_top_level_resource')}: #{uri}"
 
     # first, export this resource
     export_resource(pfx, uri)

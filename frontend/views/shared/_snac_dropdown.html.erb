@@ -41,6 +41,21 @@
 
               <%= form_with url: url_for({:controller => :snac, :action => :unlink, :uris => [obj['uri']]}), local: false do |f| %>
 
+                <fieldset>
+                  <% case type %>
+                  <% when 'agent' %>
+                    <div>
+                      <%= f.check_box "include_linked_resources" %>
+                      <%= I18n.t('actions.snac.options.include_linked_resources') %>
+                    </div>
+                  <% when 'resource' %>
+                    <div>
+                      <%= f.check_box "include_linked_agents" %>
+                      <%= I18n.t('actions.snac.options.include_linked_agents') %>
+                    </div>
+                  <% end %>
+                </fieldset>
+
                 <div class="form-actions">
                   <%= f.submit I18n.t("actions.snac.unlink.label"),
                         :id => "snac-unlink-submit-button",
