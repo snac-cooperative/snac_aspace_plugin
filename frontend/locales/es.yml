@@ -33,8 +33,8 @@ es:
         resource_confirm: ¿Está seguro de que desea eliminar los enlaces a SNAC para este recurso?
       options:
         snac_source: ID de SNAC
-        include_linked_resources: Incluir recursos vinculados
-        include_linked_agents: Incluir agentes vinculados
+        include_linked_resources: Incluir recursos vinculados publicados
+        include_linked_agents: Incluir agentes vinculados publicados
         agent_search_term: Entrada de Nombre
         resource_search_term: Título del Recurso
       job:
@@ -77,8 +77,8 @@ es:
       unlinked_with_snac: No vinculado con SNAC
     options:
       uris: URIs
-      include_linked_resources: Incluir Recursos Vinculados
-      include_linked_agents: Incluir Agentes Vinculados
+      include_linked_resources: Incluir Recursos Vinculados Publicados
+      include_linked_agents: Incluir Agentes Vinculados Publicados
       snac_source: Fuente SNAC
   snac_export_job:
     _singular: Trabajo de Exportación SNAC
