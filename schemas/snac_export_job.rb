@@ -16,7 +16,7 @@
         "type" => "boolean",
         "required" => "false",
         "default" => "false"
-      }
+      },
 
     }
   }

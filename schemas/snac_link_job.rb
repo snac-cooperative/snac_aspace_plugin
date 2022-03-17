@@ -9,7 +9,7 @@
       "snac_source" => {
         "type" => "string",
         "ifmissing" => "error"
-      }
+      },
 
     }
   }

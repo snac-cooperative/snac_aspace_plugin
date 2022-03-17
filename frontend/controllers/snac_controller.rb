@@ -53,6 +53,7 @@ class SnacController < ApplicationController
     create_job("snac_job", {
                  "job_type" => "snac_job",
                  "jsonmodel_type" => "snac_export_job",
+                 "snac_environment" => get_prefs.environment,
                  "action" => "export",
                  "uris" => params[:uris],
                  "include_linked_resources" => params[:include_linked_resources] == '1',
@@ -66,6 +67,7 @@ class SnacController < ApplicationController
     create_job("snac_job", {
                  "job_type" => "snac_job",
                  "jsonmodel_type" => "snac_link_job",
+                 "snac_environment" => get_prefs.environment,
                  "action" => "link",
                  "uris" => params[:uris],
                  "snac_source" => params[:snac_source]
@@ -78,6 +80,7 @@ class SnacController < ApplicationController
     create_job("snac_job", {
                  "job_type" => "snac_job",
                  "jsonmodel_type" => "snac_unlink_job",
+                 "snac_environment" => get_prefs.environment,
                  "action" => "unlink",
                  "uris" => params[:uris],
                  "include_linked_resources" => params[:include_linked_resources] == '1',
