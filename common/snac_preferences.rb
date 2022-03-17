@@ -9,13 +9,13 @@ class SnacPreferences
 
   SNAC_ENV_MAPPINGS = {
     SNAC_ENV_PROD => {
-      :env_name   => I18n.t("plugins.defaults.snac_environment_production"),
+      :env_name   => I18n.t("plugins.defaults.snac_production_label"),
       :web_url    => 'https://snaccooperative.org/',
       :api_url    => 'https://api.snaccooperative.org/',
       :search_url => 'https://snaccooperative.org/search'
     },
     SNAC_ENV_DEV => {
-      :env_name   => I18n.t("plugins.defaults.snac_environment_development"),
+      :env_name   => I18n.t("plugins.defaults.snac_development_label"),
       :web_url    => 'http://snac-dev.iath.virginia.edu/',
       :api_url    => 'http://snac-dev.iath.virginia.edu/api/',
       :search_url => 'https://snac-dev.iath.virginia.edu/search'
@@ -32,8 +32,8 @@ class SnacPreferences
       from = from['defaults']
     end
 
-    key = from['snac_api_key'] || ''
     env = get_env(from['snac_environment'])
+    key = from["snac_#{env}_api_key"] || ''
 
     @prefs = {:key => key, :env => env}
   end

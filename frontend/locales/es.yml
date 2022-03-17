@@ -118,8 +118,8 @@ es:
       result_summary: "Página %{page} - Mostrando resultados %{first_record_index} a %{last_record_index} de %{hit_count} coincidencias"
       preference_section: Configuración de SNAC
     defaults:
-      snac_api_key: Clave de API SNAC
       snac_environment: Entorno SNAC
-      snac_environment_production: Producción
-      snac_environment_development: Desarrollo
-      snac_environment_unspecified: (no especificado)
+      snac_production_label: Producción
+      snac_production_api_key: Clave API de Producción
+      snac_development_label: Desarrollo
+      snac_development_api_key: Clave de API de Desarrollo

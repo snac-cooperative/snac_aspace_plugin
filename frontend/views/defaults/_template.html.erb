@@ -14,12 +14,15 @@
 
           snac_envs = []
           snac_env_defs['enum'].each do |env|
-            snac_envs << [ I18n.t("plugins.defaults.snac_environment_#{env}"), env ]
+            snac_envs << [ I18n.t("plugins.defaults.snac_#{env}_label"), env ]
           end
       %>
-
       <%= form.label_and_select "snac_environment", snac_envs, {:default => snac_env_defs['default'], :plugin => true} %>
-      <%= form.label_and_textfield "snac_api_key", {:plugin => true} %>
+
+      <%  snac_env_defs['enum'].each do |env| %>
+        <%= form.label_and_textfield "snac_#{env}_api_key", {:plugin => true} %>
+      <%  end %>
+
 <%# SNAC PLUGIN CONTENT ENDS HERE %>
 
       <h3 id="noteorder"><%= I18n.t "defaults.note_order_section" %></h3>

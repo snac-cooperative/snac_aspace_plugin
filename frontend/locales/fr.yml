@@ -118,8 +118,8 @@ fr:
       result_summary: "Page %{page} - Affichage des résultats %{first_record_index} à %{last_record_index} sur %{hit_count}"
       preference_section: Paramètres SNAC
     defaults:
-      snac_api_key: Clé API SNAC
       snac_environment: Environnement SNAC
-      snac_environment_production: Production
-      snac_environment_development: Développement
-      snac_environment_unspecified: (non spécifié)
+      snac_production_label: Production
+      snac_production_api_key: Clé API de Production
+      snac_development_label: Développement
+      snac_development_api_key: Clé API de Développement
