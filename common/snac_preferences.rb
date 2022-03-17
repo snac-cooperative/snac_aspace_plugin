@@ -9,13 +9,13 @@ class SnacPreferences
 
   SNAC_ENV_MAPPINGS = {
     SNAC_ENV_PROD => {
-      :env_name   => I18n.t("plugins.defaults.snac_production_label"),
+      :env_label  => I18n.t("plugins.defaults.snac_production_label"),
       :web_url    => 'https://snaccooperative.org/',
       :api_url    => 'https://api.snaccooperative.org/',
       :search_url => 'https://snaccooperative.org/search'
     },
     SNAC_ENV_DEV => {
-      :env_name   => I18n.t("plugins.defaults.snac_development_label"),
+      :env_label  => I18n.t("plugins.defaults.snac_development_label"),
       :web_url    => 'http://snac-dev.iath.virginia.edu/',
       :api_url    => 'http://snac-dev.iath.virginia.edu/api/',
       :search_url => 'https://snac-dev.iath.virginia.edu/search'
@@ -39,8 +39,8 @@ class SnacPreferences
   end
 
 
-  def env_name
-    SNAC_ENV_MAPPINGS[@prefs[:env]][:env_name]
+  def env_label
+    SNAC_ENV_MAPPINGS[@prefs[:env]][:env_label]
   end
 
 
@@ -65,7 +65,7 @@ class SnacPreferences
 
 
   def environment
-    @prefs[:env]
+    @prefs[:env].to_s
   end
 
 
@@ -81,6 +81,16 @@ class SnacPreferences
 
   def resource_url(id = nil)
     url_with_id("#{web_url}vocab_administrator/resources", id)
+  end
+
+
+  def is_prod?
+    @prefs[:env] == SNAC_ENV_PROD
+  end
+
+
+  def is_dev?
+    @prefs[:env] == SNAC_ENV_DEV
   end
 
 

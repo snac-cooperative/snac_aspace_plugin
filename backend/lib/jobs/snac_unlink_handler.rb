@@ -20,6 +20,8 @@ class SnacUnlinkHandler
     parsed = JSONModel.parse_reference(uri)
     type = parsed[:type]
 
+    @link_helper = SnacLinkHelpers.new
+
     case type
     when /^agent/
       pfx = "[#{I18n.t('snac_job.common.agent_label')}]"
@@ -134,13 +136,13 @@ class SnacUnlinkHandler
     agent_json = agent.load
 
     # check for existing snac link
-    snac_entry = SnacLinkHelpers.agent_snac_entry(agent_json)
+    snac_entry = @link_helper.agent_snac_entry(agent_json)
     if snac_entry.nil?
       output "#{pfx} #{I18n.t('snac_job.unlink.already_unlinked')}"
       return
     end
 
-    agent_json = SnacLinkHelpers.agent_unlink(agent_json)
+    agent_json = @link_helper.agent_unlink(agent_json)
 
     agent.save(agent_json)
     @modified << agent_json.uri if agent_json.uri
@@ -229,13 +231,13 @@ class SnacUnlinkHandler
     resource_json = resource.load
 
     # check for existing snac link
-    snac_entry = SnacLinkHelpers.resource_snac_entry(resource_json)
+    snac_entry = @link_helper.resource_snac_entry(resource_json)
     if snac_entry.nil?
       output "#{pfx} #{I18n.t('snac_job.unlink.already_unlinked')}"
       return
     end
 
-    resource_json = SnacLinkHelpers.resource_unlink(resource_json)
+    resource_json = @link_helper.resource_unlink(resource_json)
 
     resource.save(resource_json)
     @modified << resource_json.uri if resource_json.uri

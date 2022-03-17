@@ -20,6 +20,8 @@ class SnacLinkHandler
     parsed = JSONModel.parse_reference(uri)
     type = parsed[:type]
 
+    @link_helper = SnacLinkHelpers.new
+
     case type
     when /^agent/
       pfx = "[#{I18n.t('snac_job.common.agent_label')}]"
@@ -64,7 +66,7 @@ class SnacLinkHandler
     agent_json = agent.load
 
     # check for existing snac link
-    snac_entry = SnacLinkHelpers.agent_snac_entry(agent_json)
+    snac_entry = @link_helper.agent_snac_entry(agent_json)
     unless snac_entry.nil?
       output "#{pfx} #{I18n.t('snac_job.link.already_linked')}: #{snac_entry['record_identifier']}"
       return
@@ -75,7 +77,7 @@ class SnacLinkHandler
     output "#{pfx} #{I18n.t('snac_job.link.looking_up_snac_id')}: #{snac_id}"
     con = SnacConstellation.new(snac_id)
 
-    agent_json = SnacLinkHelpers.agent_link(agent_json, con.url, con.ark)
+    agent_json = @link_helper.agent_link(agent_json, con.url, con.ark)
 
     agent.save(agent_json)
     @modified << agent_json.uri if agent_json.uri
@@ -97,7 +99,7 @@ class SnacLinkHandler
     resource_json = resource.load
 
     # check for existing snac link
-    snac_entry = SnacLinkHelpers.resource_snac_entry(resource_json)
+    snac_entry = @link_helper.resource_snac_entry(resource_json)
     unless snac_entry.nil?
       output "#{pfx} #{I18n.t('snac_job.link.already_linked')}: #{snac_entry['location']}"
       return
@@ -108,7 +110,7 @@ class SnacLinkHandler
     output "#{pfx} #{I18n.t('snac_job.link.looking_up_snac_id')}: #{snac_id}"
     res = SnacResource.new(snac_id)
 
-    resource_json = SnacLinkHelpers.resource_link(resource_json, res.url)
+    resource_json = @link_helper.resource_link(resource_json, res.url)
 
     resource.save(resource_json)
     @modified << resource_json.uri if resource_json.uri

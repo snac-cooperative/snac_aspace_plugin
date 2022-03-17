@@ -21,6 +21,8 @@ class SnacExportHandler
     parsed = JSONModel.parse_reference(uri)
     type = parsed[:type]
 
+    @link_helper = SnacLinkHelpers.new
+
     case type
     when /^agent/
       pfx = "[#{I18n.t('snac_job.common.agent_label')}]"
@@ -68,8 +70,8 @@ class SnacExportHandler
     agent = SnacRecordHelper.new(agent_uri)
     agent_json = agent.load
 
-    if SnacLinkHelpers.agent_exported?(agent_json)
-      @holding_repo_id = SnacLinkHelpers.agent_snac_id(agent_json)
+    if @link_helper.agent_exported?(agent_json)
+      @holding_repo_id = @link_helper.agent_snac_id(agent_json)
       return @holding_repo_id
     end
 
@@ -218,14 +220,14 @@ class SnacExportHandler
     agent_json = agent.load
 
     # check for existing snac link
-    snac_entry = SnacLinkHelpers.agent_snac_entry(agent_json)
+    snac_entry = @link_helper.agent_snac_entry(agent_json)
     unless snac_entry.nil?
       output "#{pfx} #{I18n.t('snac_job.export.already_exported')}: #{snac_entry['record_identifier']}"
 
       # already exported, but might need more resources linked to it...
-      update_agent(pfx, SnacLinkHelpers.agent_snac_id(agent_json), linked_resources)
+      update_agent(pfx, @link_helper.agent_snac_id(agent_json), linked_resources)
 
-      return SnacLinkHelpers.agent_snac_id(agent_json)
+      return @link_helper.agent_snac_id(agent_json)
     end
 
     snac_agent = agent_json
@@ -237,7 +239,7 @@ class SnacExportHandler
     output "#{pfx} #{I18n.t('snac_job.export.exported_to_snac')}: #{con.url}"
 
     # add snac constellation url and ark to agent
-    agent_json = SnacLinkHelpers.agent_link(agent_json, con.url, con.ark)
+    agent_json = @link_helper.agent_link(agent_json, con.url, con.ark)
 
     agent.save(agent_json)
     @modified << agent_json.uri if agent_json.uri
@@ -282,7 +284,7 @@ class SnacExportHandler
 
     resource = SnacRecordHelper.new(resource_uri)
     resource_json = resource.load
-    snac_id = SnacLinkHelpers.resource_snac_id(resource_json)
+    snac_id = @link_helper.resource_snac_id(resource_json)
 
     # accumulate roles per agent
     agent_roles = {}
@@ -350,10 +352,10 @@ class SnacExportHandler
     resource_json = resource.load
 
     # check for existing snac link
-    snac_entry = SnacLinkHelpers.resource_snac_entry(resource_json)
+    snac_entry = @link_helper.resource_snac_entry(resource_json)
     unless snac_entry.nil?
       output "#{pfx} #{I18n.t('snac_job.export.already_exported')}: #{snac_entry['location']}"
-      return SnacLinkHelpers.resource_snac_id(resource_json)
+      return @link_helper.resource_snac_id(resource_json)
     end
 
     snac_resource = resource_json
@@ -365,7 +367,7 @@ class SnacExportHandler
     output "#{pfx} #{I18n.t('snac_job.export.exported_to_snac')}: #{res.url}"
 
     # add snac resource url to AS resource
-    resource_json = SnacLinkHelpers.resource_link(resource_json, res.url)
+    resource_json = @link_helper.resource_link(resource_json, res.url)
 
     resource.save(resource_json)
     @modified << resource_json.uri if resource_json.uri
