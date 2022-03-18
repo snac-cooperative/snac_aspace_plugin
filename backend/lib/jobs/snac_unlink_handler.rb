@@ -1,7 +1,8 @@
 require_relative '../types/snac_constellation'
 require_relative '../types/snac_resource'
 require_relative '../helpers/snac_record_helper'
-require_relative '../helpers/snac_link_helpers'
+require_relative '../../../common/snac_preferences'
+require_relative '../../../common/snac_link_helper'
 
 class SnacUnlinkHandler
   include JSONModel
@@ -20,7 +21,8 @@ class SnacUnlinkHandler
     parsed = JSONModel.parse_reference(uri)
     type = parsed[:type]
 
-    @link_helper = SnacLinkHelpers.new
+    @snac_prefs = SnacPreferences.new(Preference.current_preferences)
+    @link_helper = SnacLinkHelper.new(@snac_prefs)
 
     case type
     when /^agent/

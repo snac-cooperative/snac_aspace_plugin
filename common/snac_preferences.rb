@@ -64,6 +64,11 @@ class SnacPreferences
   end
 
 
+  def has_api_key?
+    api_key != ''
+  end
+
+
   def environment
     @prefs[:env].to_s
   end

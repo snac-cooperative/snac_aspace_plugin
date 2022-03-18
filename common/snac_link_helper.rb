@@ -1,20 +1,23 @@
-require_relative '../../../common/snac_preferences'
+class SnacLinkHelper
 
-class SnacLinkHelpers
-
-  class SnacLinkHelpersException < StandardError; end
+  class SnacLinkHelperException < StandardError; end
 
   attr_reader :prefs
 
 
-  def initialize
-    @prefs = SnacPreferences.new(Preference.current_preferences)
+  def initialize(prefs)
+    @prefs = prefs
     @env = @prefs.environment
   end
 
 
   def agent_snac_entry(json)
     send("agent_snac_entry_#{@env}", json)
+  end
+
+
+  def agent_snac_url(json)
+    send("agent_snac_url_#{@env}", json)
   end
 
 
@@ -43,6 +46,11 @@ class SnacLinkHelpers
   end
 
 
+  def resource_snac_url(json)
+    send("resource_snac_url_#{@env}", json)
+  end
+
+
   def resource_snac_id(json)
     send("resource_snac_id_#{@env}", json)
   end
@@ -63,6 +71,25 @@ class SnacLinkHelpers
   end
 
 
+  def exported?(json)
+    objtype = get_object_type(json)
+    send("#{objtype}_exported?", json)
+  end
+
+
+  def snac_url(json)
+    objtype = get_object_type(json)
+    send("#{objtype}_snac_url", json)
+  end
+
+
+  def get_object_type(json)
+    return 'agent' if json.key?('agent_record_identifiers')
+    return 'resource' if json.key?('external_documents')
+    raise SnacLinkHelperException.new('unhandled object type')
+  end
+
+
   private
 
 
@@ -75,6 +102,22 @@ class SnacLinkHelpers
   def agent_snac_entry_development(json)
     # returns the entry containing the snac link, if any
     json['agent_record_identifiers'].find { |id| id['source'] == 'snac' }
+  end
+
+
+  def agent_snac_url_production(json)
+    # returns the snac link if it exists
+    snac_entry = agent_snac_entry(json)
+    return '' if snac_entry.nil?
+    snac_entry['record_identifier']
+  end
+
+
+  def agent_snac_url_development(json)
+    # returns the snac link if it exists
+    snac_entry = agent_snac_entry(json)
+    return '' if snac_entry.nil?
+    snac_entry['record_identifier']
   end
 
 
@@ -175,6 +218,22 @@ class SnacLinkHelpers
   def resource_snac_entry_development(json)
     # returns the entry containing the snac link, if any
     json['external_documents'].find { |ext| ext['title'] == 'snac' }
+  end
+
+
+  def resource_snac_url_production(json)
+    # returns the snac link if it exists
+    snac_entry = resource_snac_entry(json)
+    return '' if snac_entry.nil?
+    snac_entry['location']
+  end
+
+
+  def resource_snac_url_development(json)
+    # returns the snac link if it exists
+    snac_entry = resource_snac_entry(json)
+    return '' if snac_entry.nil?
+    snac_entry['location']
   end
 
 

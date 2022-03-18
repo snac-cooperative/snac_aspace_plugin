@@ -2,6 +2,9 @@ fr:
   actions:
     snac:
       label: SNAC
+      environment:
+        production_label: Production de SNAC
+        development_label: Développement du SNAC
       view:
         label: Voir dans SNAC
         agent_desc: Cliquez pour afficher cet agent dans SNAC. Cela ouvrira une nouvelle fenêtre.
@@ -12,6 +15,7 @@ fr:
         agent_confirm: Êtes-vous sûr de vouloir créer une nouvelle identité SNAC?
         resource_desc: Cela créera une nouvelle ressource dans SNAC à partir de cette ressource.
         resource_confirm: Êtes-vous sûr de vouloir créer une nouvelle ressource SNAC?
+        api_key_needed: Pour exporter cet élément vers SNAC, vous devez disposer d'une clé API définie dans les Préférences utilisateur pour l'environnement SNAC ci-dessus.
       link:
         label: Lien avec la SNAC
         agent_desc: Cela créera un lien au sein de cet agent vers une identité SNAC existante.

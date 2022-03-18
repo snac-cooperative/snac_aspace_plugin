@@ -2,6 +2,9 @@ es:
   actions:
     snac:
       label: SNAC
+      environment:
+        production_label: Producción SNAC
+        development_label: Desarrollo SNAC
       view:
         label: Ver en SNAC
         agent_desc: Haga clic para ver este agente en SNAC. Esto abrirá una nueva ventana.
@@ -12,6 +15,7 @@ es:
         agent_confirm: ¿Está seguro de que desea crear una nueva identidad SNAC?
         resource_desc: Esto creará un nuevo recurso dentro de SNAC a partir de este recurso.
         resource_confirm: ¿Está seguro de que desea crear un nuevo recurso SNAC?
+        api_key_needed: Para exportar este elemento a SNAC, debe tener una clave API definida en Preferencias de usuario para el entorno SNAC anterior.
       link:
         label: Vincular con SNAC
         agent_desc: Esto creará un enlace dentro de este agente a una identidad SNAC existente.
