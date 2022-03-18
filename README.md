@@ -61,7 +61,7 @@ If the background job is created successfully, you will be redirected to its pag
 
 Browse to the Import Data Background Job (ArchivesSpace -> Create -> Background Job -> Import Data -> SNAC JSON).
 
-The JSON input file must contain either a single instance of or an array of objects in the following format:
+The JSON input data specifying the record(s) to import must contain either a single instance of or an array of objects in the following format:
 
 ```
   {
@@ -74,6 +74,16 @@ The JSON input file must contain either a single instance of or an array of obje
 Notes:
 * the only currently supported `type` is "constellation"
 * only one of `id` or `json` is required; `id` is preferred if both are supplied
+* for objects specified by `id`, the currently configured SNAC Environment in User Preferences will be used for reading constellation data
+* to specify the SNAC Environment manually, wrap your data like so (this is how the SNAC Import does it):
+
+
+```
+  {
+    "snac_environment": "development", # or "production"
+    "records": ... your JSON input data above
+  }
+```
 
 ## Exporting to/Linking with SNAC
 
@@ -91,15 +101,15 @@ Agents are linked to SNAC via links to the SNAC identity within the Agent's Reco
 Resources are linked to SNAC via links to the SNAC resource within the Resource's External Documents section.
 
 ### Agent Export Options
-* `Include linked resources` --
-Selecting this option will export any Resource records that link to this agent,
+* `Include published linked resources` --
+Selecting this option will export any published Resource records that link to this agent,
 and generate resource relations for them within the newly-created SNAC identity.
 If any of the linked Resources have already been exported to SNAC,
 the existing SNAC resource will be used (i.e. duplicate SNAC resources are not created).
 
 ### Resource Export Options
-* `Include linked agents` --
-Selecting this option will export any Agent records that are linked by this Resource,
+* `Include published linked agents` --
+Selecting this option will export any published Agent records that are linked by this Resource,
 and generate a single resource relation to this Resource within the newly-created SNAC identities.
 If any of the linked Agents have already been exported to SNAC, they will be updated to
 include resource relations with the newly-created SNAC resource.
