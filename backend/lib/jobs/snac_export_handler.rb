@@ -22,7 +22,7 @@ class SnacExportHandler
     parsed = JSONModel.parse_reference(uri)
     type = parsed[:type]
 
-    @snac_prefs = SnacPreferences.new(Preference.current_preferences)
+    @snac_prefs = SnacPreferences.new(@json.job['snac_environment'])
     @link_helper = SnacLinkHelper.new(@snac_prefs)
 
     case type
@@ -174,7 +174,7 @@ class SnacExportHandler
 
     output "#{pfx} #{I18n.t('snac_job.export.linked_agent_checking_relations')}"
 
-    con = SnacConstellation.new(id)
+    con = SnacConstellation.new(@snac_prefs, id)
 
     # determine resource relation changes, if any
 
@@ -235,7 +235,7 @@ class SnacExportHandler
     snac_agent = agent_json
     snac_agent['linked_resources'] = linked_resources
 
-    con = SnacConstellation.new
+    con = SnacConstellation.new(@snac_prefs)
     con.export(snac_agent)
 
     output "#{pfx} #{I18n.t('snac_job.export.exported_to_snac')}: #{con.url}"
@@ -363,7 +363,7 @@ class SnacExportHandler
     snac_resource = resource_json
     snac_resource['holding_repo_id'] = repo_id
 
-    res = SnacResource.new
+    res = SnacResource.new(@snac_prefs)
     res.export(snac_resource)
 
     output "#{pfx} #{I18n.t('snac_job.export.exported_to_snac')}: #{res.url}"

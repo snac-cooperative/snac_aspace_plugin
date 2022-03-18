@@ -9,8 +9,8 @@ class SnacConstellation
   attr_accessor :constellation
 
 
-  def initialize(from = nil)
-    @prefs = SnacPreferences.new(Preference.current_preferences)
+  def initialize(prefs, from = nil)
+    @prefs = prefs
     @client = SnacApiClient.new(@prefs)
 
     # determine whether we were passed a SNAC constellation, or an ID to look one up
@@ -54,7 +54,7 @@ class SnacConstellation
 
   def import
     # returns an ArchivesSpace agent hash (used in snac_import jobs)
-    SnacImport.new.constellation_to_agent(@constellation)
+    SnacImport.new(@prefs).constellation_to_agent(@constellation)
   end
 
 

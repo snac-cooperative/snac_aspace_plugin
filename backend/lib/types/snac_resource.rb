@@ -9,8 +9,8 @@ class SnacResource
   attr_accessor :resource
 
 
-  def initialize(from = nil)
-    @prefs = SnacPreferences.new(Preference.current_preferences)
+  def initialize(prefs, from = nil)
+    @prefs = prefs
     @client = SnacApiClient.new(@prefs)
 
     # determine whether we were passed a SNAC resource, or an ID to look one up

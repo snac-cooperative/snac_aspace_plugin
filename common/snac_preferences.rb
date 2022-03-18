@@ -28,11 +28,11 @@ class SnacPreferences
     # * Preference.current_preferences (backend)
     # * user_prefs (frontend)
 
-    if from.key?('defaults')
+    if from.is_a?(Hash) && from.key?('defaults')
       from = from['defaults']
     end
 
-    env = get_env(from['snac_environment'])
+    env = get_env(from)
     key = from["snac_#{env}_api_key"] || ''
 
     @prefs = {:key => key, :env => env}
@@ -114,7 +114,15 @@ class SnacPreferences
   def get_env(from)
     return SNAC_ENV_DEFAULT if from.nil?
 
-    env = from.to_sym
+    if from.is_a?(Hash) && from.key?('snac_environment')
+      val = from['snac_environment']
+    elsif from.is_a?(String)
+      val = from
+    else
+      return SNAC_ENV_DEFAULT
+    end
+
+    env = val.to_sym
     return SNAC_ENV_DEFAULT unless SNAC_ENV_MAPPINGS.key?(env)
 
     env

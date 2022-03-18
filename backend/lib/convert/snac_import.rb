@@ -7,8 +7,8 @@ class SnacImport
   attr_reader :prefs
 
 
-  def initialize
-    @prefs = SnacPreferences.new(Preference.current_preferences)
+  def initialize(prefs)
+    @prefs = prefs
   end
 
 

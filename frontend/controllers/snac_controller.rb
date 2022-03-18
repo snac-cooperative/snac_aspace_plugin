@@ -36,8 +36,13 @@ class SnacController < ApplicationController
 
 
   def import
+    import_data = {
+      'snac_environment' => get_prefs.environment,
+      'records' => params[:records]
+    }
+
     json_file = ASUtils.tempfile('snac_import')
-    json_file.write(params[:records].to_json)
+    json_file.write(import_data.to_json)
     json_file.flush
     json_file.rewind
 

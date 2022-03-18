@@ -21,7 +21,7 @@ class SnacUnlinkHandler
     parsed = JSONModel.parse_reference(uri)
     type = parsed[:type]
 
-    @snac_prefs = SnacPreferences.new(Preference.current_preferences)
+    @snac_prefs = SnacPreferences.new(@json.job['snac_environment'])
     @link_helper = SnacLinkHelper.new(@snac_prefs)
 
     case type

@@ -21,7 +21,7 @@ class SnacLinkHandler
     parsed = JSONModel.parse_reference(uri)
     type = parsed[:type]
 
-    @snac_prefs = SnacPreferences.new(Preference.current_preferences)
+    @snac_prefs = SnacPreferences.new(@json.job['snac_environment'])
     @link_helper = SnacLinkHelper.new(@snac_prefs)
 
     case type
@@ -77,7 +77,7 @@ class SnacLinkHandler
     # load constellation to ensure it's valid and get its canonical url
     snac_id = @json.job['snac_source']
     output "#{pfx} #{I18n.t('snac_job.link.looking_up_snac_id')}: #{snac_id}"
-    con = SnacConstellation.new(snac_id)
+    con = SnacConstellation.new(@snac_prefs, snac_id)
 
     agent_json = @link_helper.agent_link(agent_json, con.url, con.ark)
 
@@ -110,7 +110,7 @@ class SnacLinkHandler
     # load resource to ensure it's valid and get its canonical url
     snac_id = @json.job['snac_source']
     output "#{pfx} #{I18n.t('snac_job.link.looking_up_snac_id')}: #{snac_id}"
-    res = SnacResource.new(snac_id)
+    res = SnacResource.new(@snac_prefs, snac_id)
 
     resource_json = @link_helper.resource_link(resource_json, res.url)
 

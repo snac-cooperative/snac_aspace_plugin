@@ -45,12 +45,22 @@ class SnacConverter < Converter
 
     # it could even be other things in the future... resources/holding reposoitories, etc.
 
-    if data.is_a?(Array)
-      data.each do |datum|
-        create_from(datum)
+    # use specified environment/wrapped records, if passed (typically via snac import plugin,
+    # or an astute user); otherwise, use the currently configured snac environment
+    if data.key?('snac_environment')
+      @snac_prefs = SnacPreferences.new(data['snac_environment'])
+      records = data['records']
+    else
+      @snac_prefs = SnacPreferences.new(Preference.current_preferences)
+      records = data
+    end
+
+    if records.is_a?(Array)
+      records.each do |record|
+        create_from(record)
       end
     else
-      create_from(data)
+      create_from(record)
     end
   end
 
@@ -85,7 +95,7 @@ class SnacConverter < Converter
       return
     end
 
-    agent_info = SnacConstellation.new(from).import
+    agent_info = SnacConstellation.new(@snac_prefs, from).import
 
     agent_hash = agent_info[:hash]
     agent_type = agent_info[:type]
