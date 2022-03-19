@@ -48,7 +48,7 @@ class SnacConverter < Converter
     # use specified environment/wrapped records, if passed (typically via snac import plugin,
     # or an astute user); otherwise, use the currently configured snac environment
     if data.key?('snac_environment')
-      @snac_prefs = SnacPreferences.new(data['snac_environment'])
+      @snac_prefs = SnacPreferences.new(Preference.current_preferences, data['snac_environment'])
       records = data['records']
     else
       @snac_prefs = SnacPreferences.new(Preference.current_preferences)

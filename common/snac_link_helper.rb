@@ -7,73 +7,128 @@ class SnacLinkHelper
 
   def initialize(prefs)
     @prefs = prefs
-    @env = @prefs.environment
   end
 
 
+  # agent methods
+
+
   def agent_snac_entry(json)
-    send("agent_snac_entry_#{@env}", json)
+    # returns the entry containing the snac link, if any
+    json['agent_record_identifiers'].find { |id| id['source'] == 'snac' && @prefs.is_my_url?(id['record_identifier']) }
   end
 
 
   def agent_snac_url(json)
-    send("agent_snac_url_#{@env}", json)
+    # returns the snac link if it exists
+    snac_entry = agent_snac_entry(json)
+    return '' if snac_entry.nil?
+    snac_entry['record_identifier']
   end
 
 
   def agent_snac_id(json)
-    send("agent_snac_id_#{@env}", json)
+    # returns the snac constellation id for the snac link if it exists, otherwise 0
+    snac_entry = agent_snac_entry(json)
+    return 0 if snac_entry.nil?
+    snac_entry['record_identifier'].split('/').last.to_i
   end
 
 
   def agent_exported?(json)
-    send("agent_exported_#{@env}?", json)
+    # returns true if this agent has a snac link for this snac environment
+    return !agent_snac_entry(json).nil?
   end
 
 
   def agent_link(json, url, ark = '')
-    send("agent_link_#{@env}", json, url, ark)
+    # adds a link for this snac environment, and also the ARK if it exists and we are working with production snac
+    has_primary_id = json['agent_record_identifiers'].map { |id| id['primary_identifier'] }.any?
+
+    json['agent_record_identifiers'] << {
+      'record_identifier' => url,
+      'primary_identifier' => !has_primary_id,
+      'source' => 'snac'
+    }
+
+    if @prefs.is_prod? && ark != ''
+      json['agent_record_identifiers'] << {
+        'record_identifier' => ark,
+        'primary_identifier' => false,
+        'source' => 'nad'
+      }
+    end
+
+    json
   end
 
 
   def agent_unlink(json)
-    send("agent_unlink_#{@env}", json)
+    # removes any links belonging to this snac environment, and also any ARKs if we are working with production snac
+    json['agent_record_identifiers'].reject! { |id| id['source'] == 'snac' && @prefs.is_my_url?(id['record_identifier']) }
+    json['agent_record_identifiers'].reject! { |id| id['record_identifier'].match(/ark:\/99166/) } if @prefs.is_prod?
+
+    json
   end
 
 
+  # resource methods
+
+
   def resource_snac_entry(json)
-    send("resource_snac_entry_#{@env}", json)
+    # returns the entry containing the snac link, if any
+    json['external_documents'].find { |ext| ext['title'] == 'snac' && @prefs.is_my_url?(ext['location']) }
   end
 
 
   def resource_snac_url(json)
-    send("resource_snac_url_#{@env}", json)
+    # returns the snac link if it exists
+    snac_entry = resource_snac_entry(json)
+    return '' if snac_entry.nil?
+    snac_entry['location']
   end
 
 
   def resource_snac_id(json)
-    send("resource_snac_id_#{@env}", json)
+    # returns the snac resource id for the snac link if it exists, otherwise 0
+    snac_entry = resource_snac_entry(json)
+    return 0 if snac_entry.nil?
+    snac_entry['location'].split('/').last.to_i
   end
 
 
   def resource_exported?(json)
-    send("resource_exported_#{@env}?", json)
+    # returns true if this resource has a snac link
+    return !resource_snac_entry(json).nil?
   end
 
 
-  def resource_link(json, url)
-    send("resource_link_#{@env}", json, url)
+  def resource_link(json, url, ignored = '')
+    # adds a link for this snac environment, and also the ARK if it exists and we are working with production snac
+    json['external_documents'] << {
+      'location' => url,
+      'title' => 'snac'
+    }
+
+    json
   end
 
 
   def resource_unlink(json)
-    send("resource_unlink_#{@env}", json)
+    # removes any links belonging to this snac environment, and also any ARKs if we are working with production snac
+    json['external_documents'].reject! { |ext| ext['title'] == 'snac' && @prefs.is_my_url?(ext['location']) }
+
+    json
   end
 
 
-  def exported?(json)
+  # convenience methods that attempt to divine underlying type
+  # and call the corresponding agent/resource methods above
+
+
+  def snac_entry(json)
     objtype = get_object_type(json)
-    send("#{objtype}_exported?", json)
+    send("#{objtype}_snac_entry", json)
   end
 
 
@@ -83,219 +138,37 @@ class SnacLinkHelper
   end
 
 
+  def snac_id(json)
+    objtype = get_object_type(json)
+    send("#{objtype}_snac_id", json)
+  end
+
+
+  def exported?(json)
+    objtype = get_object_type(json)
+    send("#{objtype}_exported?", json)
+  end
+
+
+  def link(json, url, ark = '')
+    objtype = get_object_type(json)
+    send("#{objtype}_link", json)
+  end
+
+
+  def unlink(json)
+    objtype = get_object_type(json)
+    send("#{objtype}_unlink", json)
+  end
+
+
+  # miscellaneous methods
+
+
   def get_object_type(json)
     return 'agent' if json.key?('agent_record_identifiers')
     return 'resource' if json.key?('external_documents')
     raise SnacLinkHelperException.new('unhandled object type')
-  end
-
-
-  private
-
-
-  def agent_snac_entry_production(json)
-    # returns the entry containing the snac link, if any
-    json['agent_record_identifiers'].find { |id| id['source'] == 'snac' }
-  end
-
-
-  def agent_snac_entry_development(json)
-    # returns the entry containing the snac link, if any
-    json['agent_record_identifiers'].find { |id| id['source'] == 'snac' }
-  end
-
-
-  def agent_snac_url_production(json)
-    # returns the snac link if it exists
-    snac_entry = agent_snac_entry(json)
-    return '' if snac_entry.nil?
-    snac_entry['record_identifier']
-  end
-
-
-  def agent_snac_url_development(json)
-    # returns the snac link if it exists
-    snac_entry = agent_snac_entry(json)
-    return '' if snac_entry.nil?
-    snac_entry['record_identifier']
-  end
-
-
-  def agent_snac_id_production(json)
-    # returns the snac constellation id for the snac link if it exists, otherwise 0
-    snac_entry = agent_snac_entry(json)
-    return 0 if snac_entry.nil?
-    snac_entry['record_identifier'].split('/').last.to_i
-  end
-
-
-  def agent_snac_id_development(json)
-    # returns the snac constellation id for the snac link if it exists, otherwise 0
-    snac_entry = agent_snac_entry(json)
-    return 0 if snac_entry.nil?
-    snac_entry['record_identifier'].split('/').last.to_i
-  end
-
-
-  def agent_exported_production?(json)
-    # returns true if this agent has a snac link
-    return !agent_snac_entry(json).nil?
-  end
-
-
-  def agent_exported_development?(json)
-    # returns true if this agent has a snac link
-    return !agent_snac_entry(json).nil?
-  end
-
-
-  def agent_link_production(json, url, ark = '')
-    has_primary_id = json['agent_record_identifiers'].map { |id| id['primary_identifier'] }.any?
-
-    json['agent_record_identifiers'] << {
-      'record_identifier' => url,
-      'primary_identifier' => !has_primary_id,
-      'source' => 'snac'
-    }
-
-    if ark != ''
-      json['agent_record_identifiers'] << {
-        'record_identifier' => ark,
-        'primary_identifier' => false,
-        'source' => 'nad'
-      }
-    end
-
-    json
-  end
-
-
-  def agent_link_development(json, url, ark = '')
-    has_primary_id = json['agent_record_identifiers'].map { |id| id['primary_identifier'] }.any?
-
-    json['agent_record_identifiers'] << {
-      'record_identifier' => url,
-      'primary_identifier' => !has_primary_id,
-      'source' => 'snac'
-    }
-
-    if ark != ''
-      json['agent_record_identifiers'] << {
-        'record_identifier' => ark,
-        'primary_identifier' => false,
-        'source' => 'nad'
-      }
-    end
-
-    json
-  end
-
-
-  def agent_unlink_production(json)
-    json['agent_record_identifiers'].reject! { |id| id['source'] == 'snac' }
-    json['agent_record_identifiers'].reject! { |id| id['record_identifier'].match(/ark:\/99166/) }
-    json['agent_record_identifiers'].reject! { |id| id['record_identifier'].match(/snaccooperative/) }
-
-    json
-  end
-
-
-  def agent_unlink_development(json)
-    json['agent_record_identifiers'].reject! { |id| id['source'] == 'snac' }
-    json['agent_record_identifiers'].reject! { |id| id['record_identifier'].match(/ark:\/99166/) }
-    json['agent_record_identifiers'].reject! { |id| id['record_identifier'].match(/snaccooperative/) }
-
-    json
-  end
-
-
-  def resource_snac_entry_production(json)
-    # returns the entry containing the snac link, if any
-    json['external_documents'].find { |ext| ext['title'] == 'snac' }
-  end
-
-
-  def resource_snac_entry_development(json)
-    # returns the entry containing the snac link, if any
-    json['external_documents'].find { |ext| ext['title'] == 'snac' }
-  end
-
-
-  def resource_snac_url_production(json)
-    # returns the snac link if it exists
-    snac_entry = resource_snac_entry(json)
-    return '' if snac_entry.nil?
-    snac_entry['location']
-  end
-
-
-  def resource_snac_url_development(json)
-    # returns the snac link if it exists
-    snac_entry = resource_snac_entry(json)
-    return '' if snac_entry.nil?
-    snac_entry['location']
-  end
-
-
-  def resource_snac_id_production(json)
-    # returns the snac resource id for the snac link if it exists, otherwise 0
-    snac_entry = resource_snac_entry(json)
-    return 0 if snac_entry.nil?
-    snac_entry['location'].split('/').last.to_i
-  end
-
-
-  def resource_snac_id_development(json)
-    # returns the snac resource id for the snac link if it exists, otherwise 0
-    snac_entry = resource_snac_entry(json)
-    return 0 if snac_entry.nil?
-    snac_entry['location'].split('/').last.to_i
-  end
-
-
-  def resource_exported_production?(json)
-    # returns true if this resource has a snac link
-    return !resource_snac_entry(json).nil?
-  end
-
-
-  def resource_exported_development?(json)
-    # returns true if this resource has a snac link
-    return !resource_snac_entry(json).nil?
-  end
-
-
-  def resource_link_production(json, url)
-    json['external_documents'] << {
-      'location' => url,
-      'title' => 'snac'
-    }
-
-    json
-  end
-
-
-  def resource_link_development(json, url)
-    json['external_documents'] << {
-      'location' => url,
-      'title' => 'snac'
-    }
-
-    json
-  end
-
-
-  def resource_unlink_production(json)
-    json['external_documents'].reject! { |ext| ext['title'] == 'snac' }
-
-    json
-  end
-
-
-  def resource_unlink_development(json)
-    json['external_documents'].reject! { |ext| ext['title'] == 'snac' }
-
-    json
   end
 
 

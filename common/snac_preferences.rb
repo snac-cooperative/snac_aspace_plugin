@@ -23,17 +23,23 @@ class SnacPreferences
   }
 
 
-  def initialize(from)
-    # from will be either:
+  def initialize(from, with_env = '')
+    # 'from' will be either:
     # * Preference.current_preferences (backend)
     # * user_prefs (frontend)
+    # 'with_env' overrides the environment specified in 'from'
 
     if from.is_a?(Hash) && from.key?('defaults')
       from = from['defaults']
     end
 
-    env = get_env(from)
-    key = from["snac_#{env}_api_key"] || ''
+    if with_env == ''
+      env = get_env(from)
+    else
+      env = get_env(with_env)
+    end
+
+    key = from["snac_#{env.to_s}_api_key"] || ''
 
     @prefs = {:key => key, :env => env}
   end
@@ -96,6 +102,23 @@ class SnacPreferences
 
   def is_dev?
     @prefs[:env] == SNAC_ENV_DEV
+  end
+
+
+  def is_my_url?(url)
+    # checks to see if this url belongs to our snac environment
+    url.include?(web_url)
+  end
+
+
+  def debug?
+    begin
+      val = AppConfig[:snac_debug]
+    rescue
+      val = false
+    end
+
+    val
   end
 
 
