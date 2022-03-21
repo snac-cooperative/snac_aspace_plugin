@@ -71,7 +71,7 @@ class SnacImport
       'record_identifier' => ark,
       'primary_identifier' => false,
       'source' => 'nad'
-    }
+    } if @prefs.is_prod?
 
     @agent_hash['agent_record_identifiers'] = ids
   end
