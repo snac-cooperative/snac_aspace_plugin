@@ -47,7 +47,7 @@
 
         <% unless @agent.agent_type.to_s == "agent_software" %>
           <div class="btn btn-inline-form">
-            <%= link_to I18n.t("actions.export_eac"), {:controller => :exports, :action => :download_eac, :id => @agent.id, :type => @agent.agent_type}, :class => "btn btn-sm btn-default" %>
+            <%= link_to I18n.t("actions.export_eac"), {:controller => :exports, :action => :download_eac, :id => @agent.id, :type => @agent.  agent_type}, :class => "btn btn-sm btn-default" %>
           </div>
 
           <div class="btn btn-inline-form">
