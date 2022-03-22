@@ -6,18 +6,29 @@ en:
         production_label: SNAC Production
         development_label: SNAC Development
       view:
-        label: View in SNAC
+        tab_label: View
+        button_label: View in SNAC
         agent_desc: Click to view this agent in SNAC. This will open a new window.
         resource_desc: Click to view this resource in SNAC. This will open a new window.
       export:
-        label: Export to SNAC
+        tab_label: Export
+        button_label: Export to SNAC
         agent_desc: This will create a new identity within SNAC from this agent.
         agent_confirm: Are you sure you want to create a new SNAC identity?
         resource_desc: This will create a new resource within SNAC from this resource.
         resource_confirm: Are you sure you want to create a new SNAC resource?
         api_key_needed: To export this item to SNAC, you need to have an API key defined in User Preferences for the SNAC environment above.
+      sync:
+        tab_label: Sync
+        button_label: Sync with SNAC
+        agent_desc: This will synchronize this agent with the existing identity in SNAC.
+        agent_confirm: Are you sure you want to synchronize this agent with SNAC?
+        resource_desc: This will synchronize this resource with the existing resource in SNAC.
+        resource_confirm: Are you sure you want to synchronize this resource with SNAC?
+        api_key_needed: To synchronize this item with SNAC, you need to have an API key defined in User Preferences for the SNAC environment above.
       link:
-        label: Link with SNAC
+        tab_label: Link
+        button_label: Link with SNAC
         agent_desc: This will create a link within this agent to an existing SNAC identity.
         agent_note: You can search SNAC for the identity you wish to link with, or provide the SNAC ID if you know it.
         agent_confirm: Are you sure you want to create a link to SNAC for this agent?
@@ -30,7 +41,8 @@ en:
         showing_results: "Showing %{count} matching records:"
         no_results: No matching records found
       unlink:
-        label: Unlink with SNAC
+        tab_label: Unlink
+        button_label: Unlink with SNAC
         agent_desc: This will remove any links within this agent to SNAC identities.
         agent_confirm: Are you sure you want to remove any links to SNAC for this agent?
         resource_desc: This will remove any links within this resource to SNAC resources.
@@ -86,6 +98,8 @@ en:
       snac_source: SNAC Source
   snac_export_job:
     _singular: SNAC Export Job
+  snac_sync_job:
+    _singular: SNAC Sync Job
   snac_link_job:
     _singular: SNAC Link Job
   snac_unlink_job:

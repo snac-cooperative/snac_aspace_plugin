@@ -8,10 +8,10 @@ class SnacController < ApplicationController
 
   class SnacControllerException < StandardError; end
 
-  set_access_control "update_agent_record" => [:search, :index, :import, :export, :link, :unlink]
-  set_access_control "update_resource_record" => [:export, :link, :unlink]
+  set_access_control "update_agent_record" => [:search, :index, :import, :export, :sync, :link, :unlink]
+  set_access_control "update_resource_record" => [:export, :sync, :link, :unlink]
   set_access_control "import_records" => [:search, :index, :import]
-  set_access_control "create_job" => [:export, :link, :unlink]
+  set_access_control "create_job" => [:export, :sync, :link, :unlink]
   set_access_control "view_repository" => [:resolve, :lookup]
 
 
@@ -60,6 +60,20 @@ class SnacController < ApplicationController
                  "jsonmodel_type" => "snac_export_job",
                  "snac_environment" => get_prefs.environment,
                  "action" => "export",
+                 "uris" => params[:uris],
+                 "include_linked_resources" => params[:include_linked_resources] == '1',
+                 "include_linked_agents" => params[:include_linked_agents] == '1'
+               },
+               {})
+  end
+
+
+  def sync
+    create_job("snac_job", {
+                 "job_type" => "snac_job",
+                 "jsonmodel_type" => "snac_sync_job",
+                 "snac_environment" => get_prefs.environment,
+                 "action" => "sync",
                  "uris" => params[:uris],
                  "include_linked_resources" => params[:include_linked_resources] == '1',
                  "include_linked_agents" => params[:include_linked_agents] == '1'

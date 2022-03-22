@@ -6,18 +6,29 @@ fr:
         production_label: Production de SNAC
         development_label: Développement du SNAC
       view:
-        label: Voir dans SNAC
+        tab_label: Voir
+        button_label: Voir dans SNAC
         agent_desc: Cliquez pour afficher cet agent dans SNAC. Cela ouvrira une nouvelle fenêtre.
         resource_desc: Cliquez pour afficher cette ressource dans SNAC. Cela ouvrira une nouvelle fenêtre.
       export:
-        label: Exporter vers SNAC
+        tab_label: Exporter
+        button_label: Exporter vers SNAC
         agent_desc: Cela créera une nouvelle identité au sein de SNAC à partir de cet agent.
         agent_confirm: Êtes-vous sûr de vouloir créer une nouvelle identité SNAC?
         resource_desc: Cela créera une nouvelle ressource dans SNAC à partir de cette ressource.
         resource_confirm: Êtes-vous sûr de vouloir créer une nouvelle ressource SNAC?
         api_key_needed: Pour exporter cet élément vers SNAC, vous devez disposer d'une clé API définie dans les Préférences utilisateur pour l'environnement SNAC ci-dessus.
+      sync:
+        tab_label: Synchroniser
+        button_label: Synchroniser avec le SNAC
+        agent_desc: Cela synchronisera cet agent avec l'identité existante dans SNAC.
+        agent_confirm: Voulez-vous vraiment synchroniser cet agent avec SNAC?
+        resource_desc: Cela synchronisera cette ressource avec la ressource existante dans SNAC.
+        resource_confirm: Voulez-vous vraiment synchroniser cette ressource avec SNAC?
+        api_key_needed: Pour synchroniser cet élément avec SNAC, vous devez disposer d'une clé API définie dans les Préférences utilisateur pour l'environnement SNAC ci-dessus.
       link:
-        label: Lien avec la SNAC
+        tab_label: Lien
+        button_label: Lien avec la SNAC
         agent_desc: Cela créera un lien au sein de cet agent vers une identité SNAC existante.
         agent_note: L'ID SNAC doit correspondre à une identité dans votre environnement SNAC préféré
         agent_confirm: Voulez-vous vraiment créer un lien vers SNAC pour cet agent?
@@ -30,7 +41,8 @@ fr:
         showing_results: "Affichage de %{count} enregistrements correspondants:"
         no_results: Aucun enregistrements correspondants trouvés
       unlink:
-        label: Dissocier avec SNAC
+        tab_label: Dissocier
+        button_label: Dissocier avec SNAC
         agent_desc: Cela supprimera tous les liens au sein de cet agent vers les identités SNAC.
         agent_confirm: Voulez-vous vraiment supprimer les liens vers SNAC pour cet agent?
         resource_desc: Cela supprimera tous les liens au sein de cette ressource vers les ressources SNAC.
@@ -85,7 +97,9 @@ fr:
       include_linked_agents: Inclure les Agents Liés Publiées
       snac_source: Source SNAC
   snac_export_job:
-    _singular: Travail d'exportation SNAC
+    _singular: Tâche d'exportation SNAC
+  snac_sync_job:
+    _singular: Tâche de synchronisation SNAC
   snac_link_job:
     _singular: Tâche de liaison SNAC
   snac_unlink_job:

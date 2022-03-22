@@ -1,4 +1,5 @@
 snac_envs = [ "production", "development" ]
+snac_job_actions = ['export', 'sync', 'link', 'unlink']
 
 {
   :schema => {
@@ -16,7 +17,7 @@ snac_envs = [ "production", "development" ]
       "action" => {
         "type" => "string",
         "ifmissing" => "error",
-        "enum" => ['export', 'link', 'unlink']
+        "enum" => snac_job_actions
       },
 
       "uris" => {
