@@ -82,19 +82,17 @@
 }
 
 .snac-dropdown-menu #snac-environment-label {
-  /*
-   * bootstrap alert/alert-info settings.
-   *
-   * this is a kludge to prevent ASpace from adding
-   * close buttons when set up as regular alerts
-   */
 
-  padding: 15px;
-  margin-bottom: 20px;
+  /* attempt to mimic the colors from snac's homepage */
+
+  padding: 5px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
   border: 1px solid transparent;
   border-radius: 4px;
 
-  background-color: #d9edf7;
-  border-color: #bce8f1;
-  color: #31708f;
+  background-color: #1f5c7c; /* snac header linear gradient from value */
+  border-color: #18596f;     /* snac header linear gradient to value */
+  color: #d6e5f4;            /* snac header text value */
 }
