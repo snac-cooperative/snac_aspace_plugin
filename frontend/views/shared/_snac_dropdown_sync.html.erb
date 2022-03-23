@@ -1,0 +1,36 @@
+<% if snac_prefs.has_api_key? %>
+
+  <p><%= I18n.t("actions.snac.sync.#{objtype}_desc") %></p>
+
+  <%= form_with url: url_for({:controller => :snac, :action => :sync, :uris => [obj['uri']]}), local: false do |f| %>
+
+    <fieldset>
+      <% case objtype %>
+      <% when 'agent' %>
+        <div>
+          <%= f.check_box "include_linked_resources" %>
+          <%= I18n.t('actions.snac.options.include_linked_resources') %>
+        </div>
+      <% when 'resource' %>
+        <div>
+          <%= f.check_box "include_linked_agents" %>
+          <%= I18n.t('actions.snac.options.include_linked_agents') %>
+        </div>
+      <% end %>
+    </fieldset>
+
+    <div class="form-actions">
+      <%= f.submit I18n.t("actions.snac.sync.button_label"),
+            :id => "snac-sync-submit-button",
+            :class => "btn snac-sync-button btn-default pull-left",
+            data: { confirm: I18n.t("actions.snac.sync.#{objtype}_confirm"), disable_with: I18n.t("actions.snac.sync.button_label") }
+      %>
+
+      <a class="btn btn-cancel btn-default pull-right" href="#"><%= I18n.t("actions.cancel") %></a>
+    </div>
+
+  <% end %>
+
+<% else %>
+  <p><%= I18n.t("actions.snac.sync.api_key_needed") %></p>
+<% end %>

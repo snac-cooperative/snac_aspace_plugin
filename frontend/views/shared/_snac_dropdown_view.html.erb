@@ -1,0 +1,7 @@
+<p><%= I18n.t("actions.snac.view.#{objtype}_desc") %></p>
+
+<div class="form-actions">
+  <%= link_to I18n.t("actions.snac.view.button_label"), link_helper.snac_url(obj), :class => "btn btn-default pull-left", target: '_blank', rel: 'nofollow' %>
+
+  <a class="btn btn-cancel btn-default pull-right" href="#"><%= I18n.t("actions.cancel") %></a>
+</div>

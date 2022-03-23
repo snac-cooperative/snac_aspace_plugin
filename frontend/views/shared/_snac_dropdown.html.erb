@@ -25,113 +25,33 @@
 
         <li>
           <ul class="nav nav-tabs" id="snac-tabs" role="tablist">
-
             <li class="nav-item active">
               <a class="nav-link" id="snac-view-tab" data-toggle="tab" href="#snac-view-pane" role="tab" aria-controls="snac-view-pane" aria-selected="true">
                 <%= I18n.t("actions.snac.view.tab_label") %>
               </a>
             </li>
-
             <li class="nav-item">
               <a class="nav-link" id="snac-sync-tab" data-toggle="tab" href="#snac-sync-pane" role="tab" aria-controls="snac-sync-pane" aria-selected="false">
                 <%= I18n.t("actions.snac.sync.tab_label") %>
               </a>
             </li>
-
             <li class="nav-item">
               <a class="nav-link" id="snac-unlink-tab" data-toggle="tab" href="#snac-unlink-pane" role="tab" aria-controls="snac-unlink-pane" aria-selected="false">
                 <%= I18n.t("actions.snac.unlink.tab_label") %>
               </a>
             </li>
-
           </ul>
 
           <div class="tab-content" id="snac-tab-content">
-
             <div class="tab-pane active" id="snac-view-pane" role="tabpanel" aria-labelledby="snac-view-tab">
-              <p><%= I18n.t("actions.snac.view.#{objtype}_desc") %></p>
-
-              <div class="form-actions">
-                <%= link_to I18n.t("actions.snac.view.button_label"), link_helper.snac_url(obj), :class => "btn btn-default pull-left", target: '_blank', rel: 'nofollow' %>
-
-                <a class="btn btn-cancel btn-default pull-right" href="#"><%= I18n.t("actions.cancel") %></a>
-              </div>
+              <%= render_aspace_partial :partial => "shared/snac_dropdown_view", :locals => {:snac_prefs => snac_prefs, :link_helper => link_helper, :obj => obj, :objtype => objtype} %>
             </div>
-
             <div class="tab-pane" id="snac-sync-pane" role="tabpanel" aria-labelledby="snac-sync-tab">
-
-              <% if snac_prefs.has_api_key? %>
-
-                <p><%= I18n.t("actions.snac.sync.#{objtype}_desc") %></p>
-
-                <%= form_with url: url_for({:controller => :snac, :action => :sync, :uris => [obj['uri']]}), local: false do |f| %>
-
-                  <fieldset>
-                    <% case objtype %>
-                    <% when 'agent' %>
-                      <div>
-                        <%= f.check_box "include_linked_resources" %>
-                        <%= I18n.t('actions.snac.options.include_linked_resources') %>
-                      </div>
-                    <% when 'resource' %>
-                      <div>
-                        <%= f.check_box "include_linked_agents" %>
-                        <%= I18n.t('actions.snac.options.include_linked_agents') %>
-                      </div>
-                    <% end %>
-                  </fieldset>
-
-                  <div class="form-actions">
-                    <%= f.submit I18n.t("actions.snac.sync.button_label"),
-                          :id => "snac-sync-submit-button",
-                          :class => "btn snac-sync-button btn-default pull-left",
-                          data: { confirm: I18n.t("actions.snac.sync.#{objtype}_confirm"), disable_with: I18n.t("actions.snac.sync.button_label") }
-                    %>
-
-                    <a class="btn btn-cancel btn-default pull-right" href="#"><%= I18n.t("actions.cancel") %></a>
-                  </div>
-
-                <% end %>
-
-              <% else %>
-                <p><%= I18n.t("actions.snac.sync.api_key_needed") %></p>
-              <% end %>
-
+              <%= render_aspace_partial :partial => "shared/snac_dropdown_sync", :locals => {:snac_prefs => snac_prefs, :link_helper => link_helper, :obj => obj, :objtype => objtype} %>
             </div>
-
             <div class="tab-pane" id="snac-unlink-pane" role="tabpanel" aria-labelledby="snac-unlink-tab">
-              <p><%= I18n.t("actions.snac.unlink.#{objtype}_desc") %></p>
-
-              <%= form_with url: url_for({:controller => :snac, :action => :unlink, :uris => [obj['uri']]}), local: false do |f| %>
-
-                <fieldset>
-                  <% case objtype %>
-                  <% when 'agent' %>
-                    <div>
-                      <%= f.check_box "include_linked_resources" %>
-                      <%= I18n.t('actions.snac.options.include_linked_resources') %>
-                    </div>
-                  <% when 'resource' %>
-                    <div>
-                      <%= f.check_box "include_linked_agents" %>
-                      <%= I18n.t('actions.snac.options.include_linked_agents') %>
-                    </div>
-                  <% end %>
-                </fieldset>
-
-                <div class="form-actions">
-                  <%= f.submit I18n.t("actions.snac.unlink.button_label"),
-                        :id => "snac-unlink-submit-button",
-                        :class => "btn snac-unlink-button btn-default pull-left",
-                        data: { confirm: I18n.t("actions.snac.unlink.#{objtype}_confirm"), disable_with: I18n.t("actions.snac.unlink.button_label") }
-                  %>
-
-                  <a class="btn btn-cancel btn-default pull-right" href="#"><%= I18n.t("actions.cancel") %></a>
-                </div>
-
-              <% end %>
+              <%= render_aspace_partial :partial => "shared/snac_dropdown_unlink", :locals => {:snac_prefs => snac_prefs, :link_helper => link_helper, :obj => obj, :objtype => objtype} %>
             </div>
-
           </div>
         </li>
 
@@ -139,136 +59,26 @@
 
         <li>
           <ul class="nav nav-tabs" id="snac-tabs" role="tablist">
-
             <li class="nav-item active">
               <a class="nav-link" id="snac-link-tab" data-toggle="tab" href="#snac-link-pane" role="tab" aria-controls="snac-link-pane" aria-selected="true">
                 <%= I18n.t("actions.snac.link.tab_label") %>
               </a>
             </li>
-
             <li class="nav-item">
               <a class="nav-link" id="snac-export-tab" data-toggle="tab" href="#snac-export-pane" role="tab" aria-controls="snac-export-pane" aria-selected="false">
                 <%= I18n.t("actions.snac.export.tab_label") %>
               </a>
             </li>
-
           </ul>
 
           <div class="tab-content" id="snac-tab-content">
-
             <div class="tab-pane active" id="snac-link-pane" role="tabpanel" aria-labelledby="snac-link-tab">
-
-              <p><%= I18n.t("actions.snac.link.#{objtype}_desc") %> <%= I18n.t("actions.snac.link.#{objtype}_note") %></p>
-
-              <div class="panel panel-default" id="snac-link-resolve">
-
-                <div class="container-fluid">
-
-                  <div class="row">
-
-                    <div class="col-md-12">
-                      <%= form_with url: url_for({:controller => :snac, :action => :resolve, :type => objtype, :uri => obj['uri']}), local: false do |f| %>
-
-                        <%= I18n.t("actions.snac.options.#{objtype}_search_term") %>:
-                        <%= f.text_field "snac_term", id: "snac-link-snac-term", value: obj['title'], class: "form-control" %>
-
-                        <%= button_tag I18n.t("actions.snac.link.reset"), type: 'reset', id: 'snac-link-reset-button', class: 'btn btn-sm btn-default pull-left' %>
-
-                        <%= f.submit I18n.t("actions.snac.link.resolve"),
-                              :id => "snac-link-resolve-button",
-                              :class => "btn btn-sm btn-default pull-right"
-                        %>
-                      <% end %>
-                    </div>
-
-                    <div class="col-md-12">
-
-                      <br>
-
-                      <div class="panel panel-default hide" id="snac-link-resolve-results">
-                      </div>
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-              <%= form_with url: url_for({:controller => :snac, :action => :lookup, :type => objtype, :uri => obj['uri']}), id: "snac-link-lookup-form", class: "hide", local: false do |f| %>
-                <%= f.text_field "snac_source", id: "snac-link-lookup-snac-source", class: "hide" %>
-              <% end %>
-
-              <%= form_with url: url_for({:controller => :snac, :action => :link, :uris => [obj['uri']]}), local: false do |f| %>
-
-                <fieldset>
-                  <div class="text-center">
-                    <%= I18n.t('actions.snac.options.snac_source') %>:
-                    <%= f.text_field "snac_source", id: "snac-link-snac-source", size: 10 %>
-                    <%= button_tag I18n.t("actions.snac.link.lookup"), type: 'button', id: 'snac-link-lookup-button', class: 'btn btn-sm btn-default', disabled: "" %>
-                  </div>
-                </fieldset>
-
-                <div class="panel panel-default hide" id="snac-link-lookup-results">
-                </div>
-
-                <div class="form-actions">
-                  <%= f.submit I18n.t("actions.snac.link.button_label"),
-                        :id => "snac-link-submit-button",
-                        :class => "btn snac-link-button btn-default pull-left",
-                        :disabled => "",
-                        data: { confirm: I18n.t("actions.snac.link.#{objtype}_confirm"), disable_with: I18n.t("actions.snac.link.button_label") }
-                  %>
-
-                  <a class="btn btn-cancel btn-default pull-right" href="#"><%= I18n.t("actions.cancel") %></a>
-                </div>
-
-              <% end %>
+              <%= render_aspace_partial :partial => "shared/snac_dropdown_link", :locals => {:snac_prefs => snac_prefs, :link_helper => link_helper, :obj => obj, :objtype => objtype} %>
             </div>
-
             <div class="tab-pane" id="snac-export-pane" role="tabpanel" aria-labelledby="snac-export-tab">
-
-              <% if snac_prefs.has_api_key? %>
-
-                <p><%= I18n.t("actions.snac.export.#{objtype}_desc") %></p>
-
-                <%= form_with url: url_for({:controller => :snac, :action => :export, :uris => [obj['uri']]}), local: false do |f| %>
-
-                  <fieldset>
-                    <% case objtype %>
-                    <% when 'agent' %>
-                      <div>
-                        <%= f.check_box "include_linked_resources" %>
-                        <%= I18n.t('actions.snac.options.include_linked_resources') %>
-                      </div>
-                    <% when 'resource' %>
-                      <div>
-                        <%= f.check_box "include_linked_agents" %>
-                        <%= I18n.t('actions.snac.options.include_linked_agents') %>
-                      </div>
-                    <% end %>
-                  </fieldset>
-
-                  <div class="form-actions">
-                    <%= f.submit I18n.t("actions.snac.export.button_label"),
-                          :id => "snac-export-submit-button",
-                          :class => "btn snac-export-button btn-default pull-left",
-                          data: { confirm: I18n.t("actions.snac.export.#{objtype}_confirm"), disable_with: I18n.t("actions.snac.export.button_label") }
-                    %>
-
-                    <a class="btn btn-cancel btn-default pull-right" href="#"><%= I18n.t("actions.cancel") %></a>
-                  </div>
-
-                <% end %>
-
-              <% else %>
-                <p><%= I18n.t("actions.snac.export.api_key_needed") %></p>
-              <% end %>
-
+              <%= render_aspace_partial :partial => "shared/snac_dropdown_export", :locals => {:snac_prefs => snac_prefs, :link_helper => link_helper, :obj => obj, :objtype => objtype} %>
             </div>
-
           </div>
-
         </li>
 
       <% end %>
