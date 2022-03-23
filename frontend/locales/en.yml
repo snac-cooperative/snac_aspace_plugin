@@ -116,7 +116,7 @@ en:
     import_type_snac_json_desc: Import data from SNAC JSON (either a single entry or an array of them)
   plugins:
     snac:
-      label: SNAC Import
+      label: SNAC Agent Import
       search:
         name_entry: Name Entry
       actions:
@@ -135,6 +135,7 @@ en:
         import_success_message: Redirecting to the job status page...
         import_error: Error while importing from SNAC
         search_error: Search Error
+        aspace_permissions_needed: To import agents from SNAC, you need to have permissions to create jobs, import records, and update agent records.
       result_summary: "Page %{page} - Showing results %{first_record_index} to %{last_record_index} of %{hit_count} matches"
       preference_section: SNAC Settings
     defaults:

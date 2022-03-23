@@ -1,52 +1,62 @@
 <!-- Modified by SNAC -->
 <%= setup_context :title => "SNAC Search" %>
 
-<div class="row">
+<h4 id="<%= "snac-#{@prefs.environment}-label" %>" class="snac-environment-label text-center">
+  <%= I18n.t("actions.snac.environment.#{@prefs.environment}_label") %>
+</h4>
+
+<div id="snac-import-row" class="row">
   <div class="col-md-8">
-    <h2><%= I18n.t("plugins.snac.label") %> (<%= link_to @prefs.env_label, @prefs.web_url, target: '_blank', rel: 'nofollow' %>)</h2>
+    <h2><%= I18n.t("plugins.snac.label") %></h2>
 
     <%= render_aspace_partial :partial => "shared/flash_messages" %>
 
-    <%= form_tag({:controller => :snac, :action => :search}, {:id => "snac_search", :class => "form-search", :method => "GET"}) do |form| %>
+    <% if user_can?('create_job') && user_can?('import_records') && user_can?('update_agent_record') %>
+      <%= form_tag({:controller => :snac, :action => :search}, {:id => "snac_search", :class => "form-search", :method => "GET"}) do |form| %>
 
-    <div class='control-group form-group required'>
-      <label class='control-label' for="name-entry-search-query"><%= I18n.t("plugins.snac.search.name_entry") %></label>
-      <div class='controls'>
-        <input type="text" name="name_entry" class="name-entry-search-query snac-name-input input-large" id="name-entry-search-query"></input>
+      <div class='control-group form-group required'>
+        <label class='control-label' for="name-entry-search-query"><%= I18n.t("plugins.snac.search.name_entry") %></label>
+        <div class='controls'>
+          <input type="text" name="name_entry" class="name-entry-search-query snac-name-input input-large" id="name-entry-search-query"></input>
+        </div>
       </div>
-    </div>
 
-    <div class='control-group form-group'>
-      <button type="submit" class="btn btn-primary btn-default">
-        <%= image_tag "archivesspace/btn-busy.gif", :class=>"btn-busy-icon" %>
-        <%= I18n.t("plugins.snac.actions.search") %>
-      </button>
-    </div>
-    <%= hidden_field_tag "page", @page %>
-    <%= hidden_field_tag "records_per_page", @records_per_page %>
+      <div class='control-group form-group'>
+        <button type="submit" class="btn btn-primary btn-default">
+          <%= image_tag "archivesspace/btn-busy.gif", :class=>"btn-busy-icon" %>
+          <%= I18n.t("plugins.snac.actions.search") %>
+        </button>
+      </div>
+      <%= hidden_field_tag "page", @page %>
+      <%= hidden_field_tag "records_per_page", @records_per_page %>
+      <% end %>
+
+      <div id="results"></div>
+    <% else %>
+      <p><%= I18n.t("plugins.snac.messages.aspace_permissions_needed") %></p>
     <% end %>
-
-    <div id="results"></div>
   </div>
   <div class="col-md-4">
-    <%= form_tag({:controller => :snac, :action => :import}, {:id => "snac_import", remote: true}) do |form| %>
-    <div class="selected-container" data-spy="affix">
-      <div class="alert alert-info"><%= I18n.t("plugins.snac.messages.none_selected") %></div>
-      <div id="selected"></div>
-      <button id="import-selected" class="btn btn-primary btn-default" disabled="disabled" data-confirm="<%= I18n.t("plugins.snac.actions.import_confirm") %>">
-        <%= image_tag "archivesspace/btn-busy.gif", :class=>"btn-busy-icon" %>
-        <%= I18n.t("plugins.snac.actions.import") %>
-      </button>
-    </div>
+    <% if user_can?('create_job') && user_can?('import_records') && user_can?('update_agent_record') %>
+      <%= form_tag({:controller => :snac, :action => :import}, {:id => "snac_import", remote: true}) do |form| %>
+      <div class="selected-container" data-spy="affix">
+        <div class="alert alert-info"><%= I18n.t("plugins.snac.messages.none_selected") %></div>
+        <div id="selected"></div>
+        <button id="import-selected" class="btn btn-primary btn-default" disabled="disabled" data-confirm="<%= I18n.t("plugins.snac.actions.import_confirm") %>">
+          <%= image_tag "archivesspace/btn-busy.gif", :class=>"btn-busy-icon" %>
+          <%= I18n.t("plugins.snac.actions.import") %>
+        </button>
+      </div>
+      <% end %>
     <% end %>
   </div>
-
 </div>
 
 <script src="<%= "#{AppConfig[:frontend_proxy_prefix]}assets/snac.js" %>"></script>
 <script src="<%= "#{AppConfig[:frontend_proxy_prefix]}assets/highlight.js/highlight.pack.js" %>"></script>
 
-<link href="<%= "#{AppConfig[:frontend_proxy_prefix]}assets/styles/snac.css" %>" media="all" rel="stylesheet" type="text/css">
+<link href="<%= "#{AppConfig[:frontend_proxy_prefix]}assets/styles/snac-import.css" %>" media="all" rel="stylesheet" type="text/css">
+<link href="<%= "#{AppConfig[:frontend_proxy_prefix]}assets/styles/snac-common.css" %>" media="all" rel="stylesheet" type="text/css">
 <link href="<%= "#{AppConfig[:frontend_proxy_prefix]}assets/highlight.js/styles/tomorrow.css" %>" media="all" rel="stylesheet" type="text/css">
 
 

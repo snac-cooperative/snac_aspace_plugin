@@ -11,7 +11,7 @@ class SnacController < ApplicationController
   set_access_control "update_agent_record" => [:search, :index, :import, :export, :sync, :link, :unlink]
   set_access_control "update_resource_record" => [:export, :sync, :link, :unlink]
   set_access_control "import_records" => [:search, :index, :import]
-  set_access_control "create_job" => [:export, :sync, :link, :unlink]
+  set_access_control "create_job" => [:import, :export, :sync, :link, :unlink]
   set_access_control "view_repository" => [:resolve, :lookup]
 
 

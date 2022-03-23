@@ -76,3 +76,7 @@
   border-bottom: 1px solid #Fafafa;
   padding: 5px 0;
 }
+
+#snac-import-row {
+  margin-bottom: 15px;
+}
