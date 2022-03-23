@@ -17,7 +17,8 @@ es:
         agent_confirm: ¿Está seguro de que desea crear una nueva identidad SNAC?
         resource_desc: Esto creará un nuevo recurso dentro de SNAC a partir de este recurso.
         resource_confirm: ¿Está seguro de que desea crear un nuevo recurso SNAC?
-        api_key_needed: Para exportar este elemento a SNAC, debe tener una clave API definida en Preferencias de usuario para el entorno SNAC anterior.
+        snac_api_key_needed: Para exportar este elemento a SNAC, debe tener una clave API definida en Preferencias de usuario para el entorno SNAC anterior.
+        aspace_permissions_needed: Para exportar este elemento a SNAC, debe tener permisos para crear trabajos y actualizar los registros de agentes y recursos.
       sync:
         tab_label: Sincronizar
         button_label: Sincronizar con SNAC
@@ -25,7 +26,8 @@ es:
         agent_confirm: ¿Está seguro de que desea sincronizar este agente con SNAC?
         resource_desc: Esto sincronizará este recurso con el recurso existente en SNAC.
         resource_confirm: ¿Está seguro de que desea sincronizar este recurso con SNAC?
-        api_key_needed: Para sincronizar este elemento con SNAC, debe tener una clave API definida en Preferencias de usuario para el entorno SNAC anterior.
+        snac_api_key_needed: Para sincronizar este elemento con SNAC, debe tener una clave API definida en Preferencias de usuario para el entorno SNAC anterior.
+        aspace_permissions_needed: Para sincronizar este elemento con SNAC, debe tener permisos para crear trabajos y actualizar los registros de agentes y recursos.
       link:
         tab_label: Vincular
         button_label: Vincular con SNAC
