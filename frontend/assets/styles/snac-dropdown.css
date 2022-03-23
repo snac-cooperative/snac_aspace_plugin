@@ -81,18 +81,29 @@
   margin: 0 15px;
 }
 
-.snac-dropdown-menu #snac-environment-label {
-
-  /* attempt to mimic the colors from snac's homepage */
-
+.snac-dropdown-menu .snac-environment-label {
   padding: 5px;
   margin-bottom: 10px;
   margin-left: 10px;
   margin-right: 10px;
   border: 1px solid transparent;
   border-radius: 4px;
+}
+
+.snac-dropdown-menu #snac-development-label {
+
+  /* attempt to mimic some of the colors from the snac-dev homepage */
+
+  background-color: #481f7d; /* snac header linear gradient from value */
+  border-color: #3d1970;     /* snac header linear gradient to value */
+  color: white;            /* snac header text value (#d6e5f4) was a bit too dark */
+}
+
+.snac-dropdown-menu #snac-production-label {
+
+  /* attempt to mimic some of the colors from the snac homepage */
 
   background-color: #1f5c7c; /* snac header linear gradient from value */
   border-color: #18596f;     /* snac header linear gradient to value */
-  color: #d6e5f4;            /* snac header text value */
+  color: white;            /* snac header text value (#d6e5f4) was a bit too dark */
 }
