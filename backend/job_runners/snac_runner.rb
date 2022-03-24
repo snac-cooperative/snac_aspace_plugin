@@ -1,5 +1,7 @@
 require_relative '../lib/jobs/snac_export_handler'
 require_relative '../lib/jobs/snac_sync_handler'
+require_relative '../lib/jobs/snac_push_handler'
+require_relative '../lib/jobs/snac_pull_handler'
 require_relative '../lib/jobs/snac_link_handler'
 require_relative '../lib/jobs/snac_unlink_handler'
 
@@ -8,6 +10,8 @@ class SnacRunner < JobRunner
 
   register_for_job_type('snac_export_job', :run_concurrently => true)
   register_for_job_type('snac_sync_job', :run_concurrently => true)
+  register_for_job_type('snac_push_job', :run_concurrently => true)
+  register_for_job_type('snac_pull_job', :run_concurrently => true)
   register_for_job_type('snac_link_job', :run_concurrently => true)
   register_for_job_type('snac_unlink_job', :run_concurrently => true)
 

@@ -22,12 +22,29 @@ es:
       sync:
         tab_label: Sincronizar
         button_label: Sincronizar con SNAC
-        agent_desc: Esto sincronizará este agente con la identidad existente en SNAC.
-        agent_confirm: ¿Está seguro de que desea sincronizar este agente con SNAC?
-        resource_desc: Esto sincronizará este recurso con el recurso existente en SNAC.
-        resource_confirm: ¿Está seguro de que desea sincronizar este recurso con SNAC?
+        agent_desc: Esto sincronizará los recursos vinculados publicados de este agente con la identidad existente en SNAC.
+        agent_confirm: ¿Está seguro de que desea sincronizar los recursos vinculados de este agente con SNAC?
+        resource_desc: Esto sincronizará los agentes vinculados publicados de este recurso con el recurso existente en SNAC.
+        resource_confirm: ¿Está seguro de que desea sincronizar los agentes vinculados de este recurso con SNAC?
         snac_api_key_needed: Para sincronizar este elemento con SNAC, debe tener una clave API definida en Preferencias de usuario para el entorno SNAC anterior.
         aspace_permissions_needed: Para sincronizar este elemento con SNAC, debe tener permisos para crear trabajos y actualizar los registros de agentes y recursos.
+      push:
+        tab_label: Empujar
+        button_label: Empuje a SNAC
+        agent_desc: Esto enviará cierta información de este agente a la identidad existente en SNAC.
+        agent_confirm: ¿Está seguro de que desea actualizar este agente en SNAC?
+        resource_desc: Esto enviará cierta información de este recurso al recurso existente en SNAC.
+        resource_confirm: ¿Está seguro de que desea actualizar este recurso en SNAC?
+        snac_api_key_needed: Para actualizar este elemento en SNAC, debe tener una clave API definida en Preferencias de usuario para el entorno SNAC anterior.
+        aspace_permissions_needed: Para actualizar este elemento en SNAC, debe tener permisos para crear trabajos.
+      pull:
+        tab_label: Extraer
+        button_label: Extraer de SNAC
+        agent_desc: Esto extraerá cualquier cambio de la identidad existente en SNAC a este agente.
+        agent_confirm: ¿Está seguro de que desea actualizar este agente de SNAC?
+        resource_desc: Esto extraerá cualquier cambio del recurso existente en SNAC a este recurso.
+        resource_confirm: ¿Está seguro de que desea actualizar este recurso de SNAC?
+        aspace_permissions_needed: Para actualizar este elemento en SNAC, debe tener permisos para crear trabajos y actualizar los registros de agentes y recursos.
       link:
         tab_label: Vincular
         button_label: Vincular con SNAC
@@ -102,6 +119,10 @@ es:
     _singular: Trabajo de Exportación SNAC
   snac_sync_job:
     _singular: Trabajo de Sincronización SNAC
+  snac_push_job:
+    _singular: Trabajo de Inserción SNAC
+  snac_pull_job:
+    _singular: Trabajo de Extracción SNAC
   snac_link_job:
     _singular: Trabajo de Enlace SNAC
   snac_unlink_job:
@@ -116,7 +137,7 @@ es:
     import_type_snac_json_desc: Importar datos de SNAC JSON (ya sea una sola entrada o una matriz de ellos)
   plugins:
     snac:
-      label: Importación de Agente SNAC
+      label: Importación SNAC
       search:
         name_entry: Entrada de Nombre
       actions:

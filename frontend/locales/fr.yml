@@ -22,12 +22,29 @@ fr:
       sync:
         tab_label: Synchroniser
         button_label: Synchroniser avec le SNAC
-        agent_desc: Cela synchronisera cet agent avec l'identité existante dans SNAC.
-        agent_confirm: Voulez-vous vraiment synchroniser cet agent avec SNAC?
-        resource_desc: Cela synchronisera cette ressource avec la ressource existante dans SNAC.
-        resource_confirm: Voulez-vous vraiment synchroniser cette ressource avec SNAC?
+        agent_desc: Cela synchronisera les ressources liées publiées de cet agent avec l'identité existante dans SNAC.
+        agent_confirm: Voulez-vous vraiment synchroniser les ressources liées de cet agent avec SNAC?
+        resource_desc: Cela synchronisera les agents liés publiés de cette ressource avec la ressource existante dans SNAC.
+        resource_confirm: Voulez-vous vraiment synchroniser les agents liés de cette ressource avec SNAC?
         snac_api_key_needed: Pour synchroniser cet élément avec SNAC, vous devez disposer d'une clé API définie dans les Préférences utilisateur pour l'environnement SNAC ci-dessus.
         aspace_permissions_needed: Pour synchroniser cet élément avec SNAC, vous devez disposer des autorisations nécessaires pour créer des tâches et mettre à jour les enregistrements d'agent et de ressource.
+      push:
+        tab_label: Pousser
+        button_label: Pousser vers SNAC
+        agent_desc: Cela poussera certaines informations de cet agent vers l'identité existante dans SNAC.
+        agent_confirm: Voulez-vous vraiment mettre à jour cet agent dans SNAC?
+        resource_desc: Cela poussera certaines informations de cette ressource vers la ressource existante dans SNAC.
+        resource_confirm: Voulez-vous vraiment mettre à jour cette ressource dans SNAC?
+        snac_api_key_needed: Pour mettre à jour cet élément dans SNAC, vous devez disposer d'une clé API définie dans les Préférences utilisateur pour l'environnement SNAC ci-dessus.
+        aspace_permissions_needed: Pour mettre à jour cet élément dans SNAC, vous devez disposer des autorisations nécessaires pour créer des travaux.
+      pull:
+        tab_label: Extrait
+        button_label: Extrait du SNAC
+        agent_desc: Cela extraira toutes les modifications de l'identité existante dans SNAC vers cet agent.
+        agent_confirm: Voulez-vous vraiment mettre à jour cet agent à partir du SNAC?
+        resource_desc: Cela extraira toutes les modifications de la ressource existante dans SNAC vers cette ressource.
+        resource_confirm: Voulez-vous vraiment mettre à jour cette ressource à partir du SNAC?
+        aspace_permissions_needed: Pour mettre à jour cet élément dans SNAC, vous devez disposer des autorisations nécessaires pour créer des tâches et mettre à jour les enregistrements d'agent et de ressource.
       link:
         tab_label: Lien
         button_label: Lien avec la SNAC
@@ -99,13 +116,17 @@ fr:
       include_linked_agents: Inclure les Agents Liés Publiées
       snac_source: Source SNAC
   snac_export_job:
-    _singular: Tâche d'exportation SNAC
+    _singular: Tâche d'Exportation SNAC
   snac_sync_job:
-    _singular: Tâche de synchronisation SNAC
+    _singular: Tâche de Synchronisation SNAC
+  snac_push_job:
+    _singular: Tâche Poussée SNAC
+  snac_pull_job:
+    _singular: Travail d'Extraction SNAC
   snac_link_job:
-    _singular: Tâche de liaison SNAC
+    _singular: Tâche de Liaison SNAC
   snac_unlink_job:
-    _singular: Tâche de dissociation SNAC
+    _singular: Tâche de Dissociation SNAC
   job:
     types:
       snac_export_job: Exportation SNAC
@@ -116,7 +137,7 @@ fr:
     import_type_snac_json_desc: Importer des données depuis SNAC JSON (soit une seule entrée, soit un tableau d'entre elles)
   plugins:
     snac:
-      label: Importation de l'agent SNAC
+      label: Importer SNAC
       search:
         name_entry: Saisie du Nom
       actions:

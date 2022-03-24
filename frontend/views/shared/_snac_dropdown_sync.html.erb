@@ -5,21 +5,6 @@
 
     <%= form_with url: url_for({:controller => :snac, :action => :sync, :uris => [obj['uri']]}), local: false do |f| %>
 
-      <fieldset>
-        <% case objtype %>
-        <% when 'agent' %>
-          <div>
-            <%= f.check_box "include_linked_resources" %>
-            <%= I18n.t('actions.snac.options.include_linked_resources') %>
-          </div>
-        <% when 'resource' %>
-          <div>
-            <%= f.check_box "include_linked_agents" %>
-            <%= I18n.t('actions.snac.options.include_linked_agents') %>
-          </div>
-        <% end %>
-      </fieldset>
-
       <div class="form-actions">
         <%= f.submit I18n.t("actions.snac.sync.button_label"),
               :id => "snac-sync-submit-button",
@@ -35,6 +20,7 @@
   <% else %>
     <p><%= I18n.t("actions.snac.sync.snac_api_key_needed") %></p>
   <% end %>
+
 <% else %>
   <p><%= I18n.t("actions.snac.sync.aspace_permissions_needed") %></p>
 <% end %>

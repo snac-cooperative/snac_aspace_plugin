@@ -5,10 +5,10 @@ require_relative '../convert/snac_export'
 require_relative '../../../common/snac_preferences'
 require_relative '../../../common/snac_link_helper'
 
-class SnacSyncHandler
+class SnacPushHandler
   include JSONModel
 
-  class SnacSyncHandlerException < StandardError; end
+  class SnacPushHandlerException < StandardError; end
 
   def initialize(job, json)
     @job = job
@@ -32,11 +32,11 @@ class SnacSyncHandler
     case type
     when /^agent/
       pfx = "[#{I18n.t('snac_job.common.agent_label')}]"
-      sync_top_level_agent(pfx, uri)
+      push_top_level_agent(pfx, uri)
 
     when /^resource/
       pfx = "[#{I18n.t('snac_job.common.resource_label')}]"
-      sync_top_level_resource(pfx, uri)
+      push_top_level_resource(pfx, uri)
 
     else
       output "#{I18n.t('snac_job.common.unhandled_type')}: #{type} (#{uri})"

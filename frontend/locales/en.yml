@@ -22,12 +22,29 @@ en:
       sync:
         tab_label: Sync
         button_label: Sync with SNAC
-        agent_desc: This will synchronize this agent with the existing identity in SNAC.
-        agent_confirm: Are you sure you want to synchronize this agent with SNAC?
-        resource_desc: This will synchronize this resource with the existing resource in SNAC.
-        resource_confirm: Are you sure you want to synchronize this resource with SNAC?
+        agent_desc: This will synchronize this agent's published linked resources with the existing identity in SNAC.
+        agent_confirm: Are you sure you want to synchronize this agent's linked resources with SNAC?
+        resource_desc: This will synchronize this resource's published linked agents with the existing resource in SNAC.
+        resource_confirm: Are you sure you want to synchronize this resource's linked agents with SNAC?
         snac_api_key_needed: To synchronize this item with SNAC, you need to have an API key defined in User Preferences for the SNAC environment above.
         aspace_permissions_needed: To synchronize this item with SNAC, you need to have permissions to create jobs and update both agent and resource records.
+      push:
+        tab_label: Push
+        button_label: Push to SNAC
+        agent_desc: This will push certain information from this agent to the existing identity in SNAC.
+        agent_confirm: Are you sure you want to update this agent in SNAC?
+        resource_desc: This will push certain information from this resource to the existing resource in SNAC.
+        resource_confirm: Are you sure you want to update this resource in SNAC?
+        snac_api_key_needed: To update this item in SNAC, you need to have an API key defined in User Preferences for the SNAC environment above.
+        aspace_permissions_needed: To update this item in SNAC, you need to have permissions to create jobs.
+      pull:
+        tab_label: Pull
+        button_label: Pull from SNAC
+        agent_desc: This will pull any changes from the existing identity in SNAC to this agent.
+        agent_confirm: Are you sure you want to update this agent from SNAC?
+        resource_desc: This will pull any changes from the existing resource in SNAC to this resource.
+        resource_confirm: Are you sure you want to update this resource from SNAC?
+        aspace_permissions_needed: To update this item in SNAC, you need to have permissions to create jobs and update both agent and resource records.
       link:
         tab_label: Link
         button_label: Link with SNAC
@@ -102,6 +119,10 @@ en:
     _singular: SNAC Export Job
   snac_sync_job:
     _singular: SNAC Sync Job
+  snac_push_job:
+    _singular: SNAC Push Job
+  snac_pull_job:
+    _singular: SNAC Pull Job
   snac_link_job:
     _singular: SNAC Link Job
   snac_unlink_job:
@@ -116,7 +137,7 @@ en:
     import_type_snac_json_desc: Import data from SNAC JSON (either a single entry or an array of them)
   plugins:
     snac:
-      label: SNAC Agent Import
+      label: SNAC Import
       search:
         name_entry: Name Entry
       actions:

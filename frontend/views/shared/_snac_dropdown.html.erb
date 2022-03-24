@@ -25,33 +25,65 @@
 
         <li>
           <ul class="nav nav-tabs" id="snac-tabs" role="tablist">
+
             <li class="nav-item active">
               <a class="nav-link" id="snac-view-tab" data-toggle="tab" href="#snac-view-pane" role="tab" aria-controls="snac-view-pane" aria-selected="true">
                 <%= I18n.t("actions.snac.view.tab_label") %>
               </a>
             </li>
+
             <li class="nav-item">
               <a class="nav-link" id="snac-sync-tab" data-toggle="tab" href="#snac-sync-pane" role="tab" aria-controls="snac-sync-pane" aria-selected="false">
                 <%= I18n.t("actions.snac.sync.tab_label") %>
               </a>
             </li>
+
+            <li class="nav-item">
+              <a class="nav-link" id="snac-push-tab" data-toggle="tab" href="#snac-push-pane" role="tab" aria-controls="snac-push-pane" aria-selected="false">
+                <%= I18n.t("actions.snac.push.tab_label") %>
+              </a>
+            </li>
+
+            <% if objtype == 'agent' %>
+            <li class="nav-item">
+              <a class="nav-link" id="snac-pull-tab" data-toggle="tab" href="#snac-pull-pane" role="tab" aria-controls="snac-pull-pane" aria-selected="false">
+                <%= I18n.t("actions.snac.pull.tab_label") %>
+              </a>
+            </li>
+            <% end %>
+
             <li class="nav-item">
               <a class="nav-link" id="snac-unlink-tab" data-toggle="tab" href="#snac-unlink-pane" role="tab" aria-controls="snac-unlink-pane" aria-selected="false">
                 <%= I18n.t("actions.snac.unlink.tab_label") %>
               </a>
             </li>
+
           </ul>
 
           <div class="tab-content" id="snac-tab-content">
+
             <div class="tab-pane active" id="snac-view-pane" role="tabpanel" aria-labelledby="snac-view-tab">
               <%= render_aspace_partial :partial => "shared/snac_dropdown_view", :locals => {:snac_prefs => snac_prefs, :link_helper => link_helper, :obj => obj, :objtype => objtype} %>
             </div>
+
             <div class="tab-pane" id="snac-sync-pane" role="tabpanel" aria-labelledby="snac-sync-tab">
               <%= render_aspace_partial :partial => "shared/snac_dropdown_sync", :locals => {:snac_prefs => snac_prefs, :link_helper => link_helper, :obj => obj, :objtype => objtype} %>
             </div>
+
+            <div class="tab-pane" id="snac-push-pane" role="tabpanel" aria-labelledby="snac-push-tab">
+              <%= render_aspace_partial :partial => "shared/snac_dropdown_push", :locals => {:snac_prefs => snac_prefs, :link_helper => link_helper, :obj => obj, :objtype => objtype} %>
+            </div>
+
+            <% if objtype == 'agent' %>
+            <div class="tab-pane" id="snac-pull-pane" role="tabpanel" aria-labelledby="snac-pull-tab">
+              <%= render_aspace_partial :partial => "shared/snac_dropdown_pull", :locals => {:snac_prefs => snac_prefs, :link_helper => link_helper, :obj => obj, :objtype => objtype} %>
+            </div>
+            <% end %>
+
             <div class="tab-pane" id="snac-unlink-pane" role="tabpanel" aria-labelledby="snac-unlink-tab">
               <%= render_aspace_partial :partial => "shared/snac_dropdown_unlink", :locals => {:snac_prefs => snac_prefs, :link_helper => link_helper, :obj => obj, :objtype => objtype} %>
             </div>
+
           </div>
         </li>
 
@@ -59,25 +91,31 @@
 
         <li>
           <ul class="nav nav-tabs" id="snac-tabs" role="tablist">
+
             <li class="nav-item active">
               <a class="nav-link" id="snac-link-tab" data-toggle="tab" href="#snac-link-pane" role="tab" aria-controls="snac-link-pane" aria-selected="true">
                 <%= I18n.t("actions.snac.link.tab_label") %>
               </a>
             </li>
+
             <li class="nav-item">
               <a class="nav-link" id="snac-export-tab" data-toggle="tab" href="#snac-export-pane" role="tab" aria-controls="snac-export-pane" aria-selected="false">
                 <%= I18n.t("actions.snac.export.tab_label") %>
               </a>
             </li>
+
           </ul>
 
           <div class="tab-content" id="snac-tab-content">
+
             <div class="tab-pane active" id="snac-link-pane" role="tabpanel" aria-labelledby="snac-link-tab">
               <%= render_aspace_partial :partial => "shared/snac_dropdown_link", :locals => {:snac_prefs => snac_prefs, :link_helper => link_helper, :obj => obj, :objtype => objtype} %>
             </div>
+
             <div class="tab-pane" id="snac-export-pane" role="tabpanel" aria-labelledby="snac-export-tab">
               <%= render_aspace_partial :partial => "shared/snac_dropdown_export", :locals => {:snac_prefs => snac_prefs, :link_helper => link_helper, :obj => obj, :objtype => objtype} %>
             </div>
+
           </div>
         </li>
 
