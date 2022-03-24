@@ -1,5 +1,5 @@
 snac_envs = [ "production", "development" ]
-snac_job_actions = ['export', 'sync', 'push', 'pull', 'link', 'unlink']
+snac_job_actions = ['export', 'push', 'pull', 'link', 'unlink']
 
 {
   :schema => {

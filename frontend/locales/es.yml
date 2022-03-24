@@ -117,8 +117,6 @@ es:
       snac_source: Fuente SNAC
   snac_export_job:
     _singular: Trabajo de Exportación SNAC
-  snac_sync_job:
-    _singular: Trabajo de Sincronización SNAC
   snac_push_job:
     _singular: Trabajo de Inserción SNAC
   snac_pull_job:

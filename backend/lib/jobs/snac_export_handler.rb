@@ -261,6 +261,8 @@ class SnacExportHandler
 
     # now export this agent
     export_agent(pfx, uri, linked_resources)
+    # ensure uri is captured in list of modified records, in case this is just a sync of an existing agent
+    @modified << uri
   end
 
 
@@ -386,6 +388,8 @@ class SnacExportHandler
 
     # first, export this resource
     export_resource(pfx, uri)
+    # ensure uri is captured in list of modified records, in case this is just a sync of an existing resource
+    @modified << uri
 
     # now export linked agents (if specified, and if not already in snac)
     export_linked_agents(pfx, uri)

@@ -117,8 +117,6 @@ en:
       snac_source: SNAC Source
   snac_export_job:
     _singular: SNAC Export Job
-  snac_sync_job:
-    _singular: SNAC Sync Job
   snac_push_job:
     _singular: SNAC Push Job
   snac_pull_job:

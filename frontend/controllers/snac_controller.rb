@@ -69,12 +69,15 @@ class SnacController < ApplicationController
 
 
   def sync
+    # sync is actually an export job that includes linked items in disguise
     create_job("snac_job", {
                  "job_type" => "snac_job",
-                 "jsonmodel_type" => "snac_sync_job",
+                 "jsonmodel_type" => "snac_export_job",
                  "snac_environment" => get_prefs.environment,
-                 "action" => "sync",
-                 "uris" => params[:uris]
+                 "action" => "export",
+                 "uris" => params[:uris],
+                 "include_linked_resources" => true,
+                 "include_linked_agents" => true
                },
                {})
   end
