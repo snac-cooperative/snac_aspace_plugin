@@ -103,6 +103,10 @@ es:
       linked_agent_checking_relations: Comprobando si se deben crear nuevas relaciones de recursos
       linked_agent_adding_relations: Agregar nuevas relaciones de recursos
       linked_agent_relations_exist: Las relaciones de recursos ya existen
+    pull:
+      found_new_name_entry: Encontré una nueva entrada de nombre en SNAC
+      updating_agent: Actualizando agente...
+      agent_unchanged: No se encontraron nuevos cambios en SNAC
     link:
       looking_up_snac_id: Buscando el ID de SNAC
       already_linked: Ya vinculado

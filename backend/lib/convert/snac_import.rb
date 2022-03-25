@@ -163,7 +163,7 @@ class SnacImport
       name['rest_of_name'] = rest_of_name
       name['qualifier'] = qualifiers.join(', ').gsub(', (', ' (') unless qualifiers.empty?
       name['number'] = numbers.first unless numbers.empty?
-      name['fuller_form'] = fuller_form
+      name['fuller_form'] = fuller_form if fuller_form
       name['dates'] = dates.first unless dates.empty?
 
       names << name
