@@ -106,6 +106,7 @@ class SnacPullHandler
       end
       next if match
       output "#{pfx} #{I18n.t('snac_job.pull.found_new_name_entry')}"
+      sname.delete('authorized')
       agent_json['names'] << sname
       updated = true
 	end
