@@ -22,29 +22,27 @@ en:
       sync:
         tab_label: Sync
         button_label: Sync with SNAC
-        agent_desc: This will synchronize this agent's published linked resources with the existing identity in SNAC.
+        agent_desc: This will synchronize this agent's published linked resources with the existing identity in SNAC.  New linked resources are found, exported to SNAC if necessary, and tied together with this agent in SNAC.
         agent_confirm: Are you sure you want to synchronize this agent's linked resources with SNAC?
-        resource_desc: This will synchronize this resource's published linked agents with the existing resource in SNAC.
+        resource_desc: This will synchronize this resource's published linked agents with the existing resource in SNAC.  New linked agents are found, exported to SNAC if necessary, and tied together with this resource in SNAC.
         resource_confirm: Are you sure you want to synchronize this resource's linked agents with SNAC?
         snac_api_key_needed: To synchronize this item with SNAC, you need to have an API key defined in User Preferences for the SNAC environment above.
         aspace_permissions_needed: To synchronize this item with SNAC, you need to have permissions to create jobs and update both agent and resource records.
       push:
         tab_label: Push
         button_label: Push to SNAC
-        agent_desc: This will push certain information from this agent to the existing identity in SNAC.
+        agent_desc: This will push certain information from this agent to the existing identity in SNAC.  Specifically, name entries from this agent will be added to SNAC, if they are not already present.  No new SNAC entries are created or linked.
         agent_confirm: Are you sure you want to update this agent in SNAC?
-        resource_desc: This will push certain information from this resource to the existing resource in SNAC.
+        resource_desc: This will push certain information from this resource to the existing resource in SNAC.  Specifically, the title, link, abstract, and extent will be updated if they are missing or differ from this resource.  No new SNAC entries are created or linked.
         resource_confirm: Are you sure you want to update this resource in SNAC?
         snac_api_key_needed: To update this item in SNAC, you need to have an API key defined in User Preferences for the SNAC environment above.
         aspace_permissions_needed: To update this item in SNAC, you need to have permissions to create jobs.
       pull:
         tab_label: Pull
         button_label: Pull from SNAC
-        agent_desc: This will pull any changes from the existing identity in SNAC to this agent.
+        agent_desc: This will pull certain information from the existing identity in SNAC to this agent.  Specifically, name entries from SNAC will be added to this agent, if they are not already present.
         agent_confirm: Are you sure you want to update this agent from SNAC?
-        resource_desc: This will pull any changes from the existing resource in SNAC to this resource.
-        resource_confirm: Are you sure you want to update this resource from SNAC?
-        aspace_permissions_needed: To update this item in SNAC, you need to have permissions to create jobs and update both agent and resource records.
+        aspace_permissions_needed: To update this item from SNAC, you need to have permissions to create jobs and update both agent and resource records.
       link:
         tab_label: Link
         button_label: Link with SNAC
@@ -62,9 +60,9 @@ en:
       unlink:
         tab_label: Unlink
         button_label: Unlink with SNAC
-        agent_desc: This will remove any links within this agent to SNAC identities.
+        agent_desc: This will remove any links within this agent to SNAC identities.  No SNAC entries are modified or deleted.
         agent_confirm: Are you sure you want to remove any links to SNAC for this agent?
-        resource_desc: This will remove any links within this resource to SNAC resources.
+        resource_desc: This will remove any links within this resource to SNAC resources.  No SNAC entries are modified or deleted.
         resource_confirm: Are you sure you want to remove any links to SNAC for this resource?
       options:
         snac_source: SNAC ID

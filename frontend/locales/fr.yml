@@ -22,29 +22,27 @@ fr:
       sync:
         tab_label: Synchroniser
         button_label: Synchroniser avec le SNAC
-        agent_desc: Cela synchronisera les ressources liées publiées de cet agent avec l'identité existante dans SNAC.
+        agent_desc: Cela synchronisera les ressources liées publiées de cet agent avec l'identité existante dans SNAC.  De nouvelles ressources liées sont trouvées, exportées vers SNAC si nécessaire et liées avec cet agent dans SNAC.
         agent_confirm: Voulez-vous vraiment synchroniser les ressources liées de cet agent avec SNAC?
-        resource_desc: Cela synchronisera les agents liés publiés de cette ressource avec la ressource existante dans SNAC.
+        resource_desc: Cela synchronisera les agents liés publiés de cette ressource avec la ressource existante dans SNAC.  De nouveaux agents liés sont trouvés, exportés vers SNAC si nécessaire et liés avec cette ressource dans SNAC.
         resource_confirm: Voulez-vous vraiment synchroniser les agents liés de cette ressource avec SNAC?
         snac_api_key_needed: Pour synchroniser cet élément avec SNAC, vous devez disposer d'une clé API définie dans les Préférences utilisateur pour l'environnement SNAC ci-dessus.
         aspace_permissions_needed: Pour synchroniser cet élément avec SNAC, vous devez disposer des autorisations nécessaires pour créer des tâches et mettre à jour les enregistrements d'agent et de ressource.
       push:
         tab_label: Pousser
         button_label: Pousser vers SNAC
-        agent_desc: Cela poussera certaines informations de cet agent vers l'identité existante dans SNAC.
+        agent_desc: Cela poussera certaines informations de cet agent vers l'identité existante dans SNAC.  Plus précisément, les entrées de nom de cet agent seront ajoutées au SNAC, si elles ne sont pas déjà présentes.  Aucune nouvelle entrée SNAC n'est créée ou liée.
         agent_confirm: Voulez-vous vraiment mettre à jour cet agent dans SNAC?
-        resource_desc: Cela poussera certaines informations de cette ressource vers la ressource existante dans SNAC.
+        resource_desc: Cela poussera certaines informations de cette ressource vers la ressource existante dans SNAC.  Plus précisément, le titre, le lien, le résumé et l'étendue seront mis à jour s'ils manquent ou diffèrent de cette ressource.  Aucune nouvelle entrée SNAC n'est créée ou liée.
         resource_confirm: Voulez-vous vraiment mettre à jour cette ressource dans SNAC?
         snac_api_key_needed: Pour mettre à jour cet élément dans SNAC, vous devez disposer d'une clé API définie dans les Préférences utilisateur pour l'environnement SNAC ci-dessus.
         aspace_permissions_needed: Pour mettre à jour cet élément dans SNAC, vous devez disposer des autorisations nécessaires pour créer des travaux.
       pull:
         tab_label: Extrait
         button_label: Extrait du SNAC
-        agent_desc: Cela extraira toutes les modifications de l'identité existante dans SNAC vers cet agent.
+        agent_desc: Cela extraira certaines informations de l'identité existante dans SNAC vers cet agent.  Plus précisément, les entrées de nom du SNAC seront ajoutées à cet agent, si elles ne sont pas déjà présentes.
         agent_confirm: Voulez-vous vraiment mettre à jour cet agent à partir du SNAC?
-        resource_desc: Cela extraira toutes les modifications de la ressource existante dans SNAC vers cette ressource.
-        resource_confirm: Voulez-vous vraiment mettre à jour cette ressource à partir du SNAC?
-        aspace_permissions_needed: Pour mettre à jour cet élément dans SNAC, vous devez disposer des autorisations nécessaires pour créer des tâches et mettre à jour les enregistrements d'agent et de ressource.
+        aspace_permissions_needed: Pour mettre à jour cet élément à partir de SNAC, vous devez disposer des autorisations nécessaires pour créer des tâches et mettre à jour les enregistrements d'agent et de ressource.
       link:
         tab_label: Lien
         button_label: Lien avec la SNAC
@@ -62,9 +60,9 @@ fr:
       unlink:
         tab_label: Dissocier
         button_label: Dissocier avec SNAC
-        agent_desc: Cela supprimera tous les liens au sein de cet agent vers les identités SNAC.
+        agent_desc: Cela supprimera tous les liens au sein de cet agent vers les identités SNAC.  Aucune entrée SNAC n'est modifiée ou supprimée.
         agent_confirm: Voulez-vous vraiment supprimer les liens vers SNAC pour cet agent?
-        resource_desc: Cela supprimera tous les liens au sein de cette ressource vers les ressources SNAC.
+        resource_desc: Cela supprimera tous les liens au sein de cette ressource vers les ressources SNAC.  Aucune entrée SNAC n'est modifiée ou supprimée.
         resource_confirm: Voulez-vous vraiment supprimer les liens vers SNAC pour cette ressource?
       options:
         snac_source: SNAC ID
