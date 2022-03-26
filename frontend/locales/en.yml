@@ -103,10 +103,22 @@ en:
       linked_agent_checking_relations: Checking whether to create new resource relations
       linked_agent_adding_relations: Adding new resource relations
       linked_agent_relations_exist: Resource relations already exist
+    push:
+      not_linked: Skipping item not linked to SNAC
+      found_name_entry: Found a name entry to push
+      different_title: Titles differ
+      different_link: Links differ
+      different_abstract: Abstracts differ
+      different_extent: Extents differ
+      updating_agent: Updating SNAC with differences from this agent...
+      updating_resource: Updating SNAC with differences from this resource...
+      no_differences: No differences to push to SNAC
+      pushed_to_snac: Differences pushed to SNAC
     pull:
-      found_new_name_entry: Found a new name entry in SNAC
-      updating_agent: Updating agent...
-      agent_unchanged: No new changes found in SNAC
+      found_name_entry: Found a name entry to pull
+      updating_agent: Updating this agent with differences from SNAC...
+      no_differences: No differences to pull from SNAC
+      pulled_from_snac: Differences pulled from SNAC
     link:
       looking_up_snac_id: Looking up SNAC ID
       already_linked: Already linked

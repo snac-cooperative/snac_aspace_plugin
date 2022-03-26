@@ -103,10 +103,22 @@ es:
       linked_agent_checking_relations: Comprobando si se deben crear nuevas relaciones de recursos
       linked_agent_adding_relations: Agregar nuevas relaciones de recursos
       linked_agent_relations_exist: Las relaciones de recursos ya existen
+    push:
+      not_linked: Omitir elemento no vinculado a SNAC
+      found_name_entry: Encontré una entrada de nombre para empujar
+      different_title: Los títulos difieren
+      different_link: Los enlaces difieren
+      different_abstract: Los resúmenes difieren
+      different_extent: Las extensiones difieren
+      updating_agent: Actualizando SNAC con diferencias de este agente...
+      updating_resource: Actualizando SNAC con diferencias de este recurso...
+      no_differences: No hay diferencias para empujar a SNAC
+      pushed_to_snac: Diferencias empujadas al SNAC
     pull:
-      found_new_name_entry: Encontré una nueva entrada de nombre en SNAC
-      updating_agent: Actualizando agente...
-      agent_unchanged: No se encontraron nuevos cambios en SNAC
+      found_name_entry: Encontré una entrada de nombre para extraer
+      updating_agent: Actualizando este agente con diferencias de SNAC...
+      no_differences: No hay diferencias para sacar de SNAC
+      pulled_from_snac: Diferencias extraídas de SNAC
     link:
       looking_up_snac_id: Buscando el ID de SNAC
       already_linked: Ya vinculado

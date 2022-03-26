@@ -33,6 +33,13 @@ class SnacResource
   end
 
 
+  def version
+    raise SnacResourceException.new("resource is missing version") unless @resource.key?('version')
+
+    @resource['version'].to_i
+  end
+
+
   def url
     @prefs.resource_url(id)
   end
@@ -45,6 +52,13 @@ class SnacResource
     res = @client.create_resource(stub)
 
     @resource = normalize(res)
+  end
+
+
+  def update(data)
+    res = normalize(@client.update_resource(id, version, data))
+
+    @resource['version'] = res['version']
   end
 
 

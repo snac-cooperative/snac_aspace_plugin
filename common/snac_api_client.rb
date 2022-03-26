@@ -128,6 +128,24 @@ class SnacApiClient
   end
 
 
+  def update_resource(id, version, data)
+    res = {
+      'dataType' => 'Resource',
+      'id' => id.to_i,
+      'version' => version.to_i
+    }.merge(data)
+
+    req = {
+      'command' => 'insert_resource',
+      'apikey': @prefs.api_key,
+      'resource' => res,
+      'message' => 'updated by ArchivesSpace'
+    }
+
+    perform_api_request(req, 'resource')
+  end
+
+
   def search_resources(term)
     req = {
       'command' => 'resource_search',

@@ -94,9 +94,9 @@ class SnacPullHandler
     # read snac agent json, as it would be if imported
     agent_snac = SnacConstellation.new(@snac_prefs, @link_helper.agent_snac_id(agent_json)).import
 
-    # compare these to see if anything we care about has changed
+    # compare these to see if anything we care about is different
 
-    updated = false
+    different = false
 
     # name entries?
 	agent_snac[:hash]['names'].each do |sname|
@@ -105,21 +105,24 @@ class SnacPullHandler
         match = match || agent_names_identical?(sname, aname)
       end
       next if match
-      output "#{pfx} #{I18n.t('snac_job.pull.found_new_name_entry')}"
+      output "#{pfx} #{I18n.t('snac_job.pull.found_name_entry')}"
       sname.delete('authorized')
       agent_json['names'] << sname
-      updated = true
+      different = true
 	end
 
     # finish up
 
-    if updated
+    if different
       output "#{pfx} #{I18n.t('snac_job.pull.updating_agent')}"
       agent.save(agent_json)
+      output "#{pfx} #{I18n.t('snac_job.pull.pulled_from_snac')}"
     else
-      output "#{pfx} #{I18n.t('snac_job.pull.agent_unchanged')}"
+      output "#{pfx} #{I18n.t('snac_job.pull.no_differences')}"
     end
 
+    # include this agent uri in list of modified records.  it may or may not have been modified,
+    # but either way we just want to make it easy to navigate back to from the job page
     @modified << uri
   end
 
