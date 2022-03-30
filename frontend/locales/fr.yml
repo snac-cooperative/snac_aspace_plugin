@@ -104,18 +104,21 @@ fr:
       linked_agent_relations_exist: Des relations de ressources existent déjà
     push:
       not_linked: Ignorer l'élément non lié au SNAC
-      found_name_entry: Trouvé une entrée de nom à pousser
-      different_title: Les titres diffèrent
-      different_link: Les liens diffèrent
-      different_abstract: Les résumés diffèrent
-      different_extent: Les étendues diffèrent
+      found_name_entry: Trouvé une nouvelle entrée de nom à pousser
+      found_title: Trouvé un titre mis à jour pour pousser
+      found_link: Trouvé un lien mis à jour pour pousser
+      found_abstract: Trouvé un résumé mis à jour pour pousser
+      found_extent: Trouvé une étendue mise à jour à pousser
       updating_agent: Mise à jour du SNAC avec des différences par rapport à cet agent...
       updating_resource: Mise à jour du SNAC avec des différences par rapport à cette ressource...
+      would_have_updated_agent: Aurait mis à jour l'identité SNAC avec les différences énumérées ci-dessus
+      would_have_updated_resource: Aurait mis à jour la ressource SNAC avec les différences répertoriées ci-dessus
       no_differences: Aucune différence à pousser vers SNAC
       pushed_to_snac: Différences poussées au SNAC
     pull:
       found_name_entry: Trouvé une entrée de nom à extraire
       updating_agent: Mise à jour de cet agent avec des différences par rapport au SNAC...
+      would_have_updated_agent: Aurait mis à jour cet agent avec les différences énumérées ci-dessus
       no_differences: Aucune différence à tirer du SNAC
       pulled_from_snac: Différences tirées du SNAC
     link:
@@ -127,6 +130,7 @@ fr:
       unlinked_with_snac: Non lié à la SNAC
     options:
       uris: URIs
+      dry_run: Essai
       include_linked_resources: Inclure les Ressources Liées Publiées
       include_linked_agents: Inclure les Agents Liés Publiées
       snac_source: Source SNAC

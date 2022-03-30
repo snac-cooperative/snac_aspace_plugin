@@ -41,6 +41,11 @@ class SnacPullHandler
   private
 
 
+  def dry_run?
+    @json.job['dry_run']
+  end
+
+
   def log(msg)
     puts "[SNACJOB] #{msg}"
   end
@@ -50,6 +55,9 @@ class SnacPullHandler
     log msg
     @job.write_output(msg)
   end
+
+
+  ### agent pull functions ###
 
 
   def agent_names_identical?(n1, n2)
@@ -105,7 +113,19 @@ class SnacPullHandler
         match = match || agent_names_identical?(sname, aname)
       end
       next if match
-      output "#{pfx} #{I18n.t('snac_job.pull.found_name_entry')}"
+      output "#{pfx} #{I18n.t('snac_job.pull.found_name_entry')}:"
+
+      sort_name = ''
+      case agent_json['jsonmodel_type']
+      when 'agent_person'
+        sort_name = SortNameProcessor::Person.process(sname)
+      when 'agent_family'
+        sort_name = SortNameProcessor::Family.process(sname)
+      when 'agent_corporate_entity'
+        sort_name = SortNameProcessor::CorporateEntity.process(sname)
+      end
+      output "#{pfx} #{sort_name}" if sort_name != ''
+
       sname.delete('authorized')
       agent_json['names'] << sname
       different = true
@@ -114,9 +134,13 @@ class SnacPullHandler
     # finish up
 
     if different
-      output "#{pfx} #{I18n.t('snac_job.pull.updating_agent')}"
-      agent.save(agent_json)
-      output "#{pfx} #{I18n.t('snac_job.pull.pulled_from_snac')}"
+      if dry_run?
+        output "#{pfx} #{I18n.t('snac_job.pull.would_have_updated_agent')}"
+      else
+        output "#{pfx} #{I18n.t('snac_job.pull.updating_agent')}"
+        agent.save(agent_json)
+        output "#{pfx} #{I18n.t('snac_job.pull.pulled_from_snac')}"
+      end
     else
       output "#{pfx} #{I18n.t('snac_job.pull.no_differences')}"
     end

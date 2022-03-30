@@ -90,6 +90,11 @@ class SnacExportHandler
   ### agent export functions ###
 
 
+  def dry_run?
+    @json.job['dry_run']
+  end
+
+
   def include_linked_resources?
     @json.job['include_linked_resources']
   end

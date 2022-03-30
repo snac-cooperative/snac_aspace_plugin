@@ -45,6 +45,11 @@ class SnacPushHandler
   private
 
 
+  def dry_run?
+    @json.job['dry_run']
+  end
+
+
   def log(msg)
     puts "[SNACJOB] #{msg}"
   end
@@ -182,7 +187,8 @@ class SnacPushHandler
         match = match || name_entries_identical?(aname, sname)
       end
       next if match
-      output "#{pfx} #{I18n.t('snac_job.push.found_name_entry')}"
+      output "#{pfx} #{I18n.t('snac_job.push.found_name_entry')}:"
+      output "#{pfx} #{aname['original']}"
       update_json['nameEntries'] << aname
       different = true
 	end
@@ -190,9 +196,13 @@ class SnacPushHandler
     # finish up
 
     if different
-      output "#{pfx} #{I18n.t('snac_job.push.updating_agent')}"
-      con.update_and_publish(update_json)
-      output "#{pfx} #{I18n.t('snac_job.push.pushed_to_snac')}: #{con.url}"
+      if dry_run?
+        output "#{pfx} #{I18n.t('snac_job.push.would_have_updated_agent')}"
+      else
+        output "#{pfx} #{I18n.t('snac_job.push.updating_agent')}"
+        con.update_and_publish(update_json)
+        output "#{pfx} #{I18n.t('snac_job.push.pushed_to_snac')}: #{con.url}"
+      end
     else
       output "#{pfx} #{I18n.t('snac_job.push.no_differences')}"
     end
@@ -308,44 +318,25 @@ class SnacPushHandler
     different = false
     update_json = snac_res
 
-    # title?
-    field = 'title'
-    if should_update?(aspace_res[field], snac_res[field])
-      output "#{pfx} #{I18n.t("snac_job.push.different_#{field}")}"
-      update_json[field] = aspace_res[field]
-      different = true
-    end
-
-    # link?
-    field = 'link'
-    if should_update?(aspace_res[field], snac_res[field])
-      output "#{pfx} #{I18n.t("snac_job.push.different_#{field}")}"
-      update_json[field] = aspace_res[field]
-      different = true
-    end
-
-    # abstract?
-    field = 'abstract'
-    if should_update?(aspace_res[field], snac_res[field])
-      output "#{pfx} #{I18n.t("snac_job.push.different_#{field}")}"
-      update_json[field] = aspace_res[field]
-      different = true
-    end
-
-    # extent?
-    field = 'extent'
-    if should_update?(aspace_res[field], snac_res[field])
-      output "#{pfx} #{I18n.t("snac_job.push.different_#{field}")}"
-      update_json[field] = aspace_res[field]
-      different = true
+    [ 'title', 'link', 'abstract', 'extent'].each do |field|
+      if should_update?(aspace_res[field], snac_res[field])
+        output "#{pfx} #{I18n.t("snac_job.push.found_#{field}")}:"
+        output "#{pfx} #{aspace_res[field]}"
+        update_json[field] = aspace_res[field]
+        different = true
+      end
     end
 
     # finish up
 
     if different
-      output "#{pfx} #{I18n.t('snac_job.push.updating_resource')}"
-      res.update(update_json)
-      output "#{pfx} #{I18n.t('snac_job.push.pushed_to_snac')}: #{res.url}"
+      if dry_run?
+        output "#{pfx} #{I18n.t('snac_job.push.would_have_updated_resource')}"
+      else
+        output "#{pfx} #{I18n.t('snac_job.push.updating_resource')}"
+        res.update(update_json)
+        output "#{pfx} #{I18n.t('snac_job.push.pushed_to_snac')}: #{res.url}"
+      end
     else
       output "#{pfx} #{I18n.t('snac_job.push.no_differences')}"
     end

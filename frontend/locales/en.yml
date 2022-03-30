@@ -104,18 +104,21 @@ en:
       linked_agent_relations_exist: Resource relations already exist
     push:
       not_linked: Skipping item not linked to SNAC
-      found_name_entry: Found a name entry to push
-      different_title: Titles differ
-      different_link: Links differ
-      different_abstract: Abstracts differ
-      different_extent: Extents differ
+      found_name_entry: Found a new name entry to push
+      found_title: Found an updated title to push
+      found_link: Found an updated link to push
+      found_abstract: Found an updated abstract to push
+      found_extent: Found an updated extent to push
       updating_agent: Updating SNAC with differences from this agent...
       updating_resource: Updating SNAC with differences from this resource...
+      would_have_updated_agent: Would have updated the SNAC identity with the differences listed above
+      would_have_updated_resource: Would have updated the SNAC resource with the differences listed above
       no_differences: No differences to push to SNAC
       pushed_to_snac: Differences pushed to SNAC
     pull:
-      found_name_entry: Found a name entry to pull
+      found_name_entry: Found a new name entry to pull
       updating_agent: Updating this agent with differences from SNAC...
+      would_have_updated_agent: Would have updated this agent with the differences listed above
       no_differences: No differences to pull from SNAC
       pulled_from_snac: Differences pulled from SNAC
     link:
@@ -127,6 +130,7 @@ en:
       unlinked_with_snac: Unlinked with SNAC
     options:
       uris: URIs
+      dry_run: Dry Run
       include_linked_resources: Include Published Linked Resources
       include_linked_agents: Include Published Linked Agents
       snac_source: SNAC Source
