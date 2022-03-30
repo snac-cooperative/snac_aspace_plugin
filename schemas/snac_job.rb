@@ -30,6 +30,12 @@ snac_job_actions = ['export', 'push', 'pull', 'link', 'unlink']
         }
       },
 
+      "dry_run" => {
+        "type" => "boolean",
+        "required" => "false",
+        "default" => "false"
+      },
+
     }
   }
 }
