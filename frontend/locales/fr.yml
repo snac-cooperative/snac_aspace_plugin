@@ -66,6 +66,7 @@ fr:
         resource_confirm: Voulez-vous vraiment supprimer les liens vers SNAC pour cette ressource?
       options:
         snac_source: SNAC ID
+        dry_run: Essai
         include_linked_resources: Inclure les ressources liées publiées
         include_linked_agents: Inclure les agents liés publiées
         agent_search_term: Saisie du Nom

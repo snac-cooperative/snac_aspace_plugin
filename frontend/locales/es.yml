@@ -66,6 +66,7 @@ es:
         resource_confirm: ¿Está seguro de que desea eliminar los enlaces a SNAC para este recurso?
       options:
         snac_source: ID de SNAC
+        dry_run: Ensayo
         include_linked_resources: Incluir recursos vinculados publicados
         include_linked_agents: Incluir agentes vinculados publicados
         agent_search_term: Entrada de Nombre

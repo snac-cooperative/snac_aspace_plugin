@@ -3,6 +3,13 @@
 
   <%= form_with url: url_for({:controller => :snac, :action => :pull, :uris => [obj['uri']]}), local: false do |f| %>
 
+    <fieldset>
+      <div>
+        <%= f.check_box "dry_run" %>
+        <%= I18n.t('actions.snac.options.dry_run') %>
+      </div>
+    </fieldset>
+
     <div class="form-actions">
       <%= f.submit I18n.t("actions.snac.pull.button_label"),
             :id => "snac-pull-submit-button",

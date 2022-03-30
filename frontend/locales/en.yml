@@ -66,6 +66,7 @@ en:
         resource_confirm: Are you sure you want to remove any links to SNAC for this resource?
       options:
         snac_source: SNAC ID
+        dry_run: Dry run
         include_linked_resources: Include published linked resources
         include_linked_agents: Include published linked agents
         agent_search_term: Name Entry

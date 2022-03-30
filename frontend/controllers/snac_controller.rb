@@ -46,93 +46,97 @@ class SnacController < ApplicationController
     json_file.flush
     json_file.rewind
 
-    create_job("import_job", {
-                 "import_type" => "snac_json",
-                 "jsonmodel_type" => "import_job"
-               },
-               { "snac_import_#{SecureRandom.uuid}" => json_file })
+    create_snac_job("import_job", {
+                      "import_type" => "snac_json",
+                      "jsonmodel_type" => "import_job"
+                    },
+                    { "snac_import_#{SecureRandom.uuid}" => json_file })
   end
 
 
   def export
-    create_job("snac_job", {
-                 "job_type" => "snac_job",
-                 "jsonmodel_type" => "snac_export_job",
-                 "snac_environment" => get_prefs.environment,
-                 "action" => "export",
-                 "uris" => params[:uris],
-                 "include_linked_resources" => params[:include_linked_resources] == '1',
-                 "include_linked_agents" => params[:include_linked_agents] == '1'
-               },
-               {})
+    create_snac_job("snac_job", {
+                      "job_type" => "snac_job",
+                      "jsonmodel_type" => "snac_export_job",
+                      "snac_environment" => get_prefs.environment,
+                      "action" => "export",
+                      "uris" => params[:uris],
+                      "dry_run" => params[:dry_run] == '1',
+                      "include_linked_resources" => params[:include_linked_resources] == '1',
+                      "include_linked_agents" => params[:include_linked_agents] == '1'
+                    },
+                    {})
   end
 
 
   def sync
-    # sync is actually an export job that includes linked items in disguise
-    create_job("snac_job", {
-                 "job_type" => "snac_job",
-                 "jsonmodel_type" => "snac_export_job",
-                 "snac_environment" => get_prefs.environment,
-                 "action" => "export",
-                 "uris" => params[:uris],
-                 "include_linked_resources" => true,
-                 "include_linked_agents" => true
-               },
-               {})
+    # sync is actually an export job in disguise, that automatically includes linked items
+    create_snac_job("snac_job", {
+                      "job_type" => "snac_job",
+                      "jsonmodel_type" => "snac_export_job",
+                      "snac_environment" => get_prefs.environment,
+                      "action" => "export",
+                      "uris" => params[:uris],
+                      "dry_run" => params[:dry_run] == '1',
+                      "include_linked_resources" => true,
+                      "include_linked_agents" => true
+                    },
+                    {})
   end
 
 
   def push
-    create_job("snac_job", {
-                 "job_type" => "snac_job",
-                 "jsonmodel_type" => "snac_push_job",
-                 "snac_environment" => get_prefs.environment,
-                 "action" => "push",
-                 "uris" => params[:uris],
-                 "include_linked_resources" => params[:include_linked_resources] == '1',
-                 "include_linked_agents" => params[:include_linked_agents] == '1'
-               },
-               {})
+    create_snac_job("snac_job", {
+                      "job_type" => "snac_job",
+                      "jsonmodel_type" => "snac_push_job",
+                      "snac_environment" => get_prefs.environment,
+                      "action" => "push",
+                      "uris" => params[:uris],
+                      "dry_run" => params[:dry_run] == '1',
+                      "include_linked_resources" => params[:include_linked_resources] == '1',
+                      "include_linked_agents" => params[:include_linked_agents] == '1'
+                    },
+                    {})
   end
 
 
   def pull
-    create_job("snac_job", {
-                 "job_type" => "snac_job",
-                 "jsonmodel_type" => "snac_pull_job",
-                 "snac_environment" => get_prefs.environment,
-                 "action" => "pull",
-                 "uris" => params[:uris]
-               },
-               {})
+    create_snac_job("snac_job", {
+                      "job_type" => "snac_job",
+                      "jsonmodel_type" => "snac_pull_job",
+                      "snac_environment" => get_prefs.environment,
+                      "action" => "pull",
+                      "uris" => params[:uris],
+                      "dry_run" => params[:dry_run] == '1'
+                    },
+                    {})
   end
 
 
   def link
-    create_job("snac_job", {
-                 "job_type" => "snac_job",
-                 "jsonmodel_type" => "snac_link_job",
-                 "snac_environment" => get_prefs.environment,
-                 "action" => "link",
-                 "uris" => params[:uris],
-                 "snac_source" => params[:snac_source]
-               },
-               {})
+    create_snac_job("snac_job", {
+                      "job_type" => "snac_job",
+                      "jsonmodel_type" => "snac_link_job",
+                      "snac_environment" => get_prefs.environment,
+                      "action" => "link",
+                      "uris" => params[:uris],
+                      "snac_source" => params[:snac_source]
+                    },
+                    {})
   end
 
 
   def unlink
-    create_job("snac_job", {
-                 "job_type" => "snac_job",
-                 "jsonmodel_type" => "snac_unlink_job",
-                 "snac_environment" => get_prefs.environment,
-                 "action" => "unlink",
-                 "uris" => params[:uris],
-                 "include_linked_resources" => params[:include_linked_resources] == '1',
-                 "include_linked_agents" => params[:include_linked_agents] == '1'
-               },
-               {})
+    create_snac_job("snac_job", {
+                      "job_type" => "snac_job",
+                      "jsonmodel_type" => "snac_unlink_job",
+                      "snac_environment" => get_prefs.environment,
+                      "action" => "unlink",
+                      "uris" => params[:uris],
+                      "include_linked_resources" => params[:include_linked_resources] == '1',
+                      "include_linked_agents" => params[:include_linked_agents] == '1'
+                    },
+                    {})
   end
 
 
@@ -215,7 +219,7 @@ class SnacController < ApplicationController
   private
 
 
-  def create_job(job_name, job_data, job_files)
+  def create_snac_job(job_name, job_data, job_files)
     res = {
       :job_uri => '',
       :error => ''
