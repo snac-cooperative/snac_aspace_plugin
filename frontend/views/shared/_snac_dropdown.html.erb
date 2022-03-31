@@ -15,8 +15,8 @@
 
   <ul class="dropdown-menu snac-dropdown-menu open-aligned-right">
 
-    <p id="<%= "snac-#{snac_prefs.environment}-label" %>" class="snac-environment-label text-center">
-      <%= I18n.t("actions.snac.environment.#{snac_prefs.environment}_label") %>
+    <p id="<%= "snac-#{snac_prefs.environment}-label" %>" class="snac-label text-center">
+      <%= I18n.t("actions.snac.environment.#{snac_prefs.environment}_label") %> (<%= I18n.t("actions.snac.environment.#{objtype}_label") %>)
     </p>
 
     <div>

@@ -5,6 +5,8 @@ fr:
       environment:
         production_label: Production de SNAC
         development_label: Développement du SNAC
+        agent_label: Agent
+        resource_label: Ressource
       view:
         tab_label: Voir
         button_label: Voir dans SNAC
