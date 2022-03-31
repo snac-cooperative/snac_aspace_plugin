@@ -99,9 +99,12 @@ fr:
     export:
       already_exported: Déjà exporté
       exported_to_snac: Exporté vers SNAC
-      linked_agent_checking_relations: Vérifier s'il faut créer de nouvelles relations de ressources
-      linked_agent_adding_relations: Ajout de nouvelles relations de ressources
-      linked_agent_relations_exist: Des relations de ressources existent déjà
+      update_agent_checking_resource_relations: Vérifier s'il faut créer de nouvelles relations de ressources
+      update_agent_resource_relations_exist: Des relations de ressources existent déjà
+      update_agent_adding_resource_relations: Ajout de nouvelles relations de ressources
+      would_have_updated_agent_resource_relations: Aurait ajouté de nouvelles relations de ressources à cette identité SNAC
+      would_have_exported_agent: Aurait exporté cet agent vers le SNAC
+      would_have_exported_resource: Aurait exporté cette ressource vers SNAC
     push:
       not_linked: Ignorer l'élément non lié au SNAC
       found_name_entry: Trouvé une nouvelle entrée de nom à pousser

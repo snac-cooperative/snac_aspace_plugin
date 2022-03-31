@@ -172,12 +172,12 @@ class SnacExportHandler
   end
 
 
-  def update_agent(pfx, id, linked_resources = [])
+  def update_agent_resource_relations(pfx, id, linked_resources = [])
     # adds resource relations to this identity in SNAC, if not already present
 
     return if linked_resources.empty?
 
-    output "#{pfx} #{I18n.t('snac_job.export.linked_agent_checking_relations')}"
+    output "#{pfx} #{I18n.t('snac_job.export.update_agent_checking_resource_relations')}"
 
     con = SnacConstellation.new(@snac_prefs, id)
 
@@ -206,13 +206,17 @@ class SnacExportHandler
     # update snac identity with new resource relations, if any
 
     if resource_relations.empty?
-      output "#{pfx} #{I18n.t('snac_job.export.linked_agent_relations_exist')}"
+      output "#{pfx} #{I18n.t('snac_job.export.update_agent_resource_relations_exist')}"
       return
     end
 
-    output "#{pfx} #{I18n.t('snac_job.export.linked_agent_adding_relations')}"
+    if dry_run?
+      output "#{pfx} #{I18n.t('snac_job.export.would_have_updated_agent_resource_relations')}"
+    else
+      output "#{pfx} #{I18n.t('snac_job.export.update_agent_adding_resource_relations')}"
 
-    con.update_and_publish({'resourceRelations' => resource_relations})
+      con.update_and_publish({'resourceRelations' => resource_relations})
+    end
   end
 
 
@@ -232,7 +236,7 @@ class SnacExportHandler
       output "#{pfx} #{I18n.t('snac_job.export.already_exported')}: #{snac_entry['record_identifier']}"
 
       # already exported, but might need more resources linked to it...
-      update_agent(pfx, @link_helper.agent_snac_id(agent_json), linked_resources)
+      update_agent_resource_relations(pfx, @link_helper.agent_snac_id(agent_json), linked_resources)
 
       return @link_helper.agent_snac_id(agent_json)
     end
@@ -240,18 +244,23 @@ class SnacExportHandler
     snac_agent = agent_json
     snac_agent['linked_resources'] = linked_resources
 
-    con = SnacConstellation.new(@snac_prefs)
-    con.export(snac_agent)
+    if dry_run?
+      output "#{pfx} #{I18n.t('snac_job.export.would_have_exported_agent')}"
+      -1
+    else
+      con = SnacConstellation.new(@snac_prefs)
+      con.export(snac_agent)
 
-    output "#{pfx} #{I18n.t('snac_job.export.exported_to_snac')}: #{con.url}"
+      output "#{pfx} #{I18n.t('snac_job.export.exported_to_snac')}: #{con.url}"
 
-    # add snac constellation url and ark to agent
-    agent_json = @link_helper.agent_link(agent_json, con.url, con.ark)
+      # add snac constellation url and ark to agent
+      agent_json = @link_helper.agent_link(agent_json, con.url, con.ark)
 
-    agent.save(agent_json)
-    @modified << agent_json.uri if agent_json.uri
+      agent.save(agent_json)
+      @modified << agent_json.uri if agent_json.uri
 
-    con.id
+      con.id
+    end
   end
 
 
@@ -370,18 +379,23 @@ class SnacExportHandler
     snac_resource = resource_json
     snac_resource['holding_repo_id'] = repo_id
 
-    res = SnacResource.new(@snac_prefs)
-    res.export(snac_resource)
+    if dry_run?
+      output "#{pfx} #{I18n.t('snac_job.export.would_have_exported_resource')}"
+      -1
+    else
+      res = SnacResource.new(@snac_prefs)
+      res.export(snac_resource)
 
-    output "#{pfx} #{I18n.t('snac_job.export.exported_to_snac')}: #{res.url}"
+      output "#{pfx} #{I18n.t('snac_job.export.exported_to_snac')}: #{res.url}"
 
-    # add snac resource url to AS resource
-    resource_json = @link_helper.resource_link(resource_json, res.url)
+      # add snac resource url to AS resource
+      resource_json = @link_helper.resource_link(resource_json, res.url)
 
-    resource.save(resource_json)
-    @modified << resource_json.uri if resource_json.uri
+      resource.save(resource_json)
+      @modified << resource_json.uri if resource_json.uri
 
-    res.id
+      res.id
+    end
   end
 
 
