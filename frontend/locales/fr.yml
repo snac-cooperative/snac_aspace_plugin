@@ -159,7 +159,7 @@ fr:
     import_type_snac_json_desc: Importer des données depuis SNAC JSON (soit une seule entrée, soit un tableau d'entre elles)
   plugins:
     snac:
-      label: Importer SNAC
+      label: Importation de l'Agent SNAC
       search:
         name_entry: Saisie du Nom
       actions:
