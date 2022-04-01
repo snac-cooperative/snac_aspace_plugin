@@ -5,6 +5,8 @@ require_relative '../convert/snac_export'
 require_relative '../../../common/snac_preferences'
 require_relative '../../../common/snac_link_helper'
 
+require "active_support/core_ext/string"
+
 class SnacPushHandler
   include JSONModel
 
@@ -45,11 +47,6 @@ class SnacPushHandler
   private
 
 
-  def dry_run?
-    @json.job['dry_run']
-  end
-
-
   def log(msg)
     puts "[SNACJOB] #{msg}"
   end
@@ -58,6 +55,16 @@ class SnacPushHandler
   def output(msg)
     log msg
     @job.write_output(msg)
+  end
+
+
+  def dry_run?
+    @json.job['dry_run']
+  end
+
+
+  def abbrev(str, len = 100)
+    str.truncate(len, separator: /\s/)
   end
 
 
@@ -155,11 +162,11 @@ class SnacPushHandler
   def push_agent(pfx, uri)
     # pushes agent differences to a snac constellation, if any
 
-    output ""
-    output "#{pfx} #{I18n.t('snac_job.common.processing_agent')}: #{uri}"
-
     agent = SnacRecordHelper.new(uri)
     agent_json = agent.load
+
+    output ""
+    output "#{pfx} #{I18n.t('snac_job.common.processing_agent')}: #{uri} (#{abbrev(agent.title)})"
 
     # check for existing snac link
     snac_entry = @link_helper.agent_snac_entry(agent_json)
@@ -187,8 +194,7 @@ class SnacPushHandler
         match = match || name_entries_identical?(aname, sname)
       end
       next if match
-      output "#{pfx} #{I18n.t('snac_job.push.found_name_entry')}:"
-      output "#{pfx} #{aname['original']}"
+      output "#{pfx} #{I18n.t('snac_job.push.found_name_entry')}: #{abbrev(aname['original'])}"
       update_json['nameEntries'] << aname
       different = true
 	end
@@ -293,11 +299,11 @@ class SnacPushHandler
   def push_resource(pfx, uri)
     # pushes resource differences to a snac resource, if any
 
-    output ""
-    output "#{pfx} #{I18n.t('snac_job.common.processing_resource')}: #{uri}"
-
     resource = SnacRecordHelper.new(uri)
     resource_json = resource.load
+
+    output ""
+    output "#{pfx} #{I18n.t('snac_job.common.processing_resource')}: #{uri} (#{abbrev(resource.title)})"
 
     # check for existing snac link
     snac_entry = @link_helper.resource_snac_entry(resource_json)
@@ -320,8 +326,7 @@ class SnacPushHandler
 
     [ 'title', 'link', 'abstract', 'extent'].each do |field|
       if should_update?(aspace_res[field], snac_res[field])
-        output "#{pfx} #{I18n.t("snac_job.push.found_#{field}")}:"
-        output "#{pfx} #{aspace_res[field]}"
+        output "#{pfx} #{I18n.t("snac_job.push.found_#{field}")}: #{abbrev(aspace_res[field])}"
         update_json[field] = aspace_res[field]
         different = true
       end

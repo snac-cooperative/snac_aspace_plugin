@@ -5,6 +5,8 @@ require_relative '../convert/snac_export'
 require_relative '../../../common/snac_preferences'
 require_relative '../../../common/snac_link_helper'
 
+require "active_support/core_ext/string"
+
 class SnacExportHandler
   include JSONModel
 
@@ -56,6 +58,16 @@ class SnacExportHandler
   end
 
 
+  def dry_run?
+    @json.job['dry_run']
+  end
+
+
+  def abbrev(str, len = 100)
+    str.truncate(len, separator: /\s/)
+  end
+
+
   ### repository export functions ###
 
 
@@ -88,11 +100,6 @@ class SnacExportHandler
 
 
   ### agent export functions ###
-
-
-  def dry_run?
-    @json.job['dry_run']
-  end
 
 
   def include_linked_resources?
@@ -199,7 +206,7 @@ class SnacExportHandler
     resource_relations = []
     new_resource_relations.each do |r|
       pair = {:resource_id => r['resource']['id'], :role_id => r['role']['id']}
-      next if cur_id_role_pairs.include?({:resource_id => r['resource']['id'], :role_id => r['role']['id']})
+      next if cur_id_role_pairs.include?(pair)
       resource_relations << r
     end
 
@@ -224,11 +231,11 @@ class SnacExportHandler
     # exports an agent to a snac constellation, if not already exported.
     # returns the snac id for the constellation in either case.
 
-    output ""
-    output "#{pfx} #{I18n.t('snac_job.common.processing_agent')}: #{uri}"
-
     agent = SnacRecordHelper.new(uri)
     agent_json = agent.load
+
+    output ""
+    output "#{pfx} #{I18n.t('snac_job.common.processing_agent')}: #{uri} (#{abbrev(agent.title)})"
 
     # check for existing snac link
     snac_entry = @link_helper.agent_snac_entry(agent_json)
@@ -363,11 +370,11 @@ class SnacExportHandler
     # first, ensure this repository exists as a holding repository in snac
     repo_id = export_repository
 
-    output ""
-    output "#{pfx} #{I18n.t('snac_job.common.processing_resource')}: #{uri}"
-
     resource = SnacRecordHelper.new(uri)
     resource_json = resource.load
+
+    output ""
+    output "#{pfx} #{I18n.t('snac_job.common.processing_resource')}: #{uri} (#{abbrev(resource.title)})"
 
     # check for existing snac link
     snac_entry = @link_helper.resource_snac_entry(resource_json)

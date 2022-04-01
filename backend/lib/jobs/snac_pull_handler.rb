@@ -5,6 +5,8 @@ require_relative '../convert/snac_export'
 require_relative '../../../common/snac_preferences'
 require_relative '../../../common/snac_link_helper'
 
+require "active_support/core_ext/string"
+
 class SnacPullHandler
   include JSONModel
 
@@ -41,11 +43,6 @@ class SnacPullHandler
   private
 
 
-  def dry_run?
-    @json.job['dry_run']
-  end
-
-
   def log(msg)
     puts "[SNACJOB] #{msg}"
   end
@@ -54,6 +51,16 @@ class SnacPullHandler
   def output(msg)
     log msg
     @job.write_output(msg)
+  end
+
+
+  def dry_run?
+    @json.job['dry_run']
+  end
+
+
+  def abbrev(str, len = 100)
+    str.truncate(len, separator: /\s/)
   end
 
 
@@ -92,12 +99,12 @@ class SnacPullHandler
   def pull_agent(pfx, uri, linked_resources = [])
     # grabs constellation from snac, and updates any agent info that has changed
 
-    output ""
-    output "#{pfx} #{I18n.t('snac_job.common.processing_agent')}: #{uri}"
-
     # read aspace agent json
     agent = SnacRecordHelper.new(uri)
     agent_json = agent.load
+
+    output ""
+    output "#{pfx} #{I18n.t('snac_job.common.processing_agent')}: #{uri} (#{abbrev(agent.title)})"
 
     # read snac agent json, as it would be if imported
     agent_snac = SnacConstellation.new(@snac_prefs, @link_helper.agent_snac_id(agent_json)).import
@@ -113,7 +120,6 @@ class SnacPullHandler
         match = match || agent_names_identical?(sname, aname)
       end
       next if match
-      output "#{pfx} #{I18n.t('snac_job.pull.found_name_entry')}:"
 
       sort_name = ''
       case agent_json['jsonmodel_type']
@@ -124,7 +130,8 @@ class SnacPullHandler
       when 'agent_corporate_entity'
         sort_name = SortNameProcessor::CorporateEntity.process(sname)
       end
-      output "#{pfx} #{sort_name}" if sort_name != ''
+
+      output "#{pfx} #{I18n.t('snac_job.pull.found_name_entry')}: #{abbrev(sort_name)}"
 
       sname.delete('authorized')
       agent_json['names'] << sname

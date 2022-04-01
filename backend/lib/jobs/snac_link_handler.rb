@@ -4,6 +4,8 @@ require_relative '../helpers/snac_record_helper'
 require_relative '../../../common/snac_preferences'
 require_relative '../../../common/snac_link_helper'
 
+require "active_support/core_ext/string"
+
 class SnacLinkHandler
   include JSONModel
 
@@ -55,17 +57,27 @@ class SnacLinkHandler
   end
 
 
+  def dry_run?
+    @json.job['dry_run']
+  end
+
+
+  def abbrev(str, len = 100)
+    str.truncate(len, separator: /\s/)
+  end
+
+
   ### agent link functions ###
 
 
   def link_agent(pfx, uri)
     # adds snac links to the given agent
 
-    output ""
-    output "#{pfx} #{I18n.t('snac_job.common.processing_agent')}: #{uri}"
-
     agent = SnacRecordHelper.new(uri)
     agent_json = agent.load
+
+    output ""
+    output "#{pfx} #{I18n.t('snac_job.common.processing_agent')}: #{uri} (#{abbrev(agent.title)})"
 
     # check for existing snac link
     snac_entry = @link_helper.agent_snac_entry(agent_json)
@@ -94,11 +106,11 @@ class SnacLinkHandler
   def link_resource(pfx, uri)
     # adds snac links to the given resource
 
-    output ""
-    output "#{pfx} #{I18n.t('snac_job.common.processing_resource')}: #{uri}"
-
     resource = SnacRecordHelper.new(uri)
     resource_json = resource.load
+
+    output ""
+    output "#{pfx} #{I18n.t('snac_job.common.processing_resource')}: #{uri} (#{abbrev(resource.title)})"
 
     # check for existing snac link
     snac_entry = @link_helper.resource_snac_entry(resource_json)
