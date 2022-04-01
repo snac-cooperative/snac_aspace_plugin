@@ -145,7 +145,9 @@ class SnacPushHandler
 
     name_entry['components'].each do |component|
       pieces << component['text']
-      pieces << component['type']['term']
+      # this depends on name types being consistent between systems, which is not always the
+      # case, and can cause false negatives.  probably can just use the actual text above.
+      #pieces << component['type']['term']
     end
 
     pieces
