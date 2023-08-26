@@ -7,11 +7,9 @@
         </div>
       <% end %>
       <div class="pull-right">
-
-<%# SNAC PLUGIN CONTENT STARTS HERE %>
+<%# SNAC PLUGIN CONTENT SECTION STARTS HERE %>
           <%= render_aspace_partial :partial => "shared/snac_dropdown", :locals => {:obj => @repository['agent_representation']} %>
-<%# SNAC PLUGIN CONTENT ENDS HERE %>
-
+<%# SNAC PLUGIN CONTENT SECTION ENDS HERE %>
         <% if session[:repo_id] != @repository.id and @repositories.any?{|r| r['uri'] === @repository.uri} %>
           <%= form_for @repository, :as => "repository", :url => {:action => :select}, :html => {:style => "display: inline;"} do |f| %>
             <button type="submit" class="btn btn-sm btn-success"><%= I18n.t("repository._frontend.action.select") %></button>
@@ -24,7 +22,7 @@
                 {   :class => "btn btn-sm btn-danger delete-record delete-repository", 
                     :"data-confirm-btn-class" => "btn-danger repo-delete", 
                     :"data-title" => I18n.t("actions.delete_repository_confirm_title", :name => @repository["repository"]["name"]),
-                    :"data-message" => I18n.t("actions.delete_repository_confirm_message", :repository => @repository["repository"]["repo_code"] ) } %>
+                    :"data-message" => I18n.t("actions.delete_repository_confirm_message", :repository => @repository["repository"]["repo_code"].gsub("'", "").gsub('"', '') ) } %>
             </div>
           </div>
         <% end %>
@@ -32,9 +30,7 @@
       <div class="clearfix"></div>
     </div>
   </div>
-
-<%# SNAC PLUGIN CONTENT STARTS HERE %>
+<%# SNAC PLUGIN CONTENT SECTION STARTS HERE %>
   <%= render_aspace_partial :partial => "shared/snac_templates" %>
-<%# SNAC PLUGIN CONTENT ENDS HERE %>
-
+<%# SNAC PLUGIN CONTENT SECTION ENDS HERE %>
 </div>

@@ -58,11 +58,9 @@
               <%= yield :exports %>
             </ul>
           </div>
-
-<%# SNAC PLUGIN CONTENT STARTS HERE %>
+<%# SNAC PLUGIN CONTENT SECTION STARTS HERE %>
           <%= render_aspace_partial :partial => "shared/snac_dropdown", :locals => {:obj => record} %>
-<%# SNAC PLUGIN CONTENT ENDS HERE %>
-
+<%# SNAC PLUGIN CONTENT SECTION ENDS HERE %>
           <% if user_can?('merge_archival_record') %>
             <%=
                 render_aspace_partial :partial => "shared/merge_dropdown",
@@ -153,8 +151,6 @@
       </div>
       <div class="clearfix"></div>
     </div>
-
-<%# SNAC PLUGIN CONTENT STARTS HERE %>
+<%# SNAC PLUGIN CONTENT SECTION STARTS HERE %>
   <%= render_aspace_partial :partial => "shared/snac_templates" %>
-<%# SNAC PLUGIN CONTENT ENDS HERE %>
-
+<%# SNAC PLUGIN CONTENT SECTION ENDS HERE %>

@@ -53,11 +53,9 @@
           <div class="btn btn-inline-form">
             <%= link_to I18n.t("actions.export_marc_auth"), {:controller => :exports, :action => :download_marc_auth, :id => @agent.id, :type => @agent.agent_type}, :class => "btn btn-sm btn-default" %>
           </div>
-
-<%# SNAC PLUGIN CONTENT STARTS HERE %>
+<%# SNAC PLUGIN CONTENT SECTION STARTS HERE %>
           <%= render_aspace_partial :partial => "shared/snac_dropdown", :locals => {:obj => @agent} %>
-<%# SNAC PLUGIN CONTENT ENDS HERE %>
-
+<%# SNAC PLUGIN CONTENT SECTION ENDS HERE %>
         <% end %>
 
 
@@ -81,9 +79,7 @@
     </div>
     <div class="clearfix"></div>
   </div>
-
-<%# SNAC PLUGIN CONTENT STARTS HERE %>
+<%# SNAC PLUGIN CONTENT SECTION STARTS HERE %>
   <%= render_aspace_partial :partial => "shared/snac_templates" %>
-<%# SNAC PLUGIN CONTENT ENDS HERE %>
-
+<%# SNAC PLUGIN CONTENT SECTION ENDS HERE %>
 <% end %>
