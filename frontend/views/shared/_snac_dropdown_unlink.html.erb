@@ -1,34 +1,40 @@
-<% if user_can?('create_job') && user_can?('update_agent_record') && user_can?('update_resource_record') %>
-  <p><%= I18n.t("actions.snac.unlink.#{objtype}_desc") %></p>
+<% if !edit_mode? %>
+  <% if user_can?('create_job') && user_can?('update_agent_record') && user_can?('update_resource_record') %>
+    <p><%= I18n.t("actions.snac.unlink.#{objtype}_desc") %></p>
 
-  <%= form_with url: url_for({:controller => :snac, :action => :unlink, :uris => [obj['uri']]}), local: false do |f| %>
+    <%= form_with url: url_for({:controller => :snac, :action => :unlink, :uris => [obj['uri']]}), local: false do |f| %>
 
-    <fieldset>
-      <% case objtype %>
-      <% when 'agent' %>
-        <div>
-          <%= f.check_box "include_linked_resources" %>
-          <%= I18n.t('actions.snac.options.include_linked_resources') %>
-        </div>
-      <% when 'resource' %>
-        <div>
-          <%= f.check_box "include_linked_agents" %>
-          <%= I18n.t('actions.snac.options.include_linked_agents') %>
-        </div>
-      <% end %>
-    </fieldset>
+      <fieldset>
+        <% case objtype %>
+        <% when 'agent' %>
+          <div>
+            <%= f.check_box "include_linked_resources" %>
+            <%= I18n.t('actions.snac.options.include_linked_resources') %>
+          </div>
+        <% when 'resource' %>
+          <div>
+            <%= f.check_box "include_linked_agents" %>
+            <%= I18n.t('actions.snac.options.include_linked_agents') %>
+          </div>
+        <% end %>
+      </fieldset>
 
-    <div class="form-actions">
-      <%= f.submit I18n.t("actions.snac.unlink.button_label"),
-            :id => "snac-unlink-submit-button",
-            :class => "btn snac-unlink-button btn-default pull-left",
-            data: { confirm: I18n.t("actions.snac.unlink.#{objtype}_confirm"), disable_with: I18n.t("actions.snac.unlink.button_label") }
-      %>
+      <div class="form-actions">
+        <%= f.submit I18n.t("actions.snac.unlink.button_label"),
+              :id => "snac-unlink-submit-button",
+              :class => "btn snac-unlink-button btn-default pull-left",
+              data: { confirm: I18n.t("actions.snac.unlink.#{objtype}_confirm"), disable_with: I18n.t("actions.snac.unlink.button_label") }
+        %>
 
-      <a class="btn btn-cancel btn-default pull-right" href="#"><%= I18n.t("actions.cancel") %></a>
-    </div>
+        <a class="btn btn-cancel btn-default pull-right" href="#"><%= I18n.t("actions.cancel") %></a>
+      </div>
 
+    <% end %>
+  <% else %>
+    <p><%= I18n.t("actions.snac.unlink.aspace_permissions_needed") %></p>
   <% end %>
 <% else %>
-  <p><%= I18n.t("actions.snac.unlink.aspace_permissions_needed") %></p>
+  <p class="text-center">
+    <%= I18n.t("actions.snac.unavailable.editing") %>
+  </p>
 <% end %>

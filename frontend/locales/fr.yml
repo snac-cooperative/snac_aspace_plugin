@@ -73,6 +73,8 @@ fr:
         include_linked_agents: Inclure les agents liés publiées
         agent_search_term: Saisie du Nom
         resource_search_term: Titre de la Ressource
+      unavailable:
+        editing: Cette fonctionnalité n'est pas disponible en mode édition.
       job:
         success_title: Emploi SNAC créé
         success_message: Redirection vers la page d'état du travail...

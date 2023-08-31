@@ -1,26 +1,32 @@
-<% if user_can?('create_job') && user_can?('update_agent_record') && user_can?('update_resource_record') %>
-  <p><%= I18n.t("actions.snac.pull.#{objtype}_desc") %></p>
+<% if !edit_mode? %>
+  <% if user_can?('create_job') && user_can?('update_agent_record') && user_can?('update_resource_record') %>
+    <p><%= I18n.t("actions.snac.pull.#{objtype}_desc") %></p>
 
-  <%= form_with url: url_for({:controller => :snac, :action => :pull, :uris => [obj['uri']]}), local: false do |f| %>
+    <%= form_with url: url_for({:controller => :snac, :action => :pull, :uris => [obj['uri']]}), local: false do |f| %>
 
-    <fieldset>
-      <div>
-        <%= f.check_box "dry_run" %>
-        <%= I18n.t('actions.snac.options.dry_run') %>
+      <fieldset>
+        <div>
+          <%= f.check_box "dry_run" %>
+          <%= I18n.t('actions.snac.options.dry_run') %>
+        </div>
+      </fieldset>
+
+      <div class="form-actions">
+        <%= f.submit I18n.t("actions.snac.pull.button_label"),
+              :id => "snac-pull-submit-button",
+              :class => "btn snac-pull-button btn-default pull-left",
+              data: { confirm: I18n.t("actions.snac.pull.#{objtype}_confirm"), disable_with: I18n.t("actions.snac.pull.button_label") }
+        %>
+
+        <a class="btn btn-cancel btn-default pull-right" href="#"><%= I18n.t("actions.cancel") %></a>
       </div>
-    </fieldset>
+    <% end %>
 
-    <div class="form-actions">
-      <%= f.submit I18n.t("actions.snac.pull.button_label"),
-            :id => "snac-pull-submit-button",
-            :class => "btn snac-pull-button btn-default pull-left",
-            data: { confirm: I18n.t("actions.snac.pull.#{objtype}_confirm"), disable_with: I18n.t("actions.snac.pull.button_label") }
-      %>
-
-      <a class="btn btn-cancel btn-default pull-right" href="#"><%= I18n.t("actions.cancel") %></a>
-    </div>
+  <% else %>
+    <p><%= I18n.t("actions.snac.pull.aspace_permissions_needed") %></p>
   <% end %>
-
 <% else %>
-  <p><%= I18n.t("actions.snac.pull.aspace_permissions_needed") %></p>
+  <p class="text-center">
+    <%= I18n.t("actions.snac.unavailable.editing") %>
+  </p>
 <% end %>

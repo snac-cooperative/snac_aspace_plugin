@@ -73,6 +73,8 @@ en:
         include_linked_agents: Include published linked agents
         agent_search_term: Name Entry
         resource_search_term: Resource Title
+      unavailable:
+        editing: This functionality is unavailable while in edit mode.
       job:
         success_title: SNAC job created
         success_message: Redirecting to the job status page...
