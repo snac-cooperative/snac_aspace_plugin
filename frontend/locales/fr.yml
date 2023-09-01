@@ -154,6 +154,8 @@ fr:
   job:
     types:
       snac_export_job: Exportation SNAC
+      snac_push_job: Poussée SNAC
+      snac_pull_job: Extraction SNAC
       snac_link_job: Lien SNAC
       snac_unlink_job: SNAC Dissocier
   import_job:
