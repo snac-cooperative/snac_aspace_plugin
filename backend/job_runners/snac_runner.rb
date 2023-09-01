@@ -36,6 +36,9 @@ class SnacRunner < JobRunner
                               :repo_id => @job.repo_id) do
 
             uris.each_with_index do |uri, index|
+              # Undo any slash conversion that was done to avoid resource URI detection in the /jobs page
+              uri.gsub!('|', '/')
+
               output ""
               output "=====================[ #{I18n.t('snac_job.common.processing_record', :index => index+1, :length => uris.length)} ]====================="
 

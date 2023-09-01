@@ -226,6 +226,13 @@ class SnacController < ApplicationController
     }
 
     begin
+      # The /jobs page tries to detect resource URIs in the job data, but presumably is looking for a
+      # single string only, as it crashes when attempting to parse any that are contained in this array.
+      # To work around this, we convert any slashes in the URI to avoid this detection.
+      if job_data.key?('uris')
+        job_data['uris'].map! { |uri| uri.gsub('/', '|') }
+      end
+
       job = Job.new(job_name, job_data, job_files)
       response = job.upload
 
