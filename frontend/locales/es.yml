@@ -143,14 +143,41 @@ es:
       snac_source: Fuente SNAC
   snac_export_job:
     _singular: Trabajo de Exportación SNAC
+    snac_environment: Entorno SNAC
+    action: Acción
+    uris: URIs
+    dry_run: Ensayo
+    include_linked_resources: Incluir Recursos Vinculados Publicados
+    include_linked_agents: Incluir Agentes Vinculados Publicados
   snac_push_job:
     _singular: Trabajo de Inserción SNAC
+    snac_environment: Entorno SNAC
+    action: Acción
+    uris: URIs
+    dry_run: Ensayo
+    include_linked_resources: Incluir Recursos Vinculados Publicados
+    include_linked_agents: Incluir Agentes Vinculados Publicados
   snac_pull_job:
     _singular: Trabajo de Extracción SNAC
+    snac_environment: Entorno SNAC
+    action: Acción
+    uris: URIs
+    dry_run: Ensayo
   snac_link_job:
     _singular: Trabajo de Enlace SNAC
+    snac_environment: Entorno SNAC
+    action: Acción
+    uris: URIs
+    dry_run: Ensayo
+    snac_source: Fuente SNAC
   snac_unlink_job:
     _singular: Trabajo de Desvinculación de SNAC
+    snac_environment: Entorno SNAC
+    action: Acción
+    uris: URIs
+    dry_run: Ensayo
+    include_linked_resources: Incluir Recursos Vinculados Publicados
+    include_linked_agents: Incluir Agentes Vinculados Publicados
   job:
     types:
       snac_export_job: Exportación SNAC
