@@ -1,0 +1,24 @@
+<div class="form-group">
+  <label class="col-sm-3 control-label"><%= I18n.t("plugins.defaults.snac_environment")  %></label>
+  <div class="col-sm-9 controls label-only"><%= I18n.t("plugins.defaults.snac_#{job['snac_environment']}_label") %></div>
+</div>
+
+<div class="form-group">
+  <label class="col-sm-3 control-label"><%= I18n.t("snac_job.options.dry_run")  %></label>
+  <div class="col-sm-9 controls label-only"><%= job['dry_run'] %></div>
+</div>
+
+<div class="form-group">
+  <label class="col-sm-3 control-label"><%= I18n.t("snac_job.options.include_linked_resources")  %></label>
+  <div class="col-sm-9 controls label-only"><%= job['include_linked_resources'] %></div>
+</div>
+
+<div class="form-group">
+  <label class="col-sm-3 control-label"><%= I18n.t("snac_job.options.include_linked_agents")  %></label>
+  <div class="col-sm-9 controls label-only"><%= job['include_linked_agents'] %></div>
+</div>
+
+<div class="form-group">
+  <label class="col-sm-3 control-label"><%= I18n.t("snac_job.options.uris")  %></label>
+  <div class="col-sm-9 controls label-only"><%= job['uris'] %></div>
+</div>

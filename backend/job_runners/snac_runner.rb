@@ -8,6 +8,7 @@ class SnacRunner < JobRunner
   include JSONModel
 
   register_for_job_type('snac_export_job', :run_concurrently => true)
+  register_for_job_type('snac_sync_job', :run_concurrently => true)
   register_for_job_type('snac_push_job', :run_concurrently => true)
   register_for_job_type('snac_pull_job', :run_concurrently => true)
   register_for_job_type('snac_link_job', :run_concurrently => true)

@@ -149,6 +149,14 @@ en:
     dry_run: Dry Run
     include_linked_resources: Include Published Linked Resources
     include_linked_agents: Include Published Linked Agents
+  snac_sync_job:
+    _singular: SNAC Sync Job
+    snac_environment: SNAC Environment
+    action: Action
+    uris: URIs
+    dry_run: Dry Run
+    include_linked_resources: Include Published Linked Resources
+    include_linked_agents: Include Published Linked Agents
   snac_push_job:
     _singular: SNAC Push Job
     snac_environment: SNAC Environment
@@ -181,6 +189,7 @@ en:
   job:
     types:
       snac_export_job: SNAC Export
+      snac_sync_job: SNAC Sync
       snac_push_job: SNAC Push
       snac_pull_job: SNAC Pull
       snac_link_job: SNAC Link
