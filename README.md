@@ -11,7 +11,7 @@ Then, add `snac_aspace_plugin` to your list of plugins in the ArchivesSpace conf
 As an example:
 
 ```
-AppConfig[:plugins] = ['local', 'lcnaf', 'snac_aspace_plugin']
+AppConfig[:plugins] << 'snac_aspace_plugin'
 ```
 
 ## Configuration
