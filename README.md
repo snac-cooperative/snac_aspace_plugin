@@ -27,12 +27,13 @@ This setting controls which instance of SNAC you wish to work with (default is P
 * [Production](https://snaccooperative.org/)
 * [Development](https://snac-dev.iath.virginia.edu/)
 
-### SNAC API Key
+### Production/Development API Key
 
-This is only required if you want to use functionality that modifies SNAC (Export, Sync, Push).
-Enter your SNAC API key here, making sure it's valid for the SNAC Environment specified above.
+These are only required if you want to use functionality that modifies SNAC (`Export`, `Sync`, or `Push`).
+Enter your SNAC API key(s) in the appropriate boxes here.
 
-**NOTE:** this setting is intended to be used at the User level only, in order to associate SNAC changes with specific users.
+**NOTE:**
+This setting is intended to be used at the User level only, in order to associate SNAC changes with specific users.
 In other words, do not set an API key as a global option for all users to share.  Each user should manage their own keys.
 
 ## Importing from SNAC
@@ -50,7 +51,9 @@ The results will display the preferred nameEntry heading.
 Clicking `Show Record` will also display the SNAC ID, ARK, and an embedded SNAC snippet page for that identity.
 
 Click `Select` next to a name entry to add it to the list of identities to import.
-**NOTE:** You can perform additional name entry searches in order to add other identities before importing.
+
+**NOTE:**
+You can perform additional name entry searches in order to add other identities before importing.
 
 Once ready, click `Import` to initate the process of importing the selected SNAC identities into ArchivesSpace, via a background job.
 If the background job is created successfully, you will be redirected to its page to see its progress.
@@ -153,9 +156,9 @@ Below are the permissions an ArchivesSpace user must have to perform each action
 `create_job`,
 `update_agent_record`,
 `import_records`
-* `Export`, `Link`, `Unlink`, `Sync`, `Pull` --
+* Export, Link, Unlink, Sync, Pull --
 `create_job`,
 `update_agent_record`,
 `update_resource_record`
-* `Push` --
+* Push --
 `create_job`
