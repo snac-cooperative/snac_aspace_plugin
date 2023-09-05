@@ -12,15 +12,15 @@ jobs:
       - name: Checkout project
         uses: actions/checkout@v4
       - name: Create zip without version tag
-        run: cd .. && zip -r -x '.git/*' -x '.github/*' ${{ github.event.repository.name }}-${{ github.ref }}.zip ${{ github.event.repository.name }}
+        run: cd .. && zip -r -x '.git/*' -x '.github/*' ${{ github.event.repository.name }}-${{ github.ref_name }}.zip ${{ github.event.repository.name }}
       - name: Create release
         uses: actions/create-release@v1
         id: create_release
         with:
           draft: false
           prerelease: false
-          release_name: Release ${{ github.ref }}
-          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
           body: ${{ github.event.commits[0].message }} 
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -30,6 +30,6 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ../${{ github.event.repository.name }}-${{ github.ref }}.zip
-          asset_name: ${{ github.event.repository.name }}-${{ github.ref }}.zip
+          asset_path: ../${{ github.event.repository.name }}-${{ github.ref_name }}.zip
+          asset_name: ${{ github.event.repository.name }}-${{ github.ref_name }}.zip
           asset_content_type: application/zip
