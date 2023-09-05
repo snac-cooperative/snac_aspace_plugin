@@ -12,7 +12,7 @@ jobs:
       - name: Checkout project
         uses: actions/checkout@v4
       - name: Create zip without version tag
-        run: cd .. && zip -r -x '.git/*' -x '.github/*' ${{ github.event.repository.name }}-${{ github.ref_name }}.zip ${{ github.event.repository.name }}
+        run: cd .. && zip -r ${{ github.event.repository.name }}-${{ github.ref_name }}.zip ${{ github.event.repository.name }} -x '*/.git*'
       - name: Create release
         uses: actions/create-release@v1
         id: create_release
